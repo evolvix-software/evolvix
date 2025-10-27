@@ -63,7 +63,7 @@ export function UpcomingEvents({ events }: UpcomingEventsProps) {
                   {event.time}
                 </p>
               </div>
-              <button className="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-lg transition-colors">
+              <button className="px-3 py-1 bg-[#635bff] hover:bg-[#4f48cc] text-white text-sm rounded-lg transition-colors">
                 {event.action}
               </button>
             </div>

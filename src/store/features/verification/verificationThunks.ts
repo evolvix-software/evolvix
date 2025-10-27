@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { VerificationData, mockVerificationData } from '@/data/mock/verificationData';
+import { setUploadProgress } from './verificationSlice';
 
 // Load verification data for current user
 export const loadVerificationData = createAsyncThunk(

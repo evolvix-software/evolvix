@@ -14,8 +14,8 @@ const statItems = [
     label: 'Courses Enrolled',
     icon: BookOpen,
     color: 'orange',
-    bgColor: 'bg-orange-100 dark:bg-orange-900/20',
-    textColor: 'text-orange-600 dark:text-orange-400'
+    bgColor: 'bg-[#635bff]/10 dark:bg-[#635bff]/20',
+    textColor: 'text-[#635bff] dark:text-[#735fff]'
   },
   {
     key: 'mentorsConnected' as keyof StudentStats,

@@ -27,7 +27,8 @@ import {
   CreditCard,
   Palette,
   Camera,
-  Key
+  Key,
+  LogOut
 } from 'lucide-react';
 
 import { Button } from '@/components/forms/Button';
@@ -49,8 +50,8 @@ const menuItems = [
   },
   {
     id: 'courses',
-    label: 'My Courses',
-    subtitle: 'Your Learning Path',
+    label: 'Courses',
+    subtitle: 'Browse & Learn',
     icon: <BookOpen className="w-5 h-5" />,
     path: '/portal/student/courses'
   },
@@ -222,7 +223,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
       <div className="flex items-center justify-between p-4 border-b border-slate-700 dark:border-gray-700 flex-shrink-0">
         {!isCollapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-600/40">
+            <div className="w-10 h-10 bg-[#635bff] rounded-xl flex items-center justify-center shadow-lg shadow-[#635bff]/40">
               <GraduationCap className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -249,7 +250,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           <div className="bg-slate-700 dark:bg-gray-700 rounded-xl p-4 hover:bg-slate-600 dark:hover:bg-gray-600 transition-colors cursor-pointer">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-orange-600 rounded-lg flex items-center justify-center">
+                <div className="w-8 h-8 bg-[#635bff] rounded-lg flex items-center justify-center">
                   <Clock className="w-4 h-4 text-white" />
                 </div>
                 <div>
@@ -270,7 +271,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         <div className="px-2 pt-4">
           <div className="bg-slate-700 dark:bg-gray-700 rounded-xl p-3 hover:bg-slate-600 dark:hover:bg-gray-600 transition-colors cursor-pointer flex items-center justify-center">
             <div className="relative">
-              <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#635bff] rounded-lg flex items-center justify-center">
                 <Clock className="w-5 h-5 text-white" />
               </div>
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-slate-700">
@@ -304,7 +305,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
               >
                 {/* Active indicator bar */}
                 {isActive && !isCollapsed && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-orange-600 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-[#635bff] rounded-r-full" />
                 )}
                 
                 {/* Icon with white background when active */}
@@ -313,7 +314,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                     ? 'bg-white' 
                     : 'bg-transparent group-hover:bg-slate-600 dark:group-hover:bg-gray-600'
                 }`}>
-                  <div className={isActive ? 'text-orange-600' : 'text-slate-300'}>
+                  <div className={isActive ? 'text-[#635bff]' : 'text-slate-300'}>
                     <IconComponent className="w-5 h-5" />
                   </div>
       </div>
@@ -351,7 +352,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
               >
                 {/* Active indicator bar */}
                 {isActive && !isCollapsed && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-orange-600 rounded-r-full" />
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-[#635bff] rounded-r-full" />
                 )}
                 
                 {/* Icon with white background when active */}
@@ -360,12 +361,12 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                     ? 'bg-white' 
                     : 'bg-transparent group-hover:bg-slate-600 dark:group-hover:bg-gray-600'
                 }`}>
-                  <div className={isActive ? 'text-orange-600' : 'text-slate-300'}>
+                  <div className={isActive ? 'text-[#635bff]' : 'text-slate-300'}>
                 {item.icon}
               </div>
                   {/* Collapsed mode badge */}
                   {isCollapsed && item.badge && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-orange-600 rounded-full flex items-center justify-center border-2 border-slate-800">
+                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#635bff] rounded-full flex items-center justify-center border-2 border-slate-800">
                       <span className="text-white text-xs font-bold">{item.badge}</span>
                     </div>
                   )}
@@ -382,7 +383,7 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
                       {item.badge && (
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
                           isActive 
-                            ? 'bg-orange-600 text-white' 
+                            ? 'bg-[#635bff] text-white' 
                             : 'bg-slate-600 dark:bg-gray-600 text-slate-300'
                         }`}>
                           {item.badge}
@@ -402,8 +403,8 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         )}
       </nav>
 
-      {/* User Profile Section */}
-      <div className={`${!isCollapsed ? 'p-4' : 'p-2'} border-t border-slate-700 dark:border-gray-700 flex-shrink-0`}>
+      {/* User Profile Section with Logout */}
+      <div className={`${!isCollapsed ? 'p-4' : 'p-2'} border-t border-slate-700 dark:border-gray-700 flex-shrink-0 space-y-2`}>
         <div className={`bg-slate-700 dark:bg-gray-700 rounded-xl p-3 hover:bg-slate-600 dark:hover:bg-gray-600 transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex justify-center'}`}>
           <div className="relative flex-shrink-0">
             <div className="w-10 h-10 bg-slate-600 dark:bg-gray-600 rounded-full flex items-center justify-center">
@@ -426,6 +427,23 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
             </div>
           )}
         </div>
+
+        {/* Logout Button */}
+        <button
+          onClick={() => {
+            // Clear all storage
+            localStorage.clear();
+            // Redirect to login
+            window.location.href = '/auth/signin';
+          }}
+          className={`w-full ${!isCollapsed ? 'flex items-center space-x-3' : 'flex justify-center'} bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg px-3 py-2.5 transition-all`}
+          title={isCollapsed ? 'Logout' : undefined}
+        >
+          <LogOut className="w-5 h-5" />
+          {!isCollapsed && (
+            <span className="text-sm font-semibold">Logout</span>
+          )}
+        </button>
       </div>
     </div>
   );

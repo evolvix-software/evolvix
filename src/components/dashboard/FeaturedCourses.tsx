@@ -18,7 +18,7 @@ export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
     <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
       <CardHeader>
         <CardTitle className="flex items-center space-x-2 text-gray-900 dark:text-white">
-          <BookOpen className="w-5 h-5 text-orange-600 dark:text-orange-400" />
+          <BookOpen className="w-5 h-5 text-[#635bff] dark:text-[#735fff]" />
           <span>Featured Courses</span>
         </CardTitle>
         <CardDescription className="text-gray-600 dark:text-gray-400">
@@ -60,7 +60,7 @@ export function FeaturedCourses({ courses }: FeaturedCoursesProps) {
                     {course.rating}
                   </span>
                 </div>
-                <button className="px-3 py-1 bg-orange-500 hover:bg-orange-600 text-white text-sm rounded-lg transition-colors">
+                <button className="px-3 py-1 bg-[#635bff] hover:bg-[#4f48cc] text-white text-sm rounded-lg transition-colors">
                   {course.action}
                 </button>
               </div>

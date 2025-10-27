@@ -71,7 +71,7 @@ export default function StudentPortal() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
           <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Loading...</h1>
         </div>
       </div>
@@ -83,7 +83,7 @@ export default function StudentPortal() {
       <StudentLayout title="Dashboard">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Loading dashboard...</h2>
           </div>
         </div>
@@ -112,11 +112,11 @@ export default function StudentPortal() {
       <div className="space-y-6">
         {/* New User Welcome Banner */}
         {isNewUser && (
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-orange-50 to-blue-50 dark:from-orange-900/20 dark:to-blue-900/20 border-orange-200 dark:border-orange-800 mb-6">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-[#635bff]/10 to-blue-50 dark:from-[#635bff]/20 dark:to-blue-900/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-blue-600 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-2xl">🎉</span>
                   </div>
                 </div>
@@ -131,7 +131,7 @@ export default function StudentPortal() {
                   <div className="flex flex-wrap gap-3">
                     <Button
                       onClick={() => router.push('/portal/verification')}
-                      className="bg-gradient-to-r from-orange-600 to-blue-600 hover:from-orange-700 hover:to-blue-700 text-white"
+                      className="bg-gradient-to-r from-[#635bff] to-blue-600 hover:from-[#4f48cc] hover:to-blue-700 text-white"
                     >
                       <Shield className="w-4 h-4 mr-2" />
                       Get Verified
@@ -162,26 +162,26 @@ export default function StudentPortal() {
 
         {/* Verification Prompt */}
         {verificationStatus?.status === 'incomplete' && (
-          <Card className="border-0 shadow-sm bg-orange-50 dark:bg-orange-900/20 border-orange-200 dark:border-orange-800 mb-6">
+          <Card className="border-0 shadow-sm bg-[#635bff]/10 dark:bg-[#635bff]/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/20 rounded-full flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-orange-600 dark:text-orange-400" />
+                  <div className="w-12 h-12 bg-[#635bff]/10 dark:bg-[#635bff]/20 rounded-full flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-[#635bff] dark:text-[#735fff]" />
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-orange-900 dark:text-orange-400">
+                  <h3 className="text-lg font-semibold text-[#635bff] dark:text-[#735fff]">
                     Become a Verified Person
                   </h3>
-                  <p className="text-orange-700 dark:text-orange-300">
+                  <p className="text-[#635bff] dark:text-[#735fff]">
                     Complete your verification to unlock all portal features, connect with mentors, and access exclusive opportunities.
                   </p>
                 </div>
                 <div className="flex-shrink-0">
                   <Button
                     onClick={() => router.push('/portal/verification')}
-                    className="bg-orange-600 hover:bg-orange-700 text-white"
+                    className="bg-[#635bff] hover:bg-[#4f48cc] text-white"
                   >
                     Verify Now
                   </Button>

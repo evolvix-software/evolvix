@@ -90,7 +90,7 @@ export default function ProfilePage() {
   };
 
   const handleInputChange = (field: string, value: string) => {
-    setEditedData(prev => ({ ...prev, [field]: value }));
+    setEditedData((prev: any) => ({ ...prev, [field]: value }));
   };
 
   const getRoleTitle = (role: string) => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createElement } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -146,7 +147,7 @@ export default function VerificationPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className={`p-3 rounded-full ${getCurrentLevelData().bgColor}`}>
-                  <getCurrentLevelData().icon className={`w-6 h-6 ${getCurrentLevelData().color}`} />
+                  {createElement(getCurrentLevelData().icon, { className: `w-6 h-6 ${getCurrentLevelData().color}` })}
                 </div>
                 <div>
                   <h3 className="font-semibold">{getCurrentLevelData().title}</h3>

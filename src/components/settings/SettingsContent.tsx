@@ -37,6 +37,7 @@ import {
   Link as LinkIcon,
   Trash2,
   Download,
+  LogOut,
   Globe,
   Sun,
   Moon,
@@ -242,7 +243,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <User className="w-5 h-5 text-orange-600" />
+                <User className="w-5 h-5 text-[#635bff]" />
                 <span>Personal Information</span>
               </CardTitle>
               <CardDescription>Manage your personal details and identity</CardDescription>
@@ -360,7 +361,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
               <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
                 <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                <Button onClick={handleSavePersonalInfo} className="bg-orange-600 hover:bg-orange-700">
+                <Button onClick={handleSavePersonalInfo} className="bg-[#635bff] hover:bg-[#4f48cc]">
                   <Save className="w-4 h-4 mr-2" />
                   Save Changes
                 </Button>
@@ -373,18 +374,18 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Camera className="w-5 h-5 text-orange-600" />
+                <Camera className="w-5 h-5 text-[#635bff]" />
                 <span>Profile Picture</span>
               </CardTitle>
               <CardDescription>Upload or update your profile picture</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-6">
-                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-orange-600">
+                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-[#635bff]">
                   <User className="w-16 h-16 text-slate-400" />
                 </div>
                 <div className="flex-1 space-y-3">
-                  <Button className="bg-orange-600 hover:bg-orange-700">
+                  <Button className="bg-[#635bff] hover:bg-[#4f48cc]">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload New Photo
                   </Button>
@@ -403,7 +404,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <GraduationCap className="w-5 h-5 text-orange-600" />
+                <GraduationCap className="w-5 h-5 text-[#635bff]" />
                 <span>Education Details</span>
               </CardTitle>
               <CardDescription>Manage your educational qualifications</CardDescription>
@@ -456,7 +457,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Award className="w-5 h-5 text-orange-600" />
+                <Award className="w-5 h-5 text-[#635bff]" />
                 <span>Skills & Interests</span>
               </CardTitle>
               <CardDescription>Add or remove your skills and interests</CardDescription>
@@ -467,7 +468,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {profile.skills.map((skill) => (
-                    <span key={skill.id} className="px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 rounded-full text-sm flex items-center space-x-2">
+                    <span key={skill.id} className="px-3 py-1 bg-[#635bff]/10 dark:bg-[#635bff]/20 text-[#635bff] dark:text-[#735fff] rounded-full text-sm flex items-center space-x-2">
                       <span>{skill.name}</span>
                       <XCircle 
                         className="w-3 h-3 cursor-pointer hover:text-red-600" 
@@ -527,7 +528,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Key className="w-5 h-5 text-orange-600" />
+                <Key className="w-5 h-5 text-[#635bff]" />
                 <span>Change Password</span>
               </CardTitle>
               <CardDescription>Update your password to keep your account secure</CardDescription>
@@ -562,7 +563,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                   className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
                 />
               </div>
-              <Button className="bg-orange-600 hover:bg-orange-700">
+              <Button className="bg-[#635bff] hover:bg-[#4f48cc]">
                 <Save className="w-4 h-4 mr-2" />
                 Update Password
               </Button>
@@ -574,7 +575,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <CreditCard className="w-5 h-5 text-orange-600" />
+                <CreditCard className="w-5 h-5 text-[#635bff]" />
                 <span>Payment Methods</span>
               </CardTitle>
               <CardDescription>Manage your saved payment methods</CardDescription>
@@ -590,7 +591,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <div className="flex items-center space-x-4">
                         <div className={`w-14 h-10 rounded-lg flex items-center justify-center shadow-lg ${
                           method.type === 'visa' ? 'bg-gradient-to-br from-blue-600 to-blue-800' :
-                          method.type === 'mastercard' ? 'bg-gradient-to-br from-red-600 to-orange-600' :
+                          method.type === 'mastercard' ? 'bg-gradient-to-br from-red-600 to-[#635bff]' :
                           'bg-gradient-to-br from-slate-600 to-slate-800'
                         }`}>
                           <span className="text-white font-bold text-xs">{method.type === 'visa' ? 'VISA' : method.type === 'mastercard' ? 'MC' : 'CARD'}</span>
@@ -705,7 +706,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <Button variant="outline" onClick={() => setShowPaymentForm(false)}>
                         Cancel
                       </Button>
-                      <Button onClick={handleAddPaymentMethod} className="bg-orange-600 hover:bg-orange-700">
+                      <Button onClick={handleAddPaymentMethod} className="bg-[#635bff] hover:bg-[#4f48cc]">
                         <Save className="w-4 h-4 mr-2" />
                         Save Payment Method
                       </Button>
@@ -721,7 +722,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Bell className="w-5 h-5 text-orange-600" />
+                <Bell className="w-5 h-5 text-[#635bff]" />
                 <span>App Notifications</span>
               </CardTitle>
               <CardDescription>Control what notifications you receive</CardDescription>
@@ -746,7 +747,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.notifications[item.key]}
                       onChange={(e) => handleNotificationToggle(item.key, e.target.checked)}
                     />
-                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
                   </label>
                 </div>
               ))}
@@ -758,7 +759,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Palette className="w-5 h-5 text-orange-600" />
+                <Palette className="w-5 h-5 text-[#635bff]" />
                 <span>Preferences</span>
               </CardTitle>
               <CardDescription>Customize your app appearance and settings</CardDescription>
@@ -768,7 +769,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
                 <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition p-2 rounded">
                   <div className="flex items-center space-x-3">
-                    {theme === 'dark' ? <Moon className="w-5 h-5 text-orange-600" /> : <Sun className="w-5 h-5 text-orange-600" />}
+                    {theme === 'dark' ? <Moon className="w-5 h-5 text-[#635bff]" /> : <Sun className="w-5 h-5 text-[#635bff]" />}
                     <div>
                       <p className="font-medium text-slate-900 dark:text-white">Theme</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">Currently using {theme} mode</p>
@@ -840,7 +841,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-orange-600" />
+                <Shield className="w-5 h-5 text-[#635bff]" />
                 <span>Privacy & Security</span>
               </CardTitle>
               <CardDescription>Manage your privacy settings and data control</CardDescription>
@@ -879,7 +880,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.privacySettings.dataSharing}
                       onChange={(e) => handlePrivacyChange('dataSharing', e.target.checked)}
                     />
-                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
                   </label>
                 </div>
               </div>
@@ -933,7 +934,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Lock className="w-5 h-5 text-orange-600" />
+                <Lock className="w-5 h-5 text-[#635bff]" />
                 <span>Account & Security</span>
               </CardTitle>
               <CardDescription>Manage your login and security credentials</CardDescription>
@@ -953,7 +954,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.twoFactorAuth}
                       onChange={handleToggleTwoFactor}
                     />
-                    <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-orange-300 dark:peer-focus:ring-orange-800 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-orange-600"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
                   </label>
                 </div>
               </div>
@@ -972,6 +973,29 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     <span className="text-slate-600 dark:text-slate-400">Google</span>
                     <span className="text-green-600">Connected</span>
                   </div>
+                </div>
+              </div>
+
+              {/* Logout Section */}
+              <div className="p-4 border border-red-200 dark:border-red-900 rounded-lg bg-red-50 dark:bg-red-900/10">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <span className="font-medium text-red-700 dark:text-red-400">Sign Out</span>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Logout from your account</p>
+                  </div>
+                  <Button 
+                    onClick={() => {
+                      // Clear all storage
+                      localStorage.clear();
+                      // Redirect to login
+                      window.location.href = '/auth/signin';
+                    }}
+                    className="bg-red-600 hover:bg-red-700 text-white"
+                    size="sm"
+                  >
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Sign Out
+                  </Button>
                 </div>
               </div>
             </CardContent>

@@ -2,6 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { VerificationData, BaseVerificationData } from '@/data/mock/verificationData';
 import { loadVerificationData, submitVerificationData, uploadDocument, checkVerificationStatus } from './verificationThunks';
 
+export interface KYCStatus {
+  status: 'pending' | 'verified' | 'rejected';
+  idUploaded: boolean;
+  verificationDate?: string;
+}
+
 interface VerificationState {
   currentVerification: VerificationData | null;
   verificationHistory: VerificationData[];
@@ -12,6 +18,7 @@ interface VerificationState {
     level: 0 | 1 | 2;
     status: 'pending' | 'approved' | 'rejected' | 'incomplete';
   } | null;
+  kycStatus: KYCStatus;
 }
 
 const initialState: VerificationState = {
@@ -20,7 +27,12 @@ const initialState: VerificationState = {
   isLoading: false,
   error: null,
   uploadProgress: {},
-  verificationStatus: null
+  verificationStatus: null,
+  kycStatus: {
+    status: 'pending',
+    idUploaded: false,
+    verificationDate: undefined
+  }
 };
 
 const verificationSlice = createSlice({

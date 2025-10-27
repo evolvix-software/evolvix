@@ -87,7 +87,7 @@ export default function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <User className="w-5 h-5 text-orange-600" />
+              <User className="w-5 h-5 text-[#635bff]" />
               <span>Profile Picture</span>
             </CardTitle>
             <CardDescription>Upload and manage your profile picture</CardDescription>
@@ -95,7 +95,7 @@ export default function ProfilePage() {
           <CardContent>
             <div className="flex items-center space-x-6">
               <div className="relative">
-                <div className="w-32 h-32 bg-gradient-to-br from-orange-500 to-orange-600 rounded-full flex items-center justify-center text-white text-4xl font-bold">
+                <div className="w-32 h-32 bg-gradient-to-br from-[#635bff] to-[#4f48cc] rounded-full flex items-center justify-center text-white text-4xl font-bold">
                   {profile.profilePicture ? (
                     <img src={profile.profilePicture} alt="Profile" className="w-32 h-32 rounded-full object-cover" />
                   ) : (
@@ -125,7 +125,7 @@ export default function ProfilePage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="flex items-center space-x-2">
-                <User className="w-5 h-5 text-orange-600" />
+                <User className="w-5 h-5 text-[#635bff]" />
                 <span>Personal Information</span>
               </CardTitle>
               <CardDescription>Your basic personal details</CardDescription>
@@ -224,7 +224,7 @@ export default function ProfilePage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="flex items-center space-x-2">
-                <GraduationCap className="w-5 h-5 text-orange-600" />
+                <GraduationCap className="w-5 h-5 text-[#635bff]" />
                 <span>Education Information</span>
               </CardTitle>
               <CardDescription>Your academic background</CardDescription>
@@ -288,7 +288,7 @@ export default function ProfilePage() {
           <CardHeader className="flex flex-row items-center justify-between">
             <div>
               <CardTitle className="flex items-center space-x-2">
-                <Star className="w-5 h-5 text-orange-600" />
+                <Star className="w-5 h-5 text-[#635bff]" />
                 <span>Skills & Interests</span>
               </CardTitle>
               <CardDescription>Your skills and preferred courses</CardDescription>
@@ -318,7 +318,7 @@ export default function ProfilePage() {
             {/* Skills List */}
             <div className="flex flex-wrap gap-2">
               {profile.skills.map((skill) => (
-                <div key={skill.id} className="flex items-center space-x-2 px-3 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-700 dark:text-orange-300 rounded-full">
+                <div key={skill.id} className="flex items-center space-x-2 px-3 py-1 bg-[#635bff]/10 dark:bg-[#635bff]/20 text-[#635bff] dark:text-[#735fff] rounded-full">
                   <span className="text-sm font-medium">{skill.name}</span>
                   {profile.isEditing.skills && (
                     <button
@@ -379,7 +379,7 @@ export default function ProfilePage() {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-orange-600" />
+              <Shield className="w-5 h-5 text-[#635bff]" />
               <span>KYC / ID Verification Status</span>
             </CardTitle>
             <CardDescription>Your identity verification status</CardDescription>
@@ -392,14 +392,14 @@ export default function ProfilePage() {
                     ? 'bg-green-100 dark:bg-green-900/20' 
                     : profile.kycStatus.status === 'rejected'
                     ? 'bg-red-100 dark:bg-red-900/20'
-                    : 'bg-orange-100 dark:bg-orange-900/20'
+                    : 'bg-[#635bff]/10 dark:bg-[#635bff]/20'
                 }`}>
                   <Shield className={`w-6 h-6 ${
                     profile.kycStatus.status === 'verified'
                       ? 'text-green-600 dark:text-green-400'
                       : profile.kycStatus.status === 'rejected'
                       ? 'text-red-600 dark:text-red-400'
-                      : 'text-orange-600 dark:text-orange-400'
+                      : 'text-[#635bff] dark:text-[#735fff]'
                   }`} />
                 </div>
                 <div>
