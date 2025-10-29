@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -21,11 +22,13 @@ import {
   updatePrivacySettings,
   setTwoFactorAuth
 } from '@/store/features/profile/profileSlice';
+import { MentorVerificationForm } from '@/components/verification';
 import {
   User,
   Mail,
   Phone,
   Calendar,
+  Clock,
   Shield,
   Lock,
   CreditCard,
@@ -74,6 +77,8 @@ import {
   Edit2,
   Save,
   XCircle,
+  Github,
+  Linkedin,
 } from 'lucide-react';
 
 interface SettingsContentProps {
@@ -82,6 +87,7 @@ interface SettingsContentProps {
 }
 
 export function SettingsContent({ section, role }: SettingsContentProps) {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const profile = useAppSelector((state) => state.profile);
   const { theme, toggleTheme } = useTheme();
@@ -92,6 +98,27 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
   const [newSkill, setNewSkill] = useState('');
   const [newInterest, setNewInterest] = useState('');
   const [showPaymentForm, setShowPaymentForm] = useState(false);
+  
+  // Mentor-specific states
+  const [professionalInfo, setProfessionalInfo] = useState({
+    bio: '',
+    expertise: [] as string[],
+    experience: [] as Array<{company: string; years: string; designation: string}>
+  });
+  const [socialLinks, setSocialLinks] = useState({
+    linkedin: '',
+    github: '',
+    portfolio: ''
+  });
+  const [payoutInfo, setPayoutInfo] = useState({
+    bankName: '',
+    accountNumber: '',
+    ifscCode: '',
+    accountHolderName: '',
+    upiId: '',
+    pan: '',
+    gst: ''
+  });
   
   // Personal Info state
   const [personalInfo, setPersonalInfo] = useState({
@@ -1019,15 +1046,836 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
     );
   }
 
-  // MENTOR SECTIONS (similar structure with mentor-specific fields)
-  return (
+  // MENTOR SECTIONS
+  if (role === 'mentor') {
+    return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Mentor Settings</CardTitle>
-          <CardDescription>Select a section from the sidebar to configure your settings.</CardDescription>
-        </CardHeader>
-      </Card>
+      {section === 'profile' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <User className="w-5 h-5 text-green-600" />
+              <span>Profile Settings</span>
+            </CardTitle>
+            <CardDescription>Manage your professional profile and information</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Verification Status Card */}
+            {(() => {
+              const storedData = typeof window !== 'undefined' ? localStorage.getItem('evolvix_registration') : null;
+              let verificationStatus: 'incomplete' | 'pending' | 'approved' | 'rejected' = 'incomplete';
+              if (storedData) {
+                try {
+                  const parsedData = JSON.parse(storedData);
+                  const verificationKey = `evolvix_mentor_verification_${parsedData.email}`;
+                  const verificationData = typeof window !== 'undefined' ? localStorage.getItem(verificationKey) : null;
+                  if (verificationData) {
+                    const verification = JSON.parse(verificationData);
+                    verificationStatus = verification.status || 'incomplete';
+                  }
+                } catch (e) {
+                  // Ignore
+                }
+              }
+              return (
+                <Card className={`border-2 ${
+                  verificationStatus === 'approved' 
+                    ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                    : verificationStatus === 'pending'
+                    ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                    : verificationStatus === 'rejected'
+                    ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                    : 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-800'
+                }`}>
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-4">
+                        <div className="flex-shrink-0">
+                          {verificationStatus === 'approved' ? (
+                            <CheckCircle2 className="w-12 h-12 text-green-600 dark:text-green-400" />
+                          ) : verificationStatus === 'pending' ? (
+                            <Clock className="w-12 h-12 text-yellow-600 dark:text-yellow-400" />
+                          ) : verificationStatus === 'rejected' ? (
+                            <XCircle className="w-12 h-12 text-red-600 dark:text-red-400" />
+                          ) : (
+                            <Shield className="w-12 h-12 text-gray-600 dark:text-gray-400" />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className={`text-lg font-semibold ${
+                            verificationStatus === 'approved'
+                              ? 'text-green-900 dark:text-green-400'
+                              : verificationStatus === 'pending'
+                              ? 'text-yellow-900 dark:text-yellow-400'
+                              : verificationStatus === 'rejected'
+                              ? 'text-red-900 dark:text-red-400'
+                              : 'text-gray-900 dark:text-white'
+                          }`}>
+                            {verificationStatus === 'approved' 
+                              ? 'Verification Complete!' 
+                              : verificationStatus === 'pending'
+                              ? 'Verification Under Review'
+                              : verificationStatus === 'rejected'
+                              ? 'Verification Rejected'
+                              : 'Verification Required'}
+                          </h3>
+                          <p className={`text-sm mt-1 ${
+                            verificationStatus === 'approved'
+                              ? 'text-green-700 dark:text-green-300'
+                              : verificationStatus === 'pending'
+                              ? 'text-yellow-700 dark:text-yellow-300'
+                              : verificationStatus === 'rejected'
+                              ? 'text-red-700 dark:text-red-300'
+                              : 'text-gray-700 dark:text-gray-300'
+                          }`}>
+                            {verificationStatus === 'approved'
+                              ? 'You are now a verified mentor with full access to all features.'
+                              : verificationStatus === 'pending'
+                              ? 'Your verification is being reviewed. You\'ll be notified once it\'s complete.'
+                              : verificationStatus === 'rejected'
+                              ? 'Your verification was rejected. Please review the requirements and submit again.'
+                              : 'Complete your verification to unlock all mentor features and start earning.'}
+                          </p>
+                        </div>
+                      </div>
+                      <Button 
+                        onClick={() => {
+                          router.push('/portal/mentor/settings?section=kyc');
+                        }}
+                        variant={verificationStatus !== 'approved' ? 'default' : 'outline'}
+                        className={verificationStatus !== 'approved' ? 'bg-green-600 hover:bg-green-700' : ''}
+                      >
+                        {verificationStatus === 'incomplete' || verificationStatus === 'rejected' 
+                          ? 'Complete Verification' 
+                          : 'View Status'}
+                      </Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })()}
+
+            {/* Basic Info */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Basic Information</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Full Name</label>
+                  <input
+                    type="text"
+                    value={personalInfo.firstName}
+                    onChange={(e) => setPersonalInfo({ ...personalInfo, firstName: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Gender</label>
+                  <select 
+                    value={personalInfo.gender}
+                    onChange={(e) => setPersonalInfo({ ...personalInfo, gender: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  >
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Date of Birth</label>
+                  <input
+                    type="date"
+                    value={personalInfo.dateOfBirth}
+                    onChange={(e) => setPersonalInfo({ ...personalInfo, dateOfBirth: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Country</label>
+                  <input
+                    type="text"
+                    value={personalInfo.country}
+                    onChange={(e) => setPersonalInfo({ ...personalInfo, country: e.target.value })}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Professional Summary */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Professional Summary</h3>
+              <textarea
+                value={professionalInfo.bio}
+                onChange={(e) => setProfessionalInfo({ ...professionalInfo, bio: e.target.value })}
+                rows={4}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                placeholder="Write a short bio about your expertise and experience..."
+              />
+            </div>
+
+            {/* Expertise/Skills */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Expertise / Skills</h3>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {professionalInfo.expertise.map((skill, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full text-sm flex items-center space-x-2">
+                    <span>{skill}</span>
+                    <XCircle 
+                      className="w-3 h-3 cursor-pointer hover:text-red-600" 
+                      onClick={() => setProfessionalInfo({...professionalInfo, expertise: professionalInfo.expertise.filter((_, i) => i !== idx)})}
+                    />
+                  </span>
+                ))}
+              </div>
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  placeholder="Add expertise/skill..."
+                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  onKeyPress={(e) => {
+                    if (e.key === 'Enter') {
+                      const target = e.target as HTMLInputElement;
+                      if (target.value.trim()) {
+                        setProfessionalInfo({...professionalInfo, expertise: [...professionalInfo.expertise, target.value.trim()]});
+                        target.value = '';
+                      }
+                    }
+                  }}
+                />
+                <Button onClick={() => {
+                  const input = document.querySelector('input[placeholder="Add expertise/skill..."]') as HTMLInputElement;
+                  if (input?.value.trim()) {
+                    setProfessionalInfo({...professionalInfo, expertise: [...professionalInfo.expertise, input.value.trim()]});
+                    input.value = '';
+                  }
+                }}>
+                  <Plus className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Experience */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Experience</h3>
+              {professionalInfo.experience.map((exp, idx) => (
+                <div key={idx} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg mb-3">
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Company</label>
+                      <input 
+                        type="text" 
+                        value={exp.company} 
+                        onChange={(e) => {
+                          const updated = [...professionalInfo.experience];
+                          updated[idx] = { ...updated[idx], company: e.target.value };
+                          setProfessionalInfo({...professionalInfo, experience: updated});
+                        }}
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Designation</label>
+                      <input 
+                        type="text" 
+                        value={exp.designation} 
+                        onChange={(e) => {
+                          const updated = [...professionalInfo.experience];
+                          updated[idx] = { ...updated[idx], designation: e.target.value };
+                          setProfessionalInfo({...professionalInfo, experience: updated});
+                        }}
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Years</label>
+                      <input 
+                        type="text" 
+                        value={exp.years} 
+                        onChange={(e) => {
+                          const updated = [...professionalInfo.experience];
+                          updated[idx] = { ...updated[idx], years: e.target.value };
+                          setProfessionalInfo({...professionalInfo, experience: updated});
+                        }}
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                      />
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm" className="mt-2" onClick={() => {
+                    setProfessionalInfo({...professionalInfo, experience: professionalInfo.experience.filter((_, i) => i !== idx)});
+                  }}>
+                    <Trash className="w-4 h-4 mr-2" />
+                    Remove
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" onClick={() => {
+                setProfessionalInfo({...professionalInfo, experience: [...professionalInfo.experience, {company: '', designation: '', years: ''}]});
+              }}>
+                <Plus className="w-4 h-4 mr-2" />
+                Add Experience
+              </Button>
+            </div>
+
+            {/* Profile Picture */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Picture</h3>
+              <div className="flex items-center space-x-6">
+                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-green-600">
+                  <User className="w-16 h-16 text-slate-400" />
+                </div>
+                <div className="flex-1 space-y-3">
+                  <Button className="bg-green-600 hover:bg-green-700">
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload Photo
+                  </Button>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">JPG, PNG or GIF. Max size 2MB</p>
+                  <Button variant="outline">
+                    <Trash className="w-4 h-4 mr-2" />
+                    Remove Photo
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Social Links</h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3">
+                  <Linkedin className="w-5 h-5 text-blue-600" />
+                  <input
+                    type="text"
+                    placeholder="LinkedIn URL"
+                    value={socialLinks.linkedin}
+                    onChange={(e) => setSocialLinks({...socialLinks, linkedin: e.target.value})}
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Github className="w-5 h-5 text-gray-900 dark:text-white" />
+                  <input
+                    type="text"
+                    placeholder="GitHub URL"
+                    value={socialLinks.github}
+                    onChange={(e) => setSocialLinks({...socialLinks, github: e.target.value})}
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Globe className="w-5 h-5 text-green-600" />
+                  <input
+                    type="text"
+                    placeholder="Portfolio URL"
+                    value={socialLinks.portfolio}
+                    onChange={(e) => setSocialLinks({...socialLinks, portfolio: e.target.value})}
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <Button variant="outline">Cancel</Button>
+              <Button onClick={() => alert('Profile settings saved!')} className="bg-green-600 hover:bg-green-700">
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'kyc' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Shield className="w-5 h-5 text-green-600" />
+              <span>KYC & Verification</span>
+            </CardTitle>
+            <CardDescription>Complete your verification to unlock all mentor features</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <MentorVerificationForm 
+              onSubmit={(data) => {
+                const storedData = localStorage.getItem('evolvix_registration');
+                if (storedData) {
+                  const parsedData = JSON.parse(storedData);
+                  const verificationKey = `evolvix_mentor_verification_${parsedData.email}`;
+                  localStorage.setItem(verificationKey, JSON.stringify({
+                    ...data,
+                    status: 'pending',
+                    submittedAt: new Date().toISOString()
+                  }));
+                  alert('Verification submitted successfully! It will be reviewed by admin.');
+                }
+              }}
+            />
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'account' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Lock className="w-5 h-5 text-green-600" />
+              <span>Account & Security</span>
+            </CardTitle>
+            <CardDescription>Manage your login and security credentials</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Email/Phone */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block flex items-center space-x-2">
+                    <Mail className="w-4 h-4" />
+                    <span>Email</span>
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="email"
+                      value={personalInfo.email}
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    />
+                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
+                      <CheckCircle2 className="w-3 h-3" />
+                      <span>Verified</span>
+                    </span>
+                  </div>
+                  <Button variant="outline" size="sm" className="mt-2">
+                    Re-verify
+                  </Button>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block flex items-center space-x-2">
+                    <Phone className="w-4 h-4" />
+                    <span>Phone</span>
+                  </label>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="tel"
+                      value={personalInfo.phone}
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    />
+                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
+                      <CheckCircle2 className="w-3 h-3" />
+                      <span>Verified</span>
+                    </span>
+                  </div>
+                  <Button variant="outline" size="sm" className="mt-2">
+                    Re-verify
+                  </Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Password */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <h3 className="font-medium text-slate-900 dark:text-white mb-4">Change Password</h3>
+              <div className="space-y-3">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Current Password</label>
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">New Password</label>
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Confirm New Password</label>
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                </div>
+                <Button className="bg-green-600 hover:bg-green-700">
+                  <Save className="w-4 h-4 mr-2" />
+                  Update Password
+                </Button>
+              </div>
+            </div>
+
+            {/* 2FA */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium text-slate-900 dark:text-white">Two-Factor Authentication</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Enable via OTP / Auth App</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" className="sr-only peer" checked={profile.twoFactorAuth} onChange={handleToggleTwoFactor} />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                </label>
+              </div>
+            </div>
+
+            {/* Linked Accounts */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-medium text-slate-900 dark:text-white">Linked Accounts</span>
+                <Button variant="outline" size="sm">
+                  <LinkIcon className="w-4 h-4 mr-2" />
+                  Connect Account
+                </Button>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-600 dark:text-slate-400">Google</span>
+                  <span className="text-green-600">Connected</span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-slate-600 dark:text-slate-400">LinkedIn</span>
+                  <Button variant="outline" size="sm">Connect</Button>
+                </div>
+              </div>
+            </div>
+
+            {/* Delete Account */}
+            <div className="p-4 border border-red-200 dark:border-red-900 rounded-lg bg-red-50 dark:bg-red-900/10">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="font-medium text-red-700 dark:text-red-400">Delete Account</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Permanently remove your account</p>
+                </div>
+                <Button variant="outline" size="sm" className="border-red-300 dark:border-red-700 text-red-600 hover:bg-red-50">
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Delete Account
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'payout' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <CreditCard className="w-5 h-5 text-green-600" />
+              <span>Payout & Financials</span>
+            </CardTitle>
+            <CardDescription>Manage your payment and financial information</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {/* Bank Account */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Bank Account</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Account Holder Name</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.accountHolderName}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, accountHolderName: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Account Number</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.accountNumber}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, accountNumber: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">IFSC Code</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.ifscCode}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, ifscCode: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Bank Name</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.bankName}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, bankName: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* UPI ID */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">UPI ID</h3>
+              <div className="flex items-center space-x-3">
+                <input
+                  type="text"
+                  placeholder="yourname@upi"
+                  value={payoutInfo.upiId}
+                  onChange={(e) => setPayoutInfo({...payoutInfo, upiId: e.target.value})}
+                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                />
+                <Button variant="outline">Add</Button>
+                {payoutInfo.upiId && <Button variant="outline" onClick={() => setPayoutInfo({...payoutInfo, upiId: ''})}>Remove</Button>}
+              </div>
+            </div>
+
+            {/* Payment Gateway */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Payment Gateway</h3>
+              <div className="space-y-3">
+                <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-medium text-slate-900 dark:text-white">Stripe</span>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Connect for payouts</p>
+                    </div>
+                    <Button variant="outline" size="sm">Connect</Button>
+                  </div>
+                </div>
+                <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="font-medium text-slate-900 dark:text-white">Razorpay</span>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">Connect for payouts</p>
+                    </div>
+                    <Button variant="outline" size="sm">Connect</Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Payout History */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Payout History</h3>
+              <Button variant="outline">
+                <Receipt className="w-4 h-4 mr-2" />
+                View Payout History
+              </Button>
+            </div>
+
+            {/* Tax Info */}
+            <div>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Tax Information</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">PAN</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.pan}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, pan: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">GST</label>
+                  <input
+                    type="text"
+                    value={payoutInfo.gst}
+                    onChange={(e) => setPayoutInfo({...payoutInfo, gst: e.target.value})}
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+              <Button variant="outline">Cancel</Button>
+              <Button onClick={() => alert('Payout settings saved!')} className="bg-green-600 hover:bg-green-700">
+                <Save className="w-4 h-4 mr-2" />
+                Save Changes
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'notifications' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Bell className="w-5 h-5 text-green-600" />
+              <span>Notification Settings</span>
+            </CardTitle>
+            <CardDescription>Control what notifications you receive</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {[
+              { name: 'Student Messages', desc: 'Notify on new message', key: 'studentMessages' as const },
+              { name: 'Booking Alerts', desc: 'Notify when class booked', key: 'bookingAlerts' as const },
+              { name: 'Payment Updates', desc: 'Payout confirmation', key: 'paymentUpdates' as const },
+              { name: 'System Alerts', desc: 'Platform changes', key: 'systemAlerts' as const },
+            ].map((item) => (
+              <div key={item.key} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <div>
+                  <p className="font-medium text-slate-900 dark:text-white">{item.name}</p>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer" 
+                    checked={(profile.notifications as any)[item.key] || false}
+                    onChange={(e) => handleNotificationToggle(item.key as any, e.target.checked)}
+                  />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                </label>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'privacy' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Shield className="w-5 h-5 text-green-600" />
+              <span>Privacy & Security</span>
+            </CardTitle>
+            <CardDescription>Manage your privacy settings and data control</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Profile Visibility */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <span className="font-medium text-slate-900 dark:text-white">Profile Visibility</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Control who can see your profile</p>
+                </div>
+                <select 
+                  value={profile.privacySettings.profileVisibility}
+                  onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value)}
+                  className="px-3 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white text-sm"
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Reviews Visibility */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between mb-2">
+                <div>
+                  <span className="font-medium text-slate-900 dark:text-white">Reviews Visibility</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Show or hide reviews</p>
+                </div>
+                <label className="relative inline-flex items-center cursor-pointer">
+                  <input 
+                    type="checkbox" 
+                    className="sr-only peer" 
+                    checked={(profile.privacySettings as any).reviewsVisibility !== false}
+                    onChange={(e) => handlePrivacyChange('reviewsVisibility' as any, e.target.checked)}
+                  />
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                </label>
+              </div>
+            </div>
+
+            {/* Data Download */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="font-medium text-slate-900 dark:text-white">Data Download</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Export your data</p>
+                </div>
+                <Button variant="outline" size="sm">
+                  <Download className="w-4 h-4 mr-2" />
+                  Generate File
+                </Button>
+              </div>
+            </div>
+
+            {/* Session History */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="flex items-center justify-between mb-3">
+                <div>
+                  <span className="font-medium text-slate-900 dark:text-white">Session History</span>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">Active logins</p>
+                </div>
+                <Button variant="outline" size="sm">
+                  <EyeIcon className="w-4 h-4 mr-2" />
+                  View & Revoke Access
+                </Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {section === 'preferences' && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Palette className="w-5 h-5 text-green-600" />
+              <span>Preferences</span>
+            </CardTitle>
+            <CardDescription>Customize your app appearance and settings</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Theme */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition p-2 rounded">
+                <div className="flex items-center space-x-3">
+                  {theme === 'dark' ? <Moon className="w-5 h-5 text-green-600" /> : <Sun className="w-5 h-5 text-green-600" />}
+                  <div>
+                    <p className="font-medium text-slate-900 dark:text-white">Theme</p>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Currently using {theme} mode</p>
+                  </div>
+                </div>
+                <Button variant="outline" size="sm">
+                  Switch to {theme === 'dark' ? 'Light' : 'Dark'}
+                </Button>
+              </div>
+            </div>
+
+            {/* Default Dashboard Tab */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+                <Layout className="w-4 h-4" />
+                <span>Default Dashboard Tab</span>
+              </label>
+              <select 
+                value={(profile.preferences as any).defaultDashboardTab || 'classes'}
+                onChange={(e) => handlePreferenceChange('defaultDashboardTab' as any, e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+              >
+                <option value="classes">Classes</option>
+                <option value="messages">Messages</option>
+                <option value="earnings">Earnings</option>
+              </select>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Choose your default dashboard view</p>
+            </div>
+
+            {/* Language */}
+            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+                <Languages className="w-4 h-4" />
+                <span>Language</span>
+              </label>
+              <select 
+                value={profile.preferences.language}
+                onChange={(e) => handlePreferenceChange('language', e.target.value)}
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+              >
+                <option value="English">English</option>
+                <option value="Hindi">Hindi</option>
+                <option value="Spanish">Spanish</option>
+                <option value="French">French</option>
+              </select>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">Select your preferred language</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {!section && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Mentor Settings</CardTitle>
+            <CardDescription>Select a section from the sidebar to configure your settings.</CardDescription>
+          </CardHeader>
+        </Card>
+      )}
     </div>
-  );
+    );
+  }
+
+  // Fallback if role doesn't match
+  return null;
 }

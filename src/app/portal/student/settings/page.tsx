@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from 'react';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { SettingsContent } from '@/components/settings/SettingsContent';
 
 function SettingsContentWrapper() {
@@ -39,9 +39,9 @@ function SettingsContentWrapper() {
   }
   
   return (
-    <StudentLayout title="Settings">
+    <Layout title="Settings" role="student">
       <SettingsContent section={activeSection} role="student" />
-    </StudentLayout>
+    </Layout>
   );
 }
 

@@ -36,11 +36,16 @@ export interface KYCStatus {
 }
 
 export interface NotificationSettings {
-  courseUpdates: boolean;
-  assignmentDeadlines: boolean;
-  mentorMessages: boolean;
-  jobAlerts: boolean;
-  achievements: boolean;
+  courseUpdates?: boolean;
+  assignmentDeadlines?: boolean;
+  mentorMessages?: boolean;
+  jobAlerts?: boolean;
+  achievements?: boolean;
+  // Mentor-specific notifications
+  studentMessages?: boolean;
+  bookingAlerts?: boolean;
+  paymentUpdates?: boolean;
+  systemAlerts?: boolean;
 }
 
 export interface PaymentMethod {
@@ -57,11 +62,15 @@ export interface Preferences {
   language: string;
   dashboardLayout: 'minimal' | 'detailed' | 'compact';
   defaultHomePage: 'dashboard' | 'courses' | 'progress' | 'assignments';
+  // Mentor-specific preferences
+  defaultDashboardTab?: 'classes' | 'messages' | 'earnings';
 }
 
 export interface PrivacySettings {
   profileVisibility: 'public' | 'private' | 'limited';
   dataSharing: boolean;
+  // Mentor-specific privacy settings
+  reviewsVisibility?: boolean;
 }
 
 export interface ProfileState {

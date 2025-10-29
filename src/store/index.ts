@@ -4,6 +4,9 @@ import studentReducer from './features/student/studentSlice';
 import verificationReducer from './features/verification/verificationSlice';
 import profileReducer from './features/profile/profileSlice';
 import coursesReducer from './features/courses/coursesSlice';
+import surveyReducer from './features/survey/surveySlice';
+import classesReducer from './features/classes/classesSlice';
+import projectsReducer from './features/projects/projectsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +15,9 @@ export const store = configureStore({
     verification: verificationReducer,
     profile: profileReducer,
     courses: coursesReducer,
+    survey: surveyReducer,
+    classes: classesReducer,
+    projects: projectsReducer,
   },
 });
 

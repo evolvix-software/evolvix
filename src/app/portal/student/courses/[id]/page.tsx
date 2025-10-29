@@ -2,12 +2,14 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { Button } from '@/components/forms/Button';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { enrollCourse, completeLesson, setCurrentLesson } from '@/store/features/courses/coursesSlice';
 import { Course } from '@/data/mock/coursesData';
-import { Clock, Users, Star, Shield, BookOpen, CheckCircle, Play, Lock, User, ChevronDown, ChevronLeft, ChevronRight, MessageSquare, Award, Download, X } from 'lucide-react';
+import { Clock, Users, Star, Shield, BookOpen, CheckCircle, Play, Lock, User, ChevronDown, ChevronLeft, ChevronRight, MessageSquare, Award, Download, X, Code, Trophy } from 'lucide-react';
+import { ProjectSubmission as ProjectSubmissionComponent } from '@/components/projects/ProjectSubmission';
+import { ProjectsLeaderboard } from '@/components/projects/ProjectsLeaderboard';
 
 export default function CourseDetailPage() {
   const params = useParams();
@@ -16,6 +18,7 @@ export default function CourseDetailPage() {
   const reviewsScrollRef = useRef<HTMLDivElement>(null);
   
   const { courses, enrolledCourses } = useAppSelector(state => state.courses);
+  const { submissions } = useAppSelector(state => state.projects);
   const kycStatus = useAppSelector(state => state.verification.kycStatus);
   const status = kycStatus?.status || 'pending';
   
@@ -26,6 +29,21 @@ export default function CourseDetailPage() {
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState('');
   const [dialogTitle, setDialogTitle] = useState('');
+  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  
+  // Get student info
+  const [studentInfo, setStudentInfo] = useState({ id: '', name: '' });
+  
+  useEffect(() => {
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setStudentInfo({
+        id: parsedData.email || 'student',
+        name: parsedData.fullName || 'Student',
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const foundCourse = courses.find(c => c.id === params.id);
@@ -123,21 +141,21 @@ export default function CourseDetailPage() {
 
   if (!course) {
     return (
-      <StudentLayout title="Course Details">
+      <Layout title="Course Details" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
             <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Loading course...</h2>
           </div>
         </div>
-      </StudentLayout>
+      </Layout>
     );
   }
 
   const visibleRelatedCourses = relatedCourses.slice(relatedCoursesStart, relatedCoursesStart + 3);
 
   return (
-    <StudentLayout title={course.title}>
+    <Layout title={course.title} role="student">
       {/* Dialog Component */}
       {showDialog && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
@@ -340,6 +358,105 @@ export default function CourseDetailPage() {
           </div>
         </div>
 
+        {/* Projects Section - Only for Enrolled Students */}
+        {isEnrolled && course.projects && course.projects.length > 0 && (
+          <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-sm overflow-hidden">
+            <div className="p-6 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Code className="w-6 h-6 text-[#635bff]" />
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Course Projects</h3>
+                  <p className="text-slate-600 dark:text-slate-400 mt-1">
+                    {course.projects.length} project{course.projects.length > 1 ? 's' : ''} • Best 3 students get Certificate & LOR
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="p-6 space-y-6">
+              {/* Projects List */}
+              <div className="space-y-4">
+                {course.projects.map((project) => {
+                  const existingSubmission = submissions.find(
+                    s => s.projectId === project.id && s.studentId === studentInfo.id && s.courseId === course.id
+                  );
+                  const isSelected = selectedProjectId === project.id;
+                  
+                  return (
+                    <div key={project.id} className="border border-slate-200 dark:border-slate-700 rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => setSelectedProjectId(isSelected ? null : project.id)}
+                        className="w-full flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                      >
+                        <div className="text-left flex-1">
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="font-bold text-slate-900 dark:text-white">
+                              {project.isFinalProject ? '🏆 Final Project' : `Project ${project.projectNumber}`}: {project.title}
+                            </h4>
+                            {existingSubmission && (
+                              <span className={`px-2 py-1 rounded text-xs font-medium ${
+                                existingSubmission.status === 'reviewed' 
+                                  ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400'
+                                  : existingSubmission.status === 'returned'
+                                  ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-400'
+                                  : 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-400'
+                              }`}>
+                                {existingSubmission.status === 'reviewed' ? 'Reviewed' : 
+                                 existingSubmission.status === 'returned' ? 'Needs Revision' : 'Pending'}
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">{project.description}</p>
+                          <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500">
+                            <span>Duration: {project.estimatedDuration}</span>
+                            <span>Max Score: {project.maxScore}</span>
+                            <span>Weight: {project.weight}%</span>
+                            {project.dueDate && (
+                              <span>Due: {new Date(project.dueDate).toLocaleDateString()}</span>
+                            )}
+                          </div>
+                          {existingSubmission?.score !== undefined && (
+                            <div className="mt-2 text-sm font-semibold text-green-600 dark:text-green-400">
+                              Your Score: {existingSubmission.score}/{existingSubmission.maxScore}
+                            </div>
+                          )}
+                        </div>
+                        <ChevronDown className={`w-5 h-5 text-slate-600 dark:text-slate-400 transition-transform ${isSelected ? 'rotate-180' : ''}`} />
+                      </button>
+                      {isSelected && (
+                        <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-slate-50 dark:bg-slate-900/50">
+                          <ProjectSubmissionComponent
+                            project={project}
+                            courseId={course.id}
+                            studentId={studentInfo.id}
+                            studentName={studentInfo.name}
+                            existingSubmission={existingSubmission}
+                            onSuccess={() => {
+                              setSelectedProjectId(null);
+                              // Force re-render to show updated status
+                              window.location.reload();
+                            }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Leaderboard */}
+              {submissions.some(s => s.courseId === course.id && s.status === 'reviewed') && (
+                <div className="pt-6 border-t border-slate-200 dark:border-slate-700">
+                  <ProjectsLeaderboard
+                    courseId={course.id}
+                    submissions={submissions.filter(s => s.courseId === course.id)}
+                    courseTitle={course.title}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* Prerequisites - Horizontal Format */}
         {course.prerequisites.length > 0 && (
           <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm">
@@ -480,6 +597,6 @@ export default function CourseDetailPage() {
           </div>
         </div>
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }

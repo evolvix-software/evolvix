@@ -24,8 +24,23 @@ export interface CoursesState {
   error: string | null;
 }
 
+// Load from localStorage on initialization
+const loadCoursesFromStorage = (): Course[] => {
+  if (typeof window !== 'undefined') {
+    const saved = localStorage.getItem('evolvix_courses');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error('Failed to load courses from localStorage:', e);
+      }
+    }
+  }
+  return [];
+};
+
 const initialState: CoursesState = {
-  courses: [],
+  courses: loadCoursesFromStorage(),
   enrolledCourses: [],
   filters: {
     category: 'all',
@@ -43,6 +58,34 @@ const coursesSlice = createSlice({
   reducers: {
     setCourses(state, action: PayloadAction<Course[]>) {
       state.courses = action.payload;
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('evolvix_courses', JSON.stringify(action.payload));
+      }
+    },
+    addCourse(state, action: PayloadAction<Course>) {
+      state.courses.push(action.payload);
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('evolvix_courses', JSON.stringify(state.courses));
+      }
+    },
+    updateCourse(state, action: PayloadAction<Partial<Course> & { id: string }>) {
+      const index = state.courses.findIndex(c => c.id === action.payload.id);
+      if (index !== -1) {
+        state.courses[index] = { ...state.courses[index], ...action.payload, updatedAt: new Date().toISOString() };
+        // Save to localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('evolvix_courses', JSON.stringify(state.courses));
+        }
+      }
+    },
+    deleteCourse(state, action: PayloadAction<string>) {
+      state.courses = state.courses.filter(c => c.id !== action.payload);
+      // Save to localStorage
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('evolvix_courses', JSON.stringify(state.courses));
+      }
     },
     setFilters(state, action: PayloadAction<Partial<CoursesState['filters']>>) {
       state.filters = { ...state.filters, ...action.payload };
@@ -116,6 +159,9 @@ const coursesSlice = createSlice({
 
 export const {
   setCourses,
+  addCourse,
+  updateCourse,
+  deleteCourse,
   setFilters,
   enrollCourse,
   unenrollCourse,

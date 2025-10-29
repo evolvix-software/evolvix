@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadVerificationData, submitVerificationData, checkVerificationStatus } from '@/store/features/verification/verificationThunks';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { VerificationLevel } from '@/components/verification/VerificationLevel';
 import { StudentVerificationForm } from '@/components/verification/StudentVerificationForm';
 import { MentorVerificationForm } from '@/components/verification/MentorVerificationForm';
@@ -142,7 +142,7 @@ export default function VerificationPage() {
   const currentStatus = verificationStatus?.status || 'incomplete';
 
   return (
-    <StudentLayout title="Verification">
+    <Layout title="Verification" role={userData.role as 'student' | 'mentor'}>
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
@@ -329,6 +329,6 @@ export default function VerificationPage() {
           </CardContent>
         </Card>
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }

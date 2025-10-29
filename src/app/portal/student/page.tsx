@@ -5,27 +5,81 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadStudentData } from '@/store/features/student/studentThunks';
 import { checkVerificationStatus } from '@/store/features/verification/verificationThunks';
-import { StudentLayout } from '@/components/layout/StudentLayout';
-import { 
-  StatsCards, 
-  FeaturedCourses, 
-  UpcomingEvents, 
-  QuickActions, 
-  RecentActivity 
-} from '@/components/dashboard';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
+import { Layout } from '@/components/layout/Layout';
+import {
+  WelcomeHeader,
+  StatsGrid,
+  ChartsSection,
+  QuickActions,
+  NotificationsFeed,
+  UpcomingCourses,
+} from '../../../components/student/dashboard';
+import { Card, CardContent } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
-import { AlertCircle, Shield, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Shield, CheckCircle, Clock, XCircle } from 'lucide-react';
+
+const defaultNotifications: Array<{
+  id: string;
+  type: 'course' | 'achievement' | 'progress';
+  title: string;
+  description: string;
+  time: string;
+}> = [];
+
+const defaultCourses: Array<{
+  id: string;
+  title: string;
+  instructor: string;
+  date: string;
+  time: string;
+}> = [];
+
+const verifiedNotifications = [
+  {
+    id: '1',
+    type: 'course' as const,
+    title: 'New course available',
+    description: 'Advanced React Development course is now available',
+    time: '2 hours ago',
+  },
+  {
+    id: '2',
+    type: 'achievement' as const,
+    title: 'Achievement unlocked',
+    description: 'You completed your first certification',
+    time: '5 hours ago',
+  },
+  {
+    id: '3',
+    type: 'progress' as const,
+    title: 'Progress milestone',
+    description: 'You reached 75% completion in JavaScript Basics',
+    time: '1 day ago',
+  },
+];
+
+const verifiedCourses = [
+  {
+    id: '1',
+    title: 'React Development',
+    instructor: 'John Doe',
+    date: 'Today',
+    time: '3:00 PM',
+  },
+  {
+    id: '2',
+    title: 'Node.js Basics',
+    instructor: 'Jane Smith',
+    date: 'Tomorrow',
+    time: '2:00 PM',
+  },
+];
 
 export default function StudentPortal() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { 
     stats, 
-    featuredCourses, 
-    upcomingEvents, 
-    quickActions, 
-    recentActivity, 
     isLoading, 
     error 
   } = useAppSelector((state) => state.student);
@@ -33,6 +87,7 @@ export default function StudentPortal() {
   const { verificationStatus } = useAppSelector((state) => state.verification);
   const [userData, setUserData] = useState<any>(null);
   const [isNewUser, setIsNewUser] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
 
   useEffect(() => {
     // Get stored registration data
@@ -67,6 +122,14 @@ export default function StudentPortal() {
     }
   }, [router, dispatch]);
 
+  useEffect(() => {
+    if (verificationStatus?.status === 'approved') {
+      setIsVerified(true);
+    } else {
+      setIsVerified(false);
+    }
+  }, [verificationStatus]);
+
   if (!userData) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -80,20 +143,20 @@ export default function StudentPortal() {
 
   if (isLoading) {
     return (
-      <StudentLayout title="Dashboard">
+      <Layout title="Dashboard" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Loading dashboard...</h2>
           </div>
         </div>
-      </StudentLayout>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <StudentLayout title="Dashboard">
+      <Layout title="Dashboard" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -103,12 +166,12 @@ export default function StudentPortal() {
             <p className="text-gray-600 dark:text-gray-400">{error}</p>
           </div>
         </div>
-      </StudentLayout>
+      </Layout>
     );
   }
 
   return (
-    <StudentLayout title="Dashboard">
+    <Layout title="Dashboard" role="student">
       <div className="space-y-6">
         {/* New User Welcome Banner */}
         {isNewUser && (
@@ -150,17 +213,9 @@ export default function StudentPortal() {
           </Card>
         )}
 
-        {/* Welcome Section */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            {isNewUser ? 'Start Your Learning Journey!' : 'Welcome to Your Learning Journey!'}
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400">
-            Discover opportunities, connect with mentors, and accelerate your growth.
-          </p>
-        </div>
+        <WelcomeHeader userName={userData.fullName || 'Student'} isVerified={isVerified} />
 
-        {/* Verification Prompt */}
+        {/* Verification Status Cards */}
         {verificationStatus?.status === 'incomplete' && (
           <Card className="border-0 shadow-sm bg-[#635bff]/10 dark:bg-[#635bff]/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
@@ -265,24 +320,22 @@ export default function StudentPortal() {
           </Card>
         )}
 
-        {/* Quick Stats */}
-        <StatsCards stats={stats} />
+        {/* Stats Grid */}
+        <StatsGrid stats={stats} />
 
         {/* Main Content Grid */}
         <div className="grid lg:grid-cols-3 gap-6">
-          {/* Left Column */}
           <div className="lg:col-span-2 space-y-6">
-            <FeaturedCourses courses={featuredCourses} />
-            <UpcomingEvents events={upcomingEvents} />
+            <ChartsSection />
+            <NotificationsFeed notifications={isVerified ? verifiedNotifications : defaultNotifications} />
           </div>
 
-          {/* Right Column */}
           <div className="space-y-6">
-            <QuickActions actions={quickActions} />
-            <RecentActivity activities={recentActivity} />
+            <QuickActions />
+            <UpcomingCourses courses={isVerified ? verifiedCourses : defaultCourses} />
           </div>
         </div>
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }

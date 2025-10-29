@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from 'react';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { CourseFilters } from '@/components/courses/CourseFilters';
 import { CourseCard } from '@/components/courses/CourseCard';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
@@ -14,8 +14,19 @@ export default function CoursesPage() {
   const { courses, filters } = useAppSelector(state => state.courses);
 
   useEffect(() => {
-    // Load courses
-    dispatch(setCourses(coursesData));
+    // Load courses - merge mock data with mentor-created courses from localStorage
+    const storedCourses = localStorage.getItem('evolvix_courses');
+    const mentorCourses = storedCourses ? JSON.parse(storedCourses) : [];
+    
+    // Merge mock courses with mentor-created courses, avoiding duplicates
+    const allCourses = [...coursesData];
+    mentorCourses.forEach((mentorCourse: Course) => {
+      if (!allCourses.find(c => c.id === mentorCourse.id)) {
+        allCourses.push(mentorCourse);
+      }
+    });
+    
+    dispatch(setCourses(allCourses));
     
     // Load enrollments from localStorage
     const stored = localStorage.getItem('evolvix_enrollments');
@@ -58,7 +69,7 @@ export default function CoursesPage() {
   });
 
   return (
-    <StudentLayout title="Courses">
+    <Layout title="Courses" role="student">
       <div className="space-y-8">
         {/* Header with Results Count */}
         <div className="flex items-center justify-between">
@@ -102,6 +113,6 @@ export default function CoursesPage() {
           </div>
         )}
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }

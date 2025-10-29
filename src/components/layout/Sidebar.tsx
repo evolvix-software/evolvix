@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAppSelector } from '@/store/hooks';
 import { Calendar, ChevronDown, ChevronRight } from 'lucide-react';
 import { 
   LayoutDashboard,
@@ -28,18 +29,30 @@ import {
   Palette,
   Camera,
   Key,
-  LogOut
+  LogOut,
+  ClipboardCheck,
+  BarChart3,
+  Users
 } from 'lucide-react';
 
-import { Button } from '@/components/forms/Button';
 import { settingsData, SettingsSection } from '@/data/mock/settingsData';
 
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
+  role: 'student' | 'mentor';
 }
 
-const menuItems = [
+interface MenuItem {
+  id: string;
+  label: string;
+  subtitle?: string;
+  icon: React.ReactNode;
+  path: string;
+  badge?: string;
+}
+
+const studentMenuItems: MenuItem[] = [
   {
     id: 'dashboard',
     label: 'Dashboard',
@@ -123,14 +136,74 @@ const menuItems = [
   }
 ];
 
-interface MenuItem {
-  id: string;
-  label: string;
-  subtitle?: string;
-  icon: React.ReactNode;
-  path: string;
-  badge?: string;
-}
+const mentorMenuItems: MenuItem[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    subtitle: 'Overview & Stats',
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    path: '/portal/mentor',
+    badge: 'Live'
+  },
+  {
+    id: 'courses',
+    label: 'My Courses',
+    subtitle: 'Create & Manage',
+    icon: <BookOpen className="w-5 h-5" />,
+    path: '/portal/mentor/courses'
+  },
+  {
+    id: 'classes',
+    label: 'Classes',
+    subtitle: 'Schedule & Manage',
+    icon: <Calendar className="w-5 h-5" />,
+    path: '/portal/mentor/classes'
+  },
+  {
+    id: 'students',
+    label: 'Student Management',
+    subtitle: 'Students & Feedback',
+    icon: <Users className="w-5 h-5" />,
+    path: '/portal/mentor/students',
+    badge: '24'
+  },
+  {
+    id: 'assignments',
+    label: 'Assignments',
+    subtitle: 'Review Submissions',
+    icon: <FileText className="w-5 h-5" />,
+    path: '/portal/mentor/assignments',
+    badge: '12'
+  },
+  {
+    id: 'projects',
+    label: 'Project Mentorship',
+    subtitle: 'Projects & Feedback',
+    icon: <Lightbulb className="w-5 h-5" />,
+    path: '/portal/mentor/projects'
+  },
+  {
+    id: 'interviews',
+    label: 'Interview Evaluation',
+    subtitle: 'AI & Live Interviews',
+    icon: <ClipboardCheck className="w-5 h-5" />,
+    path: '/portal/mentor/interviews'
+  },
+  {
+    id: 'analytics',
+    label: 'Analytics',
+    subtitle: 'Reports & Metrics',
+    icon: <BarChart3 className="w-5 h-5" />,
+    path: '/portal/mentor/analytics'
+  },
+  {
+    id: 'settings',
+    label: 'Settings',
+    subtitle: 'Preferences',
+    icon: <Settings className="w-5 h-5" />,
+    path: '/portal/mentor/settings'
+  }
+];
 
 const iconMap: Record<string, any> = {
   LayoutDashboard,
@@ -153,25 +226,63 @@ const iconMap: Record<string, any> = {
   Camera,
   Key,
   GraduationCap,
+  Calendar,
+  ClipboardCheck,
+  BarChart3,
+  Users
 };
 
-export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
+export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
   const router = useRouter();
+  
+  // Get verification level from Redux (only for student)
+  const verificationLevel = useAppSelector((state) => 
+    role === 'student' ? (state.verification.verificationStatus?.level || 0) : 0
+  );
   
   const [settingsMenuItems, setSettingsMenuItems] = useState<SettingsSection[]>([]);
   const [isSettingsPage, setIsSettingsPage] = useState(false);
-  const [activeSection, setActiveSection] = useState('basic');
+  const [activeSection, setActiveSection] = useState(role === 'mentor' ? 'profile' : 'basic');
   const [currentPath, setCurrentPath] = useState('');
   
+  // Get menu items based on role
+  const getMenuItems = (): MenuItem[] => {
+    const items = role === 'student' ? studentMenuItems : mentorMenuItems;
+    
+    // Filter menu items based on verification level (only for student)
+    if (role === 'student') {
+      const allowedForLevel1 = ['dashboard', 'courses', 'profile', 'settings'];
+    if (verificationLevel <= 1) {
+        return items.filter(item => allowedForLevel1.includes(item.id));
+      }
+    }
+    
+    return items;
+  };
+  
+  const visibleMenuItems = getMenuItems();
+  
+  // Use blue accent for all roles - matching the new theme
+  const primaryColor = 'rgb(59, 130, 246)'; // Blue #3b82f6
+  const primaryColorBg = 'bg-primary';
+  const primaryColorShadow = 'shadow-primary/40';
+  const headerIconBg = 'bg-primary';
+  const headerIconShadow = 'shadow-primary/40';
+  const activeBarColor = 'bg-primary';
+  const activeIconColor = 'text-primary';
+  const activeBadgeBg = 'bg-primary';
+  const portalTitle = role === 'student' ? 'Student Portal' : 'Mentor Portal';
+  const headerIcon = role === 'student' 
+    ? <GraduationCap className="w-6 h-6 text-white" />
+    : <User className="w-6 h-6 text-white" />;
+  
   useEffect(() => {
-    // Get current path safely
     if (typeof window !== 'undefined') {
       setCurrentPath(window.location.pathname);
       setIsSettingsPage(window.location.pathname.includes('/settings'));
     }
   }, []);
   
-  // Listen for pathname changes
   useEffect(() => {
     const updatePath = () => {
       if (typeof window !== 'undefined') {
@@ -194,74 +305,76 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
     if (typeof window !== 'undefined' && isSettingsPage) {
       const updateSection = () => {
         const params = new URLSearchParams(window.location.search);
-        setActiveSection(params.get('section') || 'basic');
+        setActiveSection(params.get('section') || (role === 'mentor' ? 'profile' : 'basic'));
       };
       
       updateSection();
       const interval = setInterval(updateSection, 100);
       return () => clearInterval(interval);
     }
-  }, [isSettingsPage]);
+  }, [isSettingsPage, role]);
 
   useEffect(() => {
     if (isSettingsPage) {
-      // Load student settings data
-      const studentSections = settingsData.settingsSections.student as SettingsSection[];
-      setSettingsMenuItems(studentSections);
+      const sections = role === 'student' 
+        ? (settingsData.settingsSections.student as SettingsSection[])
+        : (settingsData.settingsSections.mentor as SettingsSection[]);
+      setSettingsMenuItems(sections);
     }
-  }, [isSettingsPage]);
+  }, [isSettingsPage, role]);
 
   const handleNavigation = (path: string) => {
     router.push(path);
   };
 
   return (
-    <div className={`flex flex-col h-screen bg-slate-800 dark:bg-gray-800 border-r border-slate-700 dark:border-gray-700 transition-all duration-300 shadow-2xl ${
+    <div className={`flex flex-col h-screen bg-sidebar border-r border-border transition-all duration-300 shadow-2xl ${
       isCollapsed ? 'w-16' : 'w-64'
     }`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-700 dark:border-gray-700 flex-shrink-0">
+      <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
         {!isCollapsed && (
           <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-[#635bff] rounded-xl flex items-center justify-center shadow-lg shadow-[#635bff]/40">
-              <GraduationCap className="w-6 h-6 text-white" />
+            <div className={`w-10 h-10 ${headerIconBg} rounded-xl flex items-center justify-center shadow-lg ${headerIconShadow}`}>
+              {headerIcon}
             </div>
             <div>
-              <h1 className="text-lg font-bold text-white">Evolvix</h1>
-              <p className="text-xs text-slate-400 font-medium">Student Portal</p>
+              <h1 className="text-lg font-bold text-foreground">Evolvix</h1>
+              <p className="text-xs text-muted-foreground font-medium">{portalTitle}</p>
             </div>
           </div>
         )}
         <button
           onClick={onToggle}
-              className="p-2 rounded-lg hover:bg-slate-700 dark:hover:bg-gray-700 transition-colors"
+          className="p-2 rounded-lg hover:bg-secondary transition-colors"
         >
           {isCollapsed ? (
-                <ChevronRightIcon className="w-5 h-5 text-slate-300" />
-              ) : (
-                <ChevronLeft className="w-5 h-5 text-slate-300" />
-              )}
-            </button>
+            <ChevronRightIcon className="w-5 h-5 text-foreground" />
+          ) : (
+            <ChevronLeft className="w-5 h-5 text-foreground" />
+          )}
+        </button>
           </div>
 
-      {/* Today's Tasks Card */}
-      {!isCollapsed ? (
+      {/* Today's Tasks Card - Only for Student */}
+      {role === 'student' && (
+        !isCollapsed ? (
         <div className="px-4 pt-4">
-          <div className="bg-slate-700 dark:bg-gray-700 rounded-xl p-4 hover:bg-slate-600 dark:hover:bg-gray-600 transition-colors cursor-pointer">
+          <div className="bg-secondary rounded-xl p-4 hover:bg-accent transition-colors cursor-pointer">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-[#635bff] rounded-lg flex items-center justify-center">
-                  <Clock className="w-4 h-4 text-white" />
+                <div className={`w-8 h-8 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
+                  <Clock className="w-4 h-4 text-primary-foreground" />
                 </div>
                 <div>
-                  <h3 className="text-white font-semibold text-sm">Today's Tasks</h3>
+                  <h3 className="text-foreground font-semibold text-sm">Today's Tasks</h3>
                 </div>
               </div>
-              <div className="bg-slate-600 dark:bg-gray-600 text-white px-2.5 py-1 rounded-full text-xs font-bold">
+              <div className="bg-muted text-foreground px-2.5 py-1 rounded-full text-xs font-bold">
                 64
               </div>
             </div>
-            <div className="flex items-center space-x-2 mt-3 text-slate-300">
+            <div className="flex items-center space-x-2 mt-3 text-muted-foreground">
               <Calendar className="w-4 h-4" />
               <p className="text-xs">Next: Assignment Due</p>
             </div>
@@ -269,65 +382,65 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         </div>
       ) : (
         <div className="px-2 pt-4">
-          <div className="bg-slate-700 dark:bg-gray-700 rounded-xl p-3 hover:bg-slate-600 dark:hover:bg-gray-600 transition-colors cursor-pointer flex items-center justify-center">
+          <div className="bg-secondary rounded-xl p-3 hover:bg-accent transition-colors cursor-pointer flex items-center justify-center">
             <div className="relative">
-              <div className="w-10 h-10 bg-[#635bff] rounded-lg flex items-center justify-center">
-                <Clock className="w-5 h-5 text-white" />
+              <div className={`w-10 h-10 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
+                <Clock className="w-5 h-5 text-primary-foreground" />
               </div>
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center border-2 border-slate-700">
+              <div className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full flex items-center justify-center border-2 border-secondary">
                 <span className="text-white text-xs font-bold">64</span>
               </div>
             </div>
           </div>
         </div>
+        )
       )}
 
-      {/* Navigation Menu - Scrollable with hidden scrollbar */}
+      {/* Navigation Menu */}
       <nav className="flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-1 scrollbar-hide">
         {isSettingsPage ? (
-          // Settings menu - simple clickable items
+          // Settings menu
           settingsMenuItems.map((section) => {
             const IconComponent = iconMap[section.icon] || Settings;
             const isActive = activeSection === section.id || currentPath?.includes(section.id);
+            const settingsPath = role === 'student' 
+              ? `/portal/student/settings?section=${section.id}`
+              : `/portal/mentor/settings?section=${section.id}`;
 
             return (
               <button
                 key={section.id}
-                onClick={() => handleNavigation(`/portal/student/settings?section=${section.id}`)}
+                onClick={() => handleNavigation(settingsPath)}
                 className={`group relative w-full ${
-                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-center'
+                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
                 } px-3 py-2.5 rounded-lg transition-all duration-200 ${
                   isActive
-                    ? 'bg-slate-700 dark:bg-gray-700'
-                    : 'hover:bg-slate-700 dark:hover:bg-gray-700'
+                    ? 'bg-secondary'
+                    : 'hover:bg-secondary'
                 }`}
                 title={isCollapsed ? section.label : undefined}
               >
-                {/* Active indicator bar */}
                 {isActive && !isCollapsed && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-[#635bff] rounded-r-full" />
+                  <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
                 )}
                 
-                {/* Icon with white background when active */}
                 <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                   isActive 
                     ? 'bg-white' 
-                    : 'bg-transparent group-hover:bg-slate-600 dark:group-hover:bg-gray-600'
+                    : 'bg-transparent group-hover:bg-muted'
                 }`}>
-                  <div className={isActive ? 'text-[#635bff]' : 'text-slate-300'}>
+                  <div className={isActive ? activeIconColor : 'text-foreground'}>
                     <IconComponent className="w-5 h-5" />
                   </div>
-      </div>
+                </div>
 
                 {!isCollapsed && (
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between">
-                      <span className={`text-sm font-semibold transition-all ${
-                        isActive ? 'text-white' : 'text-slate-300'
-                      }`}>
-                        {section.label}
-                      </span>
-                    </div>
+                  <div className="flex-1 min-w-0 text-left">
+                    <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
+                      isActive ? 'text-foreground' : 'text-foreground'
+                    }`}>
+                      {section.label}
+                    </span>
                   </div>
                 )}
               </button>
@@ -335,94 +448,86 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
           })
         ) : (
           // Regular menu items
-          menuItems.map((item) => {
-          const isActive = currentPath === item.path;
+          visibleMenuItems.map((item) => {
+            const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
           return (
             <button
               key={item.id}
               onClick={() => handleNavigation(item.path)}
                 className={`group relative w-full ${
-                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-center'
+                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
                 } px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                isActive
-                    ? 'bg-slate-700 dark:bg-gray-700'
-                    : 'hover:bg-slate-700 dark:hover:bg-gray-700'
+                  isActive
+                    ? 'bg-secondary'
+                    : 'hover:bg-secondary'
                 }`}
                 title={isCollapsed ? item.label : undefined}
               >
-                {/* Active indicator bar */}
                 {isActive && !isCollapsed && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 bg-[#635bff] rounded-r-full" />
+                  <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
                 )}
                 
-                {/* Icon with white background when active */}
                 <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                   isActive 
                     ? 'bg-white' 
-                    : 'bg-transparent group-hover:bg-slate-600 dark:group-hover:bg-gray-600'
+                    : 'bg-transparent group-hover:bg-muted'
                 }`}>
-                  <div className={isActive ? 'text-[#635bff]' : 'text-slate-300'}>
-                {item.icon}
-              </div>
-                  {/* Collapsed mode badge */}
-                  {isCollapsed && item.badge && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-[#635bff] rounded-full flex items-center justify-center border-2 border-slate-800">
-                      <span className="text-white text-xs font-bold">{item.badge}</span>
-                    </div>
-                  )}
+                  <div className={isActive ? activeIconColor : 'text-foreground'}>
+                    {item.icon}
+                  </div>
                 </div>
                 
-              {!isCollapsed && (
-                  <div className="flex-1 min-w-0">
+                {!isCollapsed && (
+                  <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between">
-                      <span className={`text-sm font-semibold transition-all ${
-                        isActive ? 'text-white' : 'text-slate-300'
+                      <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
+                        isActive ? 'text-foreground' : 'text-foreground'
                       }`}>
                         {item.label}
                       </span>
                       {item.badge && (
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
                           isActive 
-                            ? 'bg-[#635bff] text-white' 
-                            : 'bg-slate-600 dark:bg-gray-600 text-slate-300'
+                            ? `${activeBadgeBg} text-primary-foreground` 
+                            : 'bg-muted text-muted-foreground'
                         }`}>
                           {item.badge}
                         </span>
                       )}
                     </div>
                     {item.subtitle && (
-                      <p className="text-xs text-slate-400 mt-0.5 truncate">
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate block overflow-hidden text-ellipsis whitespace-nowrap">
                         {item.subtitle}
                       </p>
                     )}
                   </div>
-              )}
+                )}
             </button>
           );
           })
         )}
       </nav>
 
-      {/* User Profile Section with Logout */}
-      <div className={`${!isCollapsed ? 'p-4' : 'p-2'} border-t border-slate-700 dark:border-gray-700 flex-shrink-0 space-y-2`}>
-        <div className={`bg-slate-700 dark:bg-gray-700 rounded-xl p-3 hover:bg-slate-600 dark:hover:bg-gray-600 transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex justify-center'}`}>
+      {/* User Profile Section */}
+      <div className={`${!isCollapsed ? 'p-4' : 'p-2'} border-t border-border flex-shrink-0 space-y-2`}>
+        <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
           <div className="relative flex-shrink-0">
-            <div className="w-10 h-10 bg-slate-600 dark:bg-gray-600 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-white" />
+            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+              <User className="w-5 h-5 text-foreground" />
             </div>
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-slate-700 dark:border-gray-700"></div>
+            <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
           </div>
           {!isCollapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-semibold text-white truncate">
-                John Doe
+            <div className="flex-1 min-w-0 text-left">
+              <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                {role === 'student' ? 'John Doe' : 'Mentor Name'}
               </p>
-              <p className="text-xs text-slate-400 truncate">
-                john@example.com
+              <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                {role === 'student' ? 'john@example.com' : 'mentor@example.com'}
               </p>
               <div className="flex items-center space-x-1 mt-0.5">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                <span className="text-xs text-green-400 font-medium">Online</span>
+                <div className="w-2 h-2 bg-primary rounded-full"></div>
+                <span className="text-xs text-primary font-medium">Online</span>
               </div>
             </div>
           )}
@@ -431,12 +536,10 @@ export function Sidebar({ isCollapsed, onToggle }: SidebarProps) {
         {/* Logout Button */}
         <button
           onClick={() => {
-            // Clear all storage
             localStorage.clear();
-            // Redirect to login
             window.location.href = '/auth/signin';
           }}
-          className={`w-full ${!isCollapsed ? 'flex items-center space-x-3' : 'flex justify-center'} bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800 text-white rounded-lg px-3 py-2.5 transition-all`}
+          className={`w-full ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'} bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg px-3 py-2.5 transition-all`}
           title={isCollapsed ? 'Logout' : undefined}
         >
           <LogOut className="w-5 h-5" />

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
 import { 
@@ -81,7 +81,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <StudentLayout title="My Profile">
+    <Layout title="My Profile" role="student">
       <div className="space-y-6">
         {/* Profile Picture Section */}
         <Card>
@@ -418,7 +418,7 @@ export default function ProfilePage() {
           </CardContent>
         </Card>
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }
 

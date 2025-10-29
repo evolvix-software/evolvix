@@ -42,37 +42,61 @@ export interface StudentVerificationData extends BaseVerificationData {
 
 export interface MentorVerificationData extends BaseVerificationData {
   role: 'mentor';
+  // Mandatory Fields
   personalInfo: {
     fullName: string;
     dateOfBirth: string;
+    gender: 'male' | 'female' | 'other';
+    email: string;
+    phoneNumber: string;
     nationality: string;
   };
-  professionalInfo: {
-    currentPosition: string;
-    company: string;
-    experience: number;
-    specialization: string[];
-    linkedinUrl?: string;
-    portfolioUrl?: string;
-  };
-  educationInfo: {
+  professionalCredentials: {
     degree: string;
     institution: string;
     graduationYear: string;
-    certifications: string[];
+    certifications: Array<{
+      name: string;
+      issuer: string;
+      issueDate: string;
+      documentUrl?: string;
+    }>;
+  };
+  experienceProof: {
+    workCertificate?: string;
+    linkedinUrl?: string;
+    experienceYears: number;
+    currentPosition?: string;
+    company?: string;
+    specialization: string[];
   };
   idProof: {
     type: 'passport' | 'aadhar' | 'driving_license';
     number: string;
     documentUrl?: string;
   };
+  profilePicture?: string;
   bankDetails: {
     accountNumber: string;
     ifscCode: string;
     bankName: string;
     accountHolderName: string;
+    documentUrl?: string;
   };
-  profilePicture?: string;
+  // Optional Fields
+  socialProfiles?: {
+    linkedin?: string;
+    github?: string;
+    portfolio?: string;
+  };
+  // Admin Action
+  adminVerification?: {
+    verifiedBy?: string;
+    verificationDate?: string;
+    videoCallCompleted?: boolean;
+    adminNotes?: string;
+  };
+  verifiedBadge?: boolean; // "Verified Mentor" badge
 }
 
 export interface EmployerVerificationData extends BaseVerificationData {

@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import { loadVerificationData, checkVerificationStatus } from '@/store/features/verification/verificationThunks';
-import { StudentLayout } from '@/components/layout/StudentLayout';
+import { Layout } from '@/components/layout/Layout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
 import { Input } from '@/components/forms/Input';
@@ -161,7 +161,7 @@ export default function ProfilePage() {
   }
 
   return (
-    <StudentLayout title="Profile">
+    <Layout title="Profile">
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
@@ -430,7 +430,7 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </StudentLayout>
+    </Layout>
   );
 }
 

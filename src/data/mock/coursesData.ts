@@ -8,16 +8,7 @@ export interface Instructor {
   bio: string;
 }
 
-export interface Lesson {
-  id: string;
-  moduleId: string;
-  title: string;
-  duration: string;
-  type: 'video' | 'reading' | 'quiz';
-  completed?: boolean;
-  videoUrl?: string;
-  content?: string;
-}
+// Lesson interface is now defined above in Course interface section
 
 export interface Module {
   id: string;
@@ -32,6 +23,112 @@ export interface Prerequisite {
   title: string;
   description: string;
   completed: boolean;
+}
+
+export interface CourseSchedule {
+  frequency: 'daily' | 'weekly' | 'twice-weekly';
+  days?: string[]; // ['monday', 'wednesday'] or ['saturday', 'sunday']
+  time?: string; // Default time for classes (HH:MM)
+  duration?: number; // Default duration in minutes
+}
+
+export interface VideoTimestamp {
+  id: string;
+  title: string;
+  timestamp: number; // seconds
+  description?: string;
+}
+
+export interface LessonAssignment {
+  id: string;
+  title: string;
+  description: string;
+  dueDate?: string;
+  maxScore: number;
+  files?: File[];
+}
+
+export interface LessonTest {
+  id: string;
+  title: string;
+  questions: Array<{
+    id: string;
+    question: string;
+    type: 'multiple-choice' | 'true-false' | 'short-answer';
+    options?: string[];
+    correctAnswer: string;
+    points: number;
+  }>;
+  passingScore: number;
+  timeLimit?: number; // in minutes
+}
+
+export interface Lesson {
+  id: string;
+  moduleId: string;
+  title: string;
+  duration: string;
+  type: 'video' | 'reading' | 'quiz';
+  completed?: boolean;
+  // For recorded courses
+  videoUrl?: string;
+  videoFile?: File | undefined;
+  timestamps?: VideoTimestamp[];
+  assignment?: LessonAssignment;
+  test?: LessonTest;
+  // For live courses (optional)
+  liveSessionLink?: string;
+  content?: string;
+}
+
+export interface CourseProject {
+  id: string;
+  projectNumber: number;
+  title: string;
+  description: string;
+  technologies: string[]; // Technologies to be used
+  requirements: string[]; // Project requirements
+  difficulty: 'beginner' | 'intermediate' | 'advanced';
+  estimatedDuration: string; // e.g., "2 weeks"
+  dueDate?: string; // Deadline for submission
+  isFinalProject: boolean; // If true, student chooses their own project
+  finalProjectGuidelines?: string; // Guidelines for final project if student choice
+  maxScore: number;
+  weight: number; // Percentage weight in final grade
+}
+
+export interface ProjectSubmission {
+  id: string;
+  projectId: string;
+  courseId: string;
+  studentId: string;
+  studentName: string;
+  githubUrl: string;
+  liveLink?: string;
+  documents: Array<{
+    id: string;
+    name: string;
+    url: string;
+    type: 'pdf' | 'doc' | 'zip' | 'other';
+  }>;
+  submittedAt: string;
+  status: 'pending' | 'reviewed' | 'returned';
+  mentorFeedback?: string;
+  score?: number;
+  maxScore: number;
+}
+
+export interface DoubtClearingSession {
+  id: string;
+  courseId: string;
+  date: string; // Sunday date
+  time: string; // Time in HH:MM
+  duration: number; // minutes
+  platform: 'zoom' | 'jitsi';
+  meetingLink?: string;
+  meetingId?: string;
+  status: 'scheduled' | 'completed' | 'cancelled';
+  attendance: string[]; // Student IDs
 }
 
 export interface Course {
@@ -57,6 +154,14 @@ export interface Course {
   enrolledCount: number;
   createdAt: string;
   updatedAt: string;
+  // New fields
+  courseType: 'live' | 'recorded'; // Course delivery type
+  schedule?: CourseSchedule; // For live courses
+  allowStudentPreferences?: boolean; // Let students choose schedule
+  // Projects
+  projects?: CourseProject[]; // Projects defined by mentor
+  enableSundayDoubtClearing?: boolean; // For recorded courses
+  doubtClearingSessions?: DoubtClearingSession[]; // Sunday sessions
 }
 
 export const coursesData: Course[] = [
@@ -167,7 +272,13 @@ export const coursesData: Course[] = [
     ],
     enrolledCount: 5634,
     createdAt: '2024-01-15',
-    updatedAt: '2024-03-20'
+    updatedAt: '2024-03-20',
+    courseType: 'recorded' as const,
+    schedule: undefined,
+    allowStudentPreferences: false,
+    projects: undefined,
+    enableSundayDoubtClearing: false,
+    doubtClearingSessions: undefined,
   },
   {
     id: '2',
@@ -234,7 +345,13 @@ export const coursesData: Course[] = [
     ],
     enrolledCount: 3421,
     createdAt: '2024-02-10',
-    updatedAt: '2024-04-05'
+    updatedAt: '2024-04-05',
+    courseType: 'recorded' as const,
+    schedule: undefined,
+    allowStudentPreferences: false,
+    projects: undefined,
+    enableSundayDoubtClearing: false,
+    doubtClearingSessions: undefined,
   },
   {
     id: '3',
@@ -302,7 +419,13 @@ export const coursesData: Course[] = [
     ],
     enrolledCount: 12345,
     createdAt: '2024-01-20',
-    updatedAt: '2024-05-10'
+    updatedAt: '2024-05-10',
+    courseType: 'recorded' as const,
+    schedule: undefined,
+    allowStudentPreferences: false,
+    projects: undefined,
+    enableSundayDoubtClearing: false,
+    doubtClearingSessions: undefined,
   },
   {
     id: '4',
@@ -354,7 +477,13 @@ export const coursesData: Course[] = [
     ],
     enrolledCount: 2345,
     createdAt: '2024-03-01',
-    updatedAt: '2024-06-15'
+    updatedAt: '2024-06-15',
+    courseType: 'recorded' as const,
+    schedule: undefined,
+    allowStudentPreferences: false,
+    projects: undefined,
+    enableSundayDoubtClearing: false,
+    doubtClearingSessions: undefined,
   }
 ];
 
