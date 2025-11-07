@@ -1,87 +1,210 @@
 "use client";
 
-import { Card, CardContent } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
-import { Users, MessageSquare, Star, TrendingUp, Search } from 'lucide-react';
+import { useState, useEffect, useMemo } from 'react';
+import { useAppSelector } from '@/store/hooks';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Users, 
+  MessageSquare, 
+  User,
+  FileText
+} from 'lucide-react';
+import { StudentList, StudentProfile, FeedbackForm, DirectMessages } from './students';
+import { Student, StudentFeedback, ChatConversation, ChatMessage } from './students/types';
+import { 
+  mockStudents, 
+  mockStudentProgress, 
+  mockFeedbacks, 
+  mockChatConversations 
+} from './students/mockData';
 
 export function StudentsContent() {
-  const students = [
-    { id: 1, name: 'Alex Johnson', progress: 85, rating: 5, assignments: 12, lastActive: '2 hours ago' },
-    { id: 2, name: 'Sarah Chen', progress: 72, rating: 5, assignments: 8, lastActive: '1 day ago' },
-    { id: 3, name: 'Michael Brown', progress: 90, rating: 4, assignments: 15, lastActive: '5 hours ago' }
-  ];
+  const { courses } = useAppSelector(state => state.courses);
+  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [activeTab, setActiveTab] = useState<'list' | 'messages'>('list');
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
+  const [feedbackCourseId, setFeedbackCourseId] = useState<string | undefined>();
+  const [feedbacks, setFeedbacks] = useState<StudentFeedback[]>(mockFeedbacks);
+  const [conversations, setConversations] = useState<ChatConversation[]>(mockChatConversations);
+
+  // Get mentor ID
+  const [mentorId, setMentorId] = useState<string>('suhxil14@gmail.com');
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setMentorId(parsedData.email || 'suhxil14@gmail.com');
+    }
+  }, []);
+
+  // Get students enrolled in mentor's courses (using mock data)
+  const enrolledStudents = useMemo(() => {
+    // For now, use all mock students since they're enrolled in courses 5-9 which belong to the mentor
+    // In production, this would filter based on actual enrollments
+    const mentorCourseIds = courses
+      .filter(c => c.instructor.id === mentorId)
+      .map(c => c.id);
+    
+    // If no courses found or filtering returns empty, show all mock students
+    const filtered = mockStudents.filter(student =>
+      student.enrolledCourses.some(courseId => mentorCourseIds.includes(courseId))
+    );
+    
+    // Return filtered students or all mock students if filter is empty
+    return filtered.length > 0 ? filtered : mockStudents;
+  }, [courses, mentorId]);
+
+  // Get course progress for selected student
+  const selectedStudentProgress = useMemo(() => {
+    if (!selectedStudent) return [];
+    return mockStudentProgress[selectedStudent.id] || [];
+  }, [selectedStudent]);
+
+  // Get existing feedback for selected student
+  const existingFeedback = useMemo(() => {
+    if (!selectedStudent || !feedbackCourseId) return undefined;
+    return feedbacks.find(
+      f => f.studentId === selectedStudent.id && f.courseId === feedbackCourseId
+    );
+  }, [selectedStudent, feedbackCourseId, feedbacks]);
+
+  const handleSelectStudent = (student: Student) => {
+    setSelectedStudent(student);
+    setActiveTab('list');
+  };
+
+  const handleBackToList = () => {
+    setSelectedStudent(null);
+    setActiveTab('list');
+  };
+
+  const handleGiveFeedback = (courseId?: string) => {
+    setFeedbackCourseId(courseId);
+    setShowFeedbackForm(true);
+  };
+
+  const handleSubmitFeedback = (feedbackData: Omit<StudentFeedback, 'id' | 'submittedAt' | 'submittedBy'>) => {
+    const newFeedback: StudentFeedback = {
+      ...feedbackData,
+      id: `feedback_${Date.now()}`,
+      submittedAt: new Date().toISOString(),
+      submittedBy: mentorId
+    };
+
+    // Remove existing feedback for same student/course if updating
+    const updatedFeedbacks = feedbacks.filter(
+      f => !(f.studentId === feedbackData.studentId && f.courseId === feedbackData.courseId)
+    );
+    
+    setFeedbacks([...updatedFeedbacks, newFeedback]);
+    setShowFeedbackForm(false);
+    setFeedbackCourseId(undefined);
+  };
+
+  const handleSendMessage = (studentId: string, message: string) => {
+    const newMessage: ChatMessage = {
+      id: `msg_${Date.now()}`,
+      studentId,
+      mentorId,
+      message,
+      sender: 'mentor',
+      timestamp: new Date().toISOString(),
+      read: false
+    };
+
+    setConversations(prev => prev.map(conv => {
+      if (conv.studentId === studentId) {
+        return {
+          ...conv,
+          lastMessage: message,
+          lastMessageTime: 'Just now',
+          messages: [...conv.messages, newMessage],
+          unreadCount: 0
+        };
+      }
+      return conv;
+    }));
+  };
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Student Management</h2>
-          <p className="text-slate-600 dark:text-slate-400">View enrolled students, progress, and feedback</p>
-        </div>
-        <div className="flex items-center space-x-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-slate-400" />
-            <input
-              type="text"
-              placeholder="Search students..."
-              className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-            />
-          </div>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+            Student Management
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400">
+            Manage students, track progress, provide feedback, and communicate
+          </p>
         </div>
       </div>
 
-      {/* Student List */}
-      <div className="grid md:grid-cols-3 gap-6">
-        {students.map((student) => (
-          <Card key={student.id} className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
-            <CardContent className="p-6">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 dark:text-green-400 font-bold">
-                    {student.name.charAt(0)}
-                  </span>
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-slate-900 dark:text-white">{student.name}</h3>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">Last active: {student.lastActive}</p>
-                </div>
-              </div>
-              <div className="space-y-3">
-                <div>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-sm text-slate-600 dark:text-slate-400">Progress</span>
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">{student.progress}%</span>
-                  </div>
-                  <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-2">
-                    <div 
-                      className="bg-green-600 h-2 rounded-full transition-all duration-500" 
-                      style={{ width: `${student.progress}%` }}
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                    <span className="text-sm font-semibold">{student.rating}</span>
-                  </div>
-                  <span className="text-sm text-slate-600 dark:text-slate-400">{student.assignments} assignments</span>
-                </div>
-                <div className="flex space-x-2">
-                  <Button variant="outline" size="sm" className="flex-1 border-slate-200 dark:border-slate-700">
-                    <MessageSquare className="w-4 h-4 mr-1" />
-                    Feedback
-                  </Button>
-                  <Button variant="outline" size="sm" className="flex-1 border-slate-200 dark:border-slate-700">
-                    <TrendingUp className="w-4 h-4 mr-1" />
-                    Progress
-                  </Button>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      {/* Main Content */}
+      {selectedStudent ? (
+        // Show Student Profile
+        <StudentProfile
+          student={selectedStudent}
+          courseProgress={selectedStudentProgress}
+          onBack={handleBackToList}
+          onMessage={() => setActiveTab('messages')}
+          onGiveFeedback={() => handleGiveFeedback()}
+        />
+      ) : (
+        // Show Tabs: Student List or Messages
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'list' | 'messages')} className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="list" className="flex items-center space-x-2">
+              <Users className="w-4 h-4" />
+              <span>Student List</span>
+              {enrolledStudents.length > 0 && (
+                <span className="ml-2 px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full">
+                  {enrolledStudents.length}
+                </span>
+              )}
+            </TabsTrigger>
+            <TabsTrigger value="messages" className="flex items-center space-x-2">
+              <MessageSquare className="w-4 h-4" />
+              <span>Direct Messages</span>
+              {conversations.some(c => c.unreadCount > 0) && (
+                <span className="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">
+                  {conversations.reduce((sum, c) => sum + c.unreadCount, 0)}
+                </span>
+              )}
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="list" className="mt-6">
+            <StudentList
+              students={enrolledStudents}
+              onSelectStudent={handleSelectStudent}
+            />
+          </TabsContent>
+
+          <TabsContent value="messages" className="mt-6">
+            <DirectMessages
+              conversations={conversations}
+              mentorId={mentorId}
+              onSendMessage={handleSendMessage}
+            />
+          </TabsContent>
+        </Tabs>
+      )}
+
+      {/* Feedback Form Modal */}
+      {showFeedbackForm && selectedStudent && (
+        <FeedbackForm
+          student={selectedStudent}
+          courseId={feedbackCourseId}
+          existingFeedback={existingFeedback}
+          onClose={() => {
+            setShowFeedbackForm(false);
+            setFeedbackCourseId(undefined);
+          }}
+          onSubmit={handleSubmitFeedback}
+        />
+      )}
     </div>
   );
 }
-

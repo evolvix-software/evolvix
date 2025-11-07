@@ -14,9 +14,10 @@ import {
   NotificationsFeed,
   UpcomingCourses,
 } from '../../../components/student/dashboard';
+import { ClassNotifications } from '@/components/student/components/ClassNotifications';
 import { Card, CardContent } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
-import { Shield, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { Shield, CheckCircle, Clock, XCircle, AlertCircle } from 'lucide-react';
 
 const defaultNotifications: Array<{
   id: string;
@@ -215,8 +216,9 @@ export default function StudentPortal() {
 
         <WelcomeHeader userName={userData.fullName || 'Student'} isVerified={isVerified} />
 
+        {/* TODO: Re-enable verification status cards after UI is complete */}
         {/* Verification Status Cards */}
-        {verificationStatus?.status === 'incomplete' && (
+        {/* {verificationStatus?.status === 'incomplete' && (
           <Card className="border-0 shadow-sm bg-[#635bff]/10 dark:bg-[#635bff]/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
@@ -244,7 +246,7 @@ export default function StudentPortal() {
               </div>
             </CardContent>
           </Card>
-        )}
+        )} */}
 
         {verificationStatus?.status === 'pending' && (
           <Card className="border-0 shadow-sm bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800 mb-6">
@@ -320,21 +322,59 @@ export default function StudentPortal() {
           </Card>
         )}
 
-        {/* Stats Grid */}
-        <StatsGrid stats={stats} />
+        {/* Class Notifications - Show meeting links for enrolled courses */}
+        <ClassNotifications />
 
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
-            <ChartsSection />
-            <NotificationsFeed notifications={isVerified ? verifiedNotifications : defaultNotifications} />
-          </div>
-
-          <div className="space-y-6">
-            <QuickActions />
-            <UpcomingCourses courses={isVerified ? verifiedCourses : defaultCourses} />
-          </div>
-        </div>
+        {/* Show limited content when not verified, full content when verified */}
+        {isVerified ? (
+          <>
+            <StatsGrid stats={stats} />
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
+                <ChartsSection />
+                <NotificationsFeed notifications={verifiedNotifications} />
+              </div>
+              <div className="space-y-6">
+                <QuickActions />
+                <UpcomingCourses courses={verifiedCourses} />
+              </div>
+            </div>
+          </>
+        ) : (
+          // TODO: Re-enable verification required message after UI is complete
+          // Temporarily showing full content even when not verified
+          <>
+            <StatsGrid stats={stats} />
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
+                <ChartsSection />
+                <NotificationsFeed notifications={verifiedNotifications} />
+              </div>
+              <div className="space-y-6">
+                <QuickActions />
+                <UpcomingCourses courses={verifiedCourses} />
+              </div>
+            </div>
+            {/* TODO: Re-enable verification required message after UI is complete */}
+            {/* <Card className="border-0 shadow-sm bg-gray-50 dark:bg-gray-800/50">
+            <CardContent className="p-8">
+              <div className="text-center space-y-4">
+                <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mx-auto">
+                  <AlertCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    Complete Verification to Access All Features
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Once verified, you'll be able to view your dashboard statistics, enroll in courses, connect with mentors, and access all student features.
+                  </p>
+                </div>
+              </div>
+            </CardContent>
+          </Card> */}
+          </>
+        )}
       </div>
     </Layout>
   );

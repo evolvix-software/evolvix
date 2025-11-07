@@ -23,7 +23,7 @@ const verificationLevels = [
       "Basic profile creation",
       "View general information"
     ],
-    requirements: ["Email verification", "Phone verification"]
+    requirements: ["Email verification"]
   },
   {
     level: 1,

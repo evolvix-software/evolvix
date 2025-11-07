@@ -10,7 +10,7 @@ import { Course } from '@/data/mock/coursesData';
 import { ProjectEvaluation } from '@/components/projects/ProjectEvaluation';
 import { ProjectsLeaderboard } from '@/components/projects/ProjectsLeaderboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Code, FileText, Users, Trophy, Calendar, CheckCircle2, Clock, XCircle } from 'lucide-react';
+import { Code, FileText, Users, Trophy, Calendar, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, Play, Video, BookOpen } from 'lucide-react';
 
 export default function MentorCourseDetailPage() {
   const params = useParams();
@@ -19,7 +19,8 @@ export default function MentorCourseDetailPage() {
   const { submissions, doubtClearingSessions } = useAppSelector(state => state.projects);
   
   const [course, setCourse] = useState<Course | null>(null);
-  const [activeTab, setActiveTab] = useState('projects');
+  const [activeTab, setActiveTab] = useState('modules');
+  const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     const foundCourse = courses.find(c => c.id === params.id);
@@ -84,7 +85,11 @@ export default function MentorCourseDetailPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="modules" className="flex items-center space-x-2">
+              <FileText className="w-4 h-4" />
+              <span>Modules</span>
+            </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center space-x-2">
               <Code className="w-4 h-4" />
               <span>Projects</span>
@@ -105,6 +110,182 @@ export default function MentorCourseDetailPage() {
               </TabsTrigger>
             )}
           </TabsList>
+
+          {/* Modules Tab */}
+          <TabsContent value="modules" className="space-y-6">
+            {course.modules && course.modules.length > 0 ? (
+              <div className="space-y-4">
+                {course.modules.map((module, moduleIdx) => {
+                  const isExpanded = expandedModules.has(module.id);
+                  const toggleModule = () => {
+                    const newExpanded = new Set(expandedModules);
+                    if (isExpanded) {
+                      newExpanded.delete(module.id);
+                    } else {
+                      newExpanded.add(module.id);
+                    }
+                    setExpandedModules(newExpanded);
+                  };
+
+                  return (
+                    <Card key={module.id} className="border border-slate-200 dark:border-slate-700">
+                      <CardHeader>
+                        <div 
+                          className="flex items-center justify-between cursor-pointer"
+                          onClick={toggleModule}
+                        >
+                          <div className="flex items-center space-x-3">
+                            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                              <span className="text-blue-600 dark:text-blue-400 font-bold text-sm">
+                                {moduleIdx + 1}
+                              </span>
+                            </div>
+                            <div>
+                              <CardTitle className="text-lg">{module.title}</CardTitle>
+                              <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                {module.description}
+                              </p>
+                              <div className="flex items-center space-x-4 mt-2 text-xs text-slate-500 dark:text-slate-400">
+                                <span className="flex items-center space-x-1">
+                                  <Play className="w-3 h-3" />
+                                  <span>{module.lessons.length} {module.lessons.length === 1 ? 'Lesson' : 'Lessons'}</span>
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleModule();
+                            }}
+                            className="ml-4"
+                          >
+                            {isExpanded ? (
+                              <ChevronUp className="w-5 h-5" />
+                            ) : (
+                              <ChevronDown className="w-5 h-5" />
+                            )}
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      {isExpanded && (
+                        <CardContent className="pt-0">
+                          <div className="space-y-3 mt-4 border-t border-slate-200 dark:border-slate-700 pt-4">
+                            {module.lessons.map((lesson, lessonIdx) => (
+                              <div
+                                key={lesson.id}
+                                className="flex items-start space-x-3 p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                              >
+                                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center mt-0.5">
+                                  <span className="text-purple-600 dark:text-purple-400 font-semibold text-xs">
+                                    {lessonIdx + 1}
+                                  </span>
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <h4 className="font-semibold text-slate-900 dark:text-white flex items-center space-x-2">
+                                        {lesson.type === 'video' && <Video className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
+                                        {lesson.type === 'reading' && <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400" />}
+                                        {lesson.type === 'quiz' && <FileText className="w-4 h-4 text-orange-600 dark:text-orange-400" />}
+                                        <span>{lesson.title}</span>
+                                      </h4>
+                                      {lesson.content && (
+                                        <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
+                                          {lesson.content}
+                                        </p>
+                                      )}
+                                      {lesson.videoUrl && (
+                                        <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+                                          Video available
+                                        </p>
+                                      )}
+                                      {lesson.liveSessionLink && (
+                                        <a
+                                          href={lesson.liveSessionLink}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-1 inline-block"
+                                        >
+                                          Join Live Session →
+                                        </a>
+                                      )}
+                                    </div>
+                                    <div className="flex items-center space-x-3 ml-4">
+                                      <span className="text-xs text-slate-500 dark:text-slate-400 flex items-center space-x-1">
+                                        <Clock className="w-3 h-3" />
+                                        <span>{lesson.duration}</span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                  
+                                  {/* Assignment */}
+                                  {lesson.assignment && (
+                                    <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800">
+                                      <div className="flex items-start space-x-2">
+                                        <FileText className="w-4 h-4 text-blue-600 dark:text-blue-400 mt-0.5 flex-shrink-0" />
+                                        <div className="flex-1">
+                                          <h5 className="text-sm font-semibold text-blue-900 dark:text-blue-100">
+                                            Assignment: {lesson.assignment.title}
+                                          </h5>
+                                          <p className="text-xs text-blue-700 dark:text-blue-300 mt-1">
+                                            {lesson.assignment.description}
+                                          </p>
+                                          <div className="flex items-center space-x-4 mt-2 text-xs text-blue-600 dark:text-blue-400">
+                                            <span>Max Score: {lesson.assignment.maxScore}</span>
+                                            {lesson.assignment.dueDate && (
+                                              <span>Due: {new Date(lesson.assignment.dueDate).toLocaleDateString()}</span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+
+                                  {/* Test */}
+                                  {lesson.test && (
+                                    <div className="mt-3 p-3 bg-orange-50 dark:bg-orange-900/20 rounded border border-orange-200 dark:border-orange-800">
+                                      <div className="flex items-start space-x-2">
+                                        <FileText className="w-4 h-4 text-orange-600 dark:text-orange-400 mt-0.5 flex-shrink-0" />
+                                        <div className="flex-1">
+                                          <h5 className="text-sm font-semibold text-orange-900 dark:text-orange-100">
+                                            Quiz: {lesson.test.title}
+                                          </h5>
+                                          <div className="flex items-center space-x-4 mt-2 text-xs text-orange-600 dark:text-orange-400">
+                                            <span>{lesson.test.questions.length} Questions</span>
+                                            <span>Passing Score: {lesson.test.passingScore}%</span>
+                                            {lesson.test.timeLimit && (
+                                              <span>Time Limit: {lesson.test.timeLimit} min</span>
+                                            )}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </CardContent>
+                      )}
+                    </Card>
+                  );
+                })}
+              </div>
+            ) : (
+              <Card className="border border-slate-200 dark:border-slate-700">
+                <CardContent className="p-12 text-center">
+                  <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Modules Yet</h3>
+                  <p className="text-slate-600 dark:text-slate-400">
+                    This course doesn't have any modules configured yet
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
 
           {/* Projects Tab */}
           <TabsContent value="projects" className="space-y-6">

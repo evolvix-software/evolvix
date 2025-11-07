@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { addCourse, updateCourse, deleteCourse } from '@/store/features/courses/coursesSlice';
+import { addCourse, updateCourse, deleteCourse, setCourses } from '@/store/features/courses/coursesSlice';
 import { Card, CardContent } from '@/components/forms/Card';
 import { Button } from '@/components/forms/Button';
 import {
@@ -14,7 +14,7 @@ import {
   Star,
   AlertCircle,
 } from 'lucide-react';
-import { Course, Instructor } from '@/data/mock/coursesData';
+import { Course, Instructor, coursesData } from '@/data/mock/coursesData';
 import { CourseForm } from './CourseForm';
 import { CourseCard } from './CourseCard';
 import { useRouter } from 'next/navigation';
@@ -45,6 +45,22 @@ export function CoursesManagement() {
     }
   }, []);
 
+  // Load courses from coursesData.ts and merge with localStorage courses
+  useEffect(() => {
+    const storedCourses = localStorage.getItem('evolvix_courses');
+    const mentorCourses = storedCourses ? JSON.parse(storedCourses) : [];
+    
+    // Merge coursesData with mentor-created courses, avoiding duplicates
+    const allCourses = [...coursesData];
+    mentorCourses.forEach((mentorCourse: Course) => {
+      if (!allCourses.find(c => c.id === mentorCourse.id)) {
+        allCourses.push(mentorCourse);
+      }
+    });
+    
+    dispatch(setCourses(allCourses));
+  }, [dispatch]);
+
   // Check verification status
   const [isVerified, setIsVerified] = useState(false);
 
@@ -64,31 +80,32 @@ export function CoursesManagement() {
   // Get only courses created by this mentor
   const myCourses = courses.filter(c => c.instructor.id === mentorInfo?.id);
 
-  if (!isVerified) {
-    return (
-      <Card className="border-2 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20">
-        <CardContent className="p-6">
-          <div className="flex items-center space-x-4">
-            <AlertCircle className="w-12 h-12 text-yellow-600 dark:text-yellow-400" />
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-400 mb-2">
-                Verification Required
-              </h3>
-              <p className="text-yellow-700 dark:text-yellow-300 mb-4">
-                You must be verified to create courses. Please complete your verification in Settings.
-              </p>
-              <Button
-                onClick={() => window.location.href = '/portal/mentor/settings?section=profile'}
-                className="bg-yellow-600 hover:bg-yellow-700"
-              >
-                Go to Settings
-              </Button>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
+  // TODO: Re-enable verification check after UI is complete
+  // if (!isVerified) {
+  //   return (
+  //     <Card className="border-2 border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20">
+  //       <CardContent className="p-6">
+  //         <div className="flex items-center space-x-4">
+  //           <AlertCircle className="w-12 h-12 text-yellow-600 dark:text-yellow-400" />
+  //           <div className="flex-1">
+  //             <h3 className="text-lg font-semibold text-yellow-900 dark:text-yellow-400 mb-2">
+  //               Verification Required
+  //             </h3>
+  //             <p className="text-yellow-700 dark:text-yellow-300 mb-4">
+  //               You must be verified to create courses. Please complete your verification in Settings.
+  //             </p>
+  //             <Button
+  //               onClick={() => window.location.href = '/portal/mentor/settings?section=profile'}
+  //               className="bg-yellow-600 hover:bg-yellow-700"
+  //             >
+  //               Go to Settings
+  //             </Button>
+  //           </div>
+  //         </div>
+  //       </CardContent>
+  //     </Card>
+  //   );
+  // }
 
   return (
     <div className="space-y-6">
@@ -179,4 +196,6 @@ export function CoursesManagement() {
     </div>
   );
 }
+
+
 

@@ -1,16 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { VerificationData, mockVerificationData } from '@/data/mock/verificationData';
+import { VerificationData } from '@/data/mock/verificationData';
 import { setUploadProgress } from './verificationSlice';
+import { verificationApi } from '@/lib/api';
 
 // Load verification data for current user
-export const loadVerificationData = createAsyncThunk(
+export const loadVerificationData = createAsyncThunk<VerificationData, string, { rejectValue: string }>(
   'verification/loadVerificationData',
   async (userId: string, { rejectWithValue }) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // In real app, this would fetch from API based on userId and role
       const storedData = localStorage.getItem('evolvix_registration');
       if (!storedData) {
         throw new Error('No registration data found');
@@ -19,47 +16,79 @@ export const loadVerificationData = createAsyncThunk(
       const registrationData = JSON.parse(storedData);
       const role = registrationData.role;
       
-      // Return mock data based on role
-      const mockData = mockVerificationData[role] || {
+      // Fetch from API
+      const response = await verificationApi.getVerificationStatus(role);
+      
+      if (response.verifications && response.verifications.length > 0) {
+        const verification = response.verifications[0];
+        // Convert Verification to VerificationData format
+        return {
+          id: verification._id,
+          userId: verification.userId,
+          role: verification.role as 'student' | 'mentor' | 'employer' | 'investor' | 'sponsor',
+          verificationLevel: Math.min(verification.verificationLevel, 2) as 0 | 1 | 2, // Cap at 2 for VerificationData
+          status: verification.status,
+          submittedAt: verification.submittedAt,
+          reviewedAt: verification.reviewedAt,
+          reviewedBy: verification.reviewedBy,
+          rejectionReason: verification.rejectionReason,
+          personalInfo: verification.personalInfo,
+          idProof: verification.idProof,
+          educationInfo: verification.educationInfo,
+          professionalCredentials: verification.professionalCredentials,
+          experienceProof: verification.experienceProof,
+          bankDetails: verification.bankDetails,
+          profilePicture: verification.profilePicture,
+        } as VerificationData;
+      }
+      
+      // Return incomplete verification if none exists
+      return {
         id: `ver_${Date.now()}`,
         userId,
         role,
         verificationLevel: 0,
         status: 'incomplete'
-      };
-      
-      return mockData as VerificationData;
-    } catch (error) {
-      return rejectWithValue('Failed to load verification data');
+      } as VerificationData;
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to load verification data');
     }
   }
 );
 
 // Submit verification data
-export const submitVerificationData = createAsyncThunk(
+export const submitVerificationData = createAsyncThunk<VerificationData, Partial<VerificationData>, { rejectValue: string }>(
   'verification/submitVerificationData',
   async (verificationData: Partial<VerificationData>, { rejectWithValue }) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // In real app, this would submit to API
-      const completeVerificationData: VerificationData = {
+      // Submit to API
+      const response = await verificationApi.submitVerification({
         ...verificationData,
-        id: verificationData.id || `ver_${Date.now()}`,
-        userId: verificationData.userId || 'current_user',
-        role: verificationData.role || 'student',
         verificationLevel: verificationData.verificationLevel || 1,
-        status: 'pending',
-        submittedAt: new Date().toISOString()
+      } as any);
+      
+      const verification = response.verification;
+      // Convert Verification to VerificationData format
+      return {
+        id: verification._id,
+        userId: verification.userId,
+        role: verification.role as 'student' | 'mentor' | 'employer' | 'investor' | 'sponsor',
+        verificationLevel: Math.min(verification.verificationLevel, 2) as 0 | 1 | 2,
+        status: verification.status,
+        submittedAt: verification.submittedAt,
+        reviewedAt: verification.reviewedAt,
+        reviewedBy: verification.reviewedBy,
+        rejectionReason: verification.rejectionReason,
+        personalInfo: verification.personalInfo,
+        idProof: verification.idProof,
+        educationInfo: verification.educationInfo,
+        professionalCredentials: verification.professionalCredentials,
+        experienceProof: verification.experienceProof,
+        bankDetails: verification.bankDetails,
+        profilePicture: verification.profilePicture,
       } as VerificationData;
-      
-      // Store in localStorage for demo
-      localStorage.setItem('evolvix_verification', JSON.stringify(completeVerificationData));
-      
-      return completeVerificationData;
-    } catch (error) {
-      return rejectWithValue('Failed to submit verification data');
+    } catch (error: any) {
+      return rejectWithValue(error.message || 'Failed to submit verification data');
     }
   }
 );
@@ -95,26 +124,37 @@ export const uploadDocument = createAsyncThunk(
 );
 
 // Check verification status
-export const checkVerificationStatus = createAsyncThunk(
+export const checkVerificationStatus = createAsyncThunk<
+  { verificationLevel: 0 | 1 | 2; status: 'pending' | 'approved' | 'rejected' | 'incomplete' },
+  string,
+  { rejectValue: string }
+>(
   'verification/checkVerificationStatus',
   async (userId: string, { rejectWithValue }) => {
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      // In real app, this would check with backend
-      const storedData = localStorage.getItem('evolvix_verification');
+      const storedData = localStorage.getItem('evolvix_registration');
       if (!storedData) {
         return { verificationLevel: 0, status: 'incomplete' };
       }
       
-      const verificationData = JSON.parse(storedData);
-      return {
-        verificationLevel: verificationData.verificationLevel,
-        status: verificationData.status
-      };
-    } catch (error) {
-      return rejectWithValue('Failed to check verification status');
+      const registrationData = JSON.parse(storedData);
+      const role = registrationData.role;
+      
+      // Fetch from API
+      const response = await verificationApi.getVerificationStatus(role);
+      
+      if (response.verifications && response.verifications.length > 0) {
+        const verification = response.verifications[0];
+        return {
+          verificationLevel: (verification.verificationLevel || 0) as 0 | 1 | 2,
+          status: (verification.status || 'incomplete') as 'pending' | 'approved' | 'rejected' | 'incomplete'
+        };
+      }
+      
+      return { verificationLevel: 0, status: 'incomplete' };
+    } catch (error: any) {
+      // Fallback to incomplete if API fails
+      return { verificationLevel: 0, status: 'incomplete' };
     }
   }
 );

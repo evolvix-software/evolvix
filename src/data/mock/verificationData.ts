@@ -259,20 +259,45 @@ export const mockVerificationData: Record<string, Partial<VerificationData>> = {
     personalInfo: {
       fullName: 'Sarah Chen',
       dateOfBirth: '1985-05-20',
+      gender: 'female',
+      email: 'sarah.chen@example.com',
+      phoneNumber: '+1-555-0123',
       nationality: 'American'
     },
-    professionalInfo: {
-      currentPosition: 'Senior Software Engineer',
-      company: 'Google',
-      experience: 8,
-      specialization: ['React', 'Node.js', 'AWS'],
-      linkedinUrl: 'https://linkedin.com/in/sarahchen'
-    },
-    educationInfo: {
+    professionalCredentials: {
       degree: 'MS Computer Science',
       institution: 'Stanford University',
       graduationYear: '2010',
-      certifications: ['AWS Certified', 'Google Cloud Professional']
+      certifications: [
+        {
+          name: 'AWS Certified',
+          issuer: 'Amazon Web Services',
+          issueDate: '2020-01-15'
+        },
+        {
+          name: 'Google Cloud Professional',
+          issuer: 'Google',
+          issueDate: '2021-03-20'
+        }
+      ]
+    },
+    experienceProof: {
+      experienceYears: 8,
+      currentPosition: 'Senior Software Engineer',
+      company: 'Google',
+      specialization: ['React', 'Node.js', 'AWS'],
+      linkedinUrl: 'https://linkedin.com/in/sarahchen'
+    },
+    idProof: {
+      type: 'passport',
+      number: 'P123456789',
+      documentUrl: 'https://example.com/documents/passport.pdf'
+    },
+    bankDetails: {
+      accountNumber: '1234567890',
+      ifscCode: 'CHASUS33',
+      bankName: 'Chase Bank',
+      accountHolderName: 'Sarah Chen'
     }
   }
 };

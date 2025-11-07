@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/store/hooks';
+import { selectRole } from '@/store/features/auth/authSlice';
 import { 
   GraduationCap, 
   Users, 
@@ -81,7 +83,7 @@ const roles = [
 
 export default function RoleSelectionPage() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const handleRoleSelect = (roleId: string) => {
@@ -91,33 +93,18 @@ export default function RoleSelectionPage() {
   const handleContinue = async () => {
     if (!selectedRole) return;
     
-    setIsLoading(true);
-    
     try {
-      const storedData = localStorage.getItem('evolvix_registration');
-      if (!storedData) {
-        console.error('No registration data found');
-        router.push('/auth/signup');
-        return;
+      const result = await dispatch(selectRole(selectedRole));
+      
+      if (selectRole.fulfilled.match(result)) {
+        const user = result.payload.user;
+        
+        // Redirect to survey or portal based on survey status
+        // You might want to check survey status here
+        router.push(`/auth/survey?role=${selectedRole}`);
       }
-      
-      const registrationData = JSON.parse(storedData);
-      
-      const completeRegistration = {
-        ...registrationData,
-        role: selectedRole,
-        status: 'completed',
-        roleSelectionDate: new Date().toISOString()
-      };
-      
-      localStorage.setItem('evolvix_registration', JSON.stringify(completeRegistration));
-      
-      await new Promise(resolve => setTimeout(resolve, 500));
-      
-      router.push('/auth/login');
     } catch (error) {
-      console.error('Error saving role:', error);
-      setIsLoading(false);
+      console.error('Error selecting role:', error);
     }
   };
 
@@ -247,14 +234,12 @@ export default function RoleSelectionPage() {
                     : 'bg-gray-200 dark:bg-gray-700 text-gray-400 cursor-not-allowed'
                   }
                 `}
-                loading={isLoading}
+                loading={false}
               >
-                {isLoading ? 'Setting up...' : (
-                  <>
-                    Complete Registration
-                    <ArrowRight className="w-5 h-5 ml-2" />
-                  </>
-                )}
+                <>
+                  Continue
+                  <ArrowRight className="w-5 h-5 ml-2" />
+                </>
               </Button>
             </div>
           </div>

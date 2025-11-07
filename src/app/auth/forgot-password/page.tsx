@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { passwordApi } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -14,17 +15,29 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [isEmailSent, setIsEmailSent] = useState(false);
   const [error, setError] = useState("");
+  const [resetToken, setResetToken] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError("");
     
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const response = await passwordApi.forgotPassword({ email });
+      
+      if (response.success) {
+        setIsEmailSent(true);
+        
+        // In development mode, the API returns the token
+        if (response.resetToken) {
+          setResetToken(response.resetToken);
+        }
+      }
+    } catch (err: any) {
+      setError(err.message || "Failed to send reset email. Please try again.");
+    } finally {
       setIsLoading(false);
-      setIsEmailSent(true);
-    }, 1000);
+    }
   };
 
   if (isEmailSent) {
@@ -39,6 +52,20 @@ export default function ForgotPasswordPage() {
             <CardDescription>
               We've sent a password reset link to <strong>{email}</strong>
             </CardDescription>
+            {resetToken && process.env.NODE_ENV === 'development' && (
+              <Alert className="mt-4">
+                <AlertDescription className="break-all">
+                  <strong>Development Mode:</strong> Reset token: {resetToken}
+                  <br />
+                  <a 
+                    href={`/auth/reset-password?token=${resetToken}&email=${email}`}
+                    className="text-primary hover:underline mt-2 block"
+                  >
+                    Click here to reset password
+                  </a>
+                </AlertDescription>
+              </Alert>
+            )}
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert>

@@ -21,19 +21,20 @@ export function QuickActions({ isVerified }: QuickActionsProps) {
       <CardContent className="space-y-2">
         <Button
           onClick={() => {
-            if (!isVerified) {
-              alert('Please complete your verification first to create courses.');
-              router.push('/portal/mentor/settings?section=profile');
-            } else {
-              router.push('/portal/mentor/classes');
-            }
+            // TODO: Re-enable verification check after UI is complete
+            // if (!isVerified) {
+            //   alert('Please complete your verification first to create courses.');
+            //   router.push('/portal/mentor/settings?section=profile');
+            //   return;
+            // }
+            router.push('/portal/mentor/classes');
           }}
           variant="outline"
           className="w-full justify-start border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
-          disabled={!isVerified}
+          // disabled={!isVerified} // Commented out for UI development
         >
           <Calendar className="w-4 h-4 mr-2" />
-          {isVerified ? 'Schedule Class' : 'Schedule Class (Verify First)'}
+          Schedule Class {/* {isVerified ? 'Schedule Class' : 'Schedule Class (Verify First)'} */}
         </Button>
         <Button
           onClick={() => router.push('/portal/mentor/assignments')}
@@ -55,4 +56,6 @@ export function QuickActions({ isVerified }: QuickActionsProps) {
     </Card>
   );
 }
+
+
 

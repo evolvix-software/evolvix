@@ -29,12 +29,13 @@ export function CourseCard({ course }: CourseCardProps) {
     e.stopPropagation();
     
     if (!isEnrolled) {
+      // TODO: Re-enable verification check after UI is complete
       // Check verification status
-      if (status !== 'verified') {
-        alert('Please complete your verification before enrolling in courses.');
-        router.push('/portal/verification');
-        return;
-      }
+      // if (status !== 'verified') {
+      //   alert('Please complete your verification before enrolling in courses.');
+      //   router.push('/portal/verification');
+      //   return;
+      // }
       
       setIsEnrolling(true);
       setTimeout(() => {

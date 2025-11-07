@@ -9,17 +9,18 @@ import { Eye, EyeOff, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
 
 import { Button } from '@/components/forms/Button';
 import { Input } from '@/components/forms/Input';
+import { signIn, signInWithGoogle } from '@/lib/firebase';
+import { authApi } from '@/lib/api/auth';
 
 const loginSchema = z.object({
-  identifier: z.string().min(1, 'Email or phone is required'),
-  password: z.string().min(1, 'Password is required'),
+  email: z.string().email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function SignInPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<'email' | 'phone'>('email');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -37,50 +38,103 @@ export default function SignInPage() {
     setError('');
     
     try {
-      // Check if user has completed registration
-      const storedData = localStorage.getItem('evolvix_registration');
-      if (!storedData) {
-        setError('No account found. Please sign up first.');
-        setIsLoading(false);
-        return;
-      }
+      // Sign in with Firebase
+      const userCredential = await signIn(data.email, data.password);
       
-      const registrationData = JSON.parse(storedData);
+      // Get Firebase ID token
+      const idToken = await userCredential.user.getIdToken();
       
-      // Verify credentials (in real app, this would be API call)
-      if (registrationData.email !== data.identifier && registrationData.phone !== data.identifier) {
-        setError('Invalid email or phone number.');
-        setIsLoading(false);
-        return;
-      }
+      // Sync with backend (this will link Firebase UID to existing MongoDB user)
+      const response = await authApi.login({});
       
-      if (registrationData.password !== data.password) {
-        setError('Invalid password.');
-        setIsLoading(false);
-        return;
-      }
+      const user = response.user;
+      const survey = response.survey;
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Store user data in localStorage for portal pages (backward compatibility)
+      localStorage.setItem('evolvix_registration', JSON.stringify({
+        email: user.email,
+        fullName: user.fullName,
+        role: user.primaryRole,
+        roles: user.roles,
+        status: 'completed',
+        isEmailVerified: user.isEmailVerified,
+      }));
       
-      // Redirect to appropriate portal based on role
-      if (registrationData.status === 'completed' && registrationData.role) {
-        console.log('Login successful, redirecting to portal:', registrationData.role);
-        router.push(`/portal/${registrationData.role}`);
-      } else {
-        console.log('Registration incomplete, redirecting to role selection');
+      // Check if user needs role selection
+      if (!user.primaryRole || user.roles.length === 0) {
         router.push('/auth/role-selection');
+        return;
       }
-    } catch (err) {
-      setError('Invalid credentials. Please try again.');
+      
+      // Check survey status
+      if (survey && !survey.completed) {
+        router.push(`/auth/survey?role=${user.primaryRole}`);
+      } else {
+        router.push(`/portal/${user.primaryRole}`);
+      }
+    } catch (err: any) {
+      console.error('Login error:', err);
+      
+      // Handle Firebase errors
+      if (err.code === 'auth/user-not-found') {
+        setError('No account found with this email. Please sign up first.');
+      } else if (err.code === 'auth/wrong-password') {
+        setError('Invalid password. Please try again.');
+      } else if (err.code === 'auth/invalid-email') {
+        setError('Invalid email address.');
+      } else if (err.code === 'auth/user-disabled') {
+        setError('This account has been disabled. Please contact support.');
+      } else if (err.code === 'auth/too-many-requests') {
+        setError('Too many failed attempts. Please try again later.');
+      } else if (err.message) {
+        setError(err.message);
+      } else {
+        setError('Failed to sign in. Please try again.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleSocialLogin = (provider: 'google') => {
-    console.log(`Sign in with ${provider}`);
-    // Implement social login logic here
+  const handleSocialLogin = async (provider: 'google') => {
+    setIsLoading(true);
+    setError('');
+    
+    try {
+      // Sign in with Google via Firebase
+      const response = await authApi.signInWithGoogle();
+      
+      const user = response.user;
+      const survey = response.survey;
+      
+      // Store user data in localStorage for portal pages (backward compatibility)
+      localStorage.setItem('evolvix_registration', JSON.stringify({
+        email: user.email,
+        fullName: user.fullName,
+        role: user.primaryRole,
+        roles: user.roles,
+        status: 'completed',
+        isEmailVerified: user.isEmailVerified,
+      }));
+      
+      // Check if user needs role selection
+      if (!user.primaryRole || user.roles.length === 0) {
+        router.push('/auth/role-selection');
+        return;
+      }
+      
+      // Check survey status
+      if (survey && !survey.completed) {
+        router.push(`/auth/survey?role=${user.primaryRole}`);
+      } else {
+        router.push(`/portal/${user.primaryRole}`);
+      }
+    } catch (err: any) {
+      console.error('Google login error:', err);
+      setError(err.message || 'Failed to sign in with Google. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -167,47 +221,15 @@ export default function SignInPage() {
             </div>
           )}
 
-          {/* Login Method Toggle */}
-          <div className="flex space-x-2 mb-4">
-            <button
-              type="button"
-              onClick={() => setLoginMethod('email')}
-              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                loginMethod === 'email'
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <Mail className="w-4 h-4" />
-              <span>Email</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => setLoginMethod('phone')}
-              className={`flex-1 flex items-center justify-center space-x-2 py-2 px-4 rounded-lg text-sm font-medium transition-colors ${
-                loginMethod === 'phone'
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              <Phone className="w-4 h-4" />
-              <span>Phone</span>
-            </button>
-          </div>
-
           {/* Signin Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Input
-              label={loginMethod === 'email' ? 'Email Address' : 'Phone Number'}
-              placeholder={
-                loginMethod === 'email' 
-                  ? 'Enter your email address' 
-                  : 'Enter your phone number'
-              }
-              type={loginMethod === 'email' ? 'email' : 'tel'}
-              icon={loginMethod === 'email' ? <Mail className="w-4 h-4" /> : <Phone className="w-4 h-4" />}
-              error={errors.identifier?.message}
-              {...register('identifier')}
+              label="Email Address"
+              placeholder="Enter your email address"
+              type="email"
+              icon={<Mail className="w-4 h-4" />}
+              error={errors.email?.message}
+              {...register('email')}
             />
 
             <Input

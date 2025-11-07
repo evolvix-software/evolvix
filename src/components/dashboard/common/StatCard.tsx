@@ -42,3 +42,5 @@ export function StatCard({ icon, value, label, trend, className = '' }: StatCard
   );
 }
 
+
+

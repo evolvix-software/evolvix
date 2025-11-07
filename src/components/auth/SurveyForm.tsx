@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { surveyApi, SurveyQuestion } from '@/lib/api';
 import { 
   ArrowRight, 
   ArrowLeft, 
@@ -14,8 +14,6 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/forms/Button';
 import { Card } from '@/components/forms/Card';
-import { saveAnswer, completeSurvey, SurveyAnswer } from '@/store/features/survey/surveySlice';
-import { SurveyQuestion, surveyData } from '@/data/mock/surveyData';
 import { cn } from '@/lib/utils';
 
 interface SurveyFormProps {
@@ -23,17 +21,33 @@ interface SurveyFormProps {
 }
 
 const SurveyForm = ({ role }: SurveyFormProps) => {
-  const dispatch = useDispatch();
   const router = useRouter();
-  const questions = surveyData[role as keyof typeof surveyData] || [];
-  
+  const [questions, setQuestions] = useState<SurveyQuestion[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [textAnswer, setTextAnswer] = useState('');
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    const loadQuestions = async () => {
+      try {
+        setIsLoading(true);
+        const response = await surveyApi.getQuestions(role);
+        setQuestions(response.questions || []);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load survey questions');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadQuestions();
+  }, [role]);
 
   const currentQuestion = questions[currentQuestionIndex];
-  const progress = ((currentQuestionIndex + 1) / questions.length) * 100;
+  const progress = questions.length > 0 ? ((currentQuestionIndex + 1) / questions.length) * 100 : 0;
   const isLastQuestion = currentQuestionIndex === questions.length - 1;
   const currentAnswer = answers[currentQuestion?.id] || '';
 
@@ -74,7 +88,7 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (!currentQuestion) return;
 
     // Validation
@@ -107,31 +121,57 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
         setAnswers({ ...answers, [currentQuestion.id]: textAnswer });
       }
 
-      // Complete the survey
-      Object.entries(answers).forEach(([questionId, answer]) => {
-        dispatch(
-          saveAnswer({
-            role,
-            answer: { questionId, answer },
-          })
-        );
-      });
+      // Submit complete survey
+      setIsSubmitting(true);
+      try {
+        const surveyAnswers = Object.entries(answers).map(([questionId, answer]) => ({
+          questionId,
+          answer,
+        }));
 
-      // Mark as completed
-      dispatch(completeSurvey({ role }));
+        // Add final text answer if it exists
+        if (currentQuestion.type === 'text' && textAnswer.trim()) {
+          surveyAnswers.push({
+            questionId: currentQuestion.id,
+            answer: textAnswer,
+          });
+        }
 
-      // Store in localStorage
-      const surveyResults = {
-        role,
-        answers,
-        completed: true,
-        completedAt: new Date().toISOString(),
-      };
-      localStorage.setItem(`evolvix_survey_${role}`, JSON.stringify(surveyResults));
+        await surveyApi.submitSurvey({
+          role,
+          answers: surveyAnswers,
+        });
 
-      // Redirect to portal
-      router.push(`/portal/${role}`);
+        // Redirect to portal
+        router.push(`/portal/${role}`);
+      } catch (err: any) {
+        setError(err.message || 'Failed to submit survey. Please try again.');
+        setIsSubmitting(false);
+      }
     } else {
+      // Save current answer incrementally
+      if (currentQuestion.type === 'text' && textAnswer.trim()) {
+        try {
+          await surveyApi.saveAnswer({
+            role,
+            questionId: currentQuestion.id,
+            answer: textAnswer,
+          });
+        } catch (err) {
+          console.error('Failed to save answer:', err);
+        }
+      } else if (currentAnswer) {
+        try {
+          await surveyApi.saveAnswer({
+            role,
+            questionId: currentQuestion.id,
+            answer: currentAnswer,
+          });
+        } catch (err) {
+          console.error('Failed to save answer:', err);
+        }
+      }
+
       setCurrentQuestionIndex(currentQuestionIndex + 1);
       setTextAnswer('');
     }
@@ -147,6 +187,27 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
     }
     return false;
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Loading survey...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600 dark:text-gray-400">No survey questions found for this role.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="h-screen overflow-hidden">
@@ -257,9 +318,15 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
               <Button
                 type="button"
                 onClick={handleNext}
+                disabled={isSubmitting}
                 className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700"
               >
-                {isLastQuestion ? (
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    Submitting...
+                  </>
+                ) : isLastQuestion ? (
                   <>
                     Complete
                     <Check className="w-4 h-4 ml-2" />

@@ -1117,7 +1117,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                               ? 'Verification Under Review'
                               : verificationStatus === 'rejected'
                               ? 'Verification Rejected'
-                              : 'Verification Required'}
+                              : 'Verified' /* 'Verification Required' - Commented out for UI development */}
                           </h3>
                           <p className={`text-sm mt-1 ${
                             verificationStatus === 'approved'
@@ -1134,7 +1134,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                               ? 'Your verification is being reviewed. You\'ll be notified once it\'s complete.'
                               : verificationStatus === 'rejected'
                               ? 'Your verification was rejected. Please review the requirements and submit again.'
-                              : 'Complete your verification to unlock all mentor features and start earning.'}
+                              : 'You have full access to all features.' /* 'Complete your verification to unlock all mentor features and start earning.' - Commented out for UI development */}
                           </p>
                         </div>
                       </div>
@@ -1392,7 +1392,8 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               <Shield className="w-5 h-5 text-green-600" />
               <span>KYC & Verification</span>
             </CardTitle>
-            <CardDescription>Complete your verification to unlock all mentor features</CardDescription>
+            <CardDescription>Manage your KYC & Verification settings</CardDescription>
+            {/* <CardDescription>Complete your verification to unlock all mentor features</CardDescription> */}
           </CardHeader>
           <CardContent>
             <MentorVerificationForm 

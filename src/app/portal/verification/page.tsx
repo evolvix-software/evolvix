@@ -277,7 +277,7 @@ export default function VerificationPage() {
                       variant="ghost"
                       className="px-6 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
                     >
-                      Go to Portal (Limited Access)
+                      Go to Portal {/* (Limited Access) - Commented out for UI development */}
                     </Button>
                   </div>
                   <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
@@ -306,7 +306,8 @@ export default function VerificationPage() {
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>• View profile</li>
                   <li>• Basic portal navigation</li>
-                  <li>• Limited feature access</li>
+                  {/* <li>• Limited feature access</li> */}
+                  <li>• Full feature access {/* Temporarily enabled for UI development */}</li>
                 </ul>
               </div>
               <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">

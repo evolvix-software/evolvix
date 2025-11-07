@@ -160,8 +160,14 @@ export default function ProfilePage() {
     );
   }
 
+  // Map role to allowed Layout roles (student, mentor, admin)
+  // For roles like employer, investor, sponsor, default to student layout
+  const layoutRole = (userData.role === 'mentor' || userData.role === 'admin') 
+    ? userData.role as 'student' | 'mentor' | 'admin'
+    : 'student';
+
   return (
-    <Layout title="Profile">
+    <Layout title="Profile" role={layoutRole}>
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
@@ -305,14 +311,17 @@ export default function ProfilePage() {
                         Level {verificationStatus?.level || 0}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-500">
-                        {verificationStatus?.level === 0 ? 'Basic Access' :
+                        {/* Commented out for UI development - showing Full Access for all */}
+                        {'Full Access'}
+                        {/* {verificationStatus?.level === 0 ? 'Basic Access' :
                          verificationStatus?.level === 1 ? 'Identity Verified' :
-                         verificationStatus?.level === 2 ? 'Full Access' : 'Limited Access'}
+                         verificationStatus?.level === 2 ? 'Full Access' : 'Limited Access'} */}
                       </p>
                     </div>
                   </div>
 
-                  {verificationStatus?.status === 'incomplete' && (
+                  {/* TODO: Re-enable verification required alert after UI is complete */}
+                  {/* {verificationStatus?.status === 'incomplete' && (
                     <div className="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
                       <div className="flex items-center space-x-3">
                         <AlertCircle className="w-5 h-5 text-orange-600 dark:text-orange-400" />
@@ -332,7 +341,7 @@ export default function ProfilePage() {
                         </Button>
                       </div>
                     </div>
-                  )}
+                  )} */}
 
                   {verificationStatus?.status === 'pending' && (
                     <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">

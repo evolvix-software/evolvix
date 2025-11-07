@@ -34,8 +34,15 @@ import {
   Download,
   Star,
   X,
+  UserCheck,
+  Share2,
+  Send,
+  CheckCircle2,
+  AlertCircle,
+  BookOpen,
+  TrendingUp,
 } from 'lucide-react';
-import { LiveClassModal } from './LiveClassModal';
+import { JitsiMeetComponent } from './JitsiMeetComponent';
 
 export function ClassesContent() {
   const router = useRouter();
@@ -46,6 +53,7 @@ export function ClassesContent() {
   const [editingClass, setEditingClass] = useState<MentorClass | null>(null);
   const [showLiveClass, setShowLiveClass] = useState<string | null>(null);
   const [chatInput, setChatInput] = useState('');
+  const [activeTab, setActiveTab] = useState<'video' | 'chat' | 'attendance'>('video');
   
   // Form state
   const [formData, setFormData] = useState({
@@ -54,17 +62,24 @@ export function ClassesContent() {
     date: '',
     time: '',
     duration: 60,
-    category: '',
+    category: 'programming',
     courseId: '',
     courseName: '',
     classType: 'live' as 'recorded' | 'live' | 'one-to-one',
-    platform: 'zoom' as 'zoom' | 'jitsi',
     videoUrl: '',
   });
 
+  const categories = [
+    { value: 'programming', label: 'Programming' },
+    { value: 'design', label: 'Design' },
+    { value: 'business', label: 'Business' },
+    { value: 'data-science', label: 'Data Science' },
+    { value: 'career', label: 'Career Development' },
+    { value: 'other', label: 'Other' },
+  ];
+
   // Get courses from Redux
   const allCourses = useAppSelector((state) => state.courses.courses);
-  // Filter to only live courses with enrollments
   const liveCoursesWithEnrollments = allCourses.filter(c => 
     c.courseType === 'live' && c.enrolledCount > 0
   );
@@ -75,93 +90,183 @@ export function ClassesContent() {
     }
   }, [currentLiveClass]);
 
-  const upcomingClasses = classes.filter(c => c.status === 'upcoming');
-  const pastClasses = classes.filter(c => c.status === 'past');
+
+  const upcomingClasses = classes.filter(c => c.status === 'upcoming').sort((a, b) => 
+    new Date(`${a.date}T${a.time}`).getTime() - new Date(`${b.date}T${b.time}`).getTime()
+  );
+  const pastClasses = classes.filter(c => c.status === 'past').sort((a, b) => 
+    new Date(`${b.date}T${b.time}`).getTime() - new Date(`${a.date}T${a.time}`).getTime()
+  );
 
   const handleSubmitClass = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (editingClass) {
-      dispatch(updateClass({
-        id: editingClass.id,
-        topic: formData.topic,
-        description: formData.description,
-        date: formData.date,
-        time: formData.time,
-        duration: formData.duration,
-        category: formData.category,
-        courseId: formData.courseId || undefined,
-        courseName: formData.courseName || undefined,
-        classType: formData.classType,
-        platform: formData.classType !== 'recorded' ? formData.platform : undefined,
-        videoUrl: formData.classType === 'recorded' ? formData.videoUrl : undefined,
-      }));
-      setEditingClass(null);
-    } else {
-      const newClass: MentorClass = {
-        id: `class_${Date.now()}`,
-        topic: formData.topic,
-        description: formData.description,
-        date: formData.date,
-        time: formData.time,
-        duration: formData.duration,
-        category: formData.category,
-        courseId: formData.courseId || undefined,
-        courseName: formData.courseName || undefined,
-        classType: formData.classType,
-        platform: formData.classType !== 'recorded' ? formData.platform : undefined,
-        meetingLink: formData.classType !== 'recorded' && formData.platform 
-          ? (formData.platform === 'zoom' 
-              ? `https://zoom.us/j/${Math.random().toString(36).substr(2, 9)}`
-              : `https://meet.jit.si/${Math.random().toString(36).substr(2, 9)}`)
-          : undefined,
-        meetingId: formData.classType !== 'recorded' ? Math.random().toString(36).substr(2, 9) : undefined,
-        videoUrl: formData.classType === 'recorded' ? formData.videoUrl : undefined,
-        enrolledStudents: [],
-        recordings: [],
-        feedback: [],
-        status: 'upcoming',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
-      dispatch(addClass(newClass));
+    if (!formData.courseId) {
+      alert('Please select a course to link this class to.');
+      return;
     }
-    
-    setShowScheduleForm(false);
+
+    const selectedCourse = allCourses.find(c => c.id === formData.courseId);
+    if (!selectedCourse) {
+      alert('Selected course not found.');
+      return;
+    }
+
+    // Generate unique meeting ID and link for Jitsi
+    // Using UUID-like format: evolvix-{courseId}-{timestamp}-{random}
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const classId = `class_${Date.now()}`;
+    const meetingId = `evolvix-${formData.courseId}-${classId}-${randomString}`.toLowerCase().replace(/[^a-z0-9-]/g, '-');
+    const meetingLink = `https://meet.jit.si/${meetingId}`;
+
+    // Create mock enrolled students based on course enrollment
+    const mockEnrolledStudents = Array.from({ length: Math.min(selectedCourse.enrolledCount, 10) }, (_, i) => ({
+      id: `student_${i + 1}`,
+      name: `Student ${i + 1}`,
+      email: `student${i + 1}@example.com`,
+    }));
+
+    const newClass: MentorClass = {
+      id: `class_${Date.now()}`,
+      topic: formData.topic,
+      description: formData.description,
+      date: formData.date,
+      time: formData.time,
+      duration: formData.duration,
+      category: formData.category,
+      courseId: formData.courseId,
+      courseName: formData.courseName,
+      classType: formData.classType,
+      platform: 'jitsi',
+      meetingId: meetingId,
+      meetingLink: meetingLink,
+      enrolledStudents: mockEnrolledStudents,
+      status: 'upcoming',
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      feedback: [],
+      recordings: [],
+    };
+
+    if (editingClass) {
+      dispatch(updateClass({ ...newClass, id: editingClass.id }));
+    } else {
+      dispatch(addClass(newClass));
+      
+      // Automatically send meeting link notification to all enrolled students
+      const enrollments = localStorage.getItem('evolvix_enrollments');
+      if (enrollments) {
+        try {
+          const enrollmentList = JSON.parse(enrollments);
+          const courseEnrollments = enrollmentList.filter((e: any) => e.courseId === formData.courseId);
+          
+          // Get student notifications from localStorage
+          const studentNotifications = localStorage.getItem('evolvix_student_notifications');
+          const notifications = studentNotifications ? JSON.parse(studentNotifications) : [];
+          
+          // Create notification for each enrolled student
+          courseEnrollments.forEach((enrollment: any) => {
+            const notification = {
+              id: `notif_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+              type: 'class_link' as const,
+              classId: newClass.id,
+              courseId: formData.courseId,
+              courseName: formData.courseName,
+              classTopic: formData.topic,
+              meetingLink: meetingLink,
+              meetingId: meetingId,
+              date: formData.date,
+              time: formData.time,
+              duration: formData.duration,
+              message: `New live class scheduled: "${formData.topic}" on ${formData.date} at ${formData.time}. Click to join!`,
+              read: false,
+              createdAt: new Date().toISOString(),
+            };
+            notifications.push(notification);
+          });
+          
+          // Save notifications
+          localStorage.setItem('evolvix_student_notifications', JSON.stringify(notifications));
+        } catch (e) {
+          console.error('Failed to send notifications to enrolled students:', e);
+        }
+      }
+    }
+
+    // Reset form
     setFormData({
       topic: '',
       description: '',
       date: '',
       time: '',
       duration: 60,
-      category: '',
+      category: 'programming',
       courseId: '',
       courseName: '',
       classType: 'live',
-      platform: 'zoom',
       videoUrl: '',
     });
+    setShowScheduleForm(false);
+    setEditingClass(null);
   };
 
   const handleStartClass = (classId: string) => {
-    dispatch(updateClassStatus({ classId, status: 'live' }));
     dispatch(setCurrentLiveClass(classId));
-    setShowLiveClass(classId);
+    dispatch(updateClassStatus({ classId, status: 'live' }));
+    
+    // Open Jitsi Meet in a new fullscreen window
+    const classItem = classes.find(c => c.id === classId);
+    if (classItem && classItem.meetingLink) {
+      // Open in new window with fullscreen-like dimensions
+      const width = window.screen.width;
+      const height = window.screen.height;
+      const left = 0;
+      const top = 0;
+      
+      const newWindow = window.open(
+        `/portal/mentor/classes/live/${classId}`,
+        `jitsi-${classId}`,
+        `width=${width},height=${height},left=${left},top=${top},resizable=yes,scrollbars=yes,toolbar=no,menubar=no,location=no`
+      );
+      
+      if (newWindow) {
+        // Focus the new window
+        newWindow.focus();
+        // Try to make it fullscreen (may require user interaction)
+        if (newWindow.document) {
+          newWindow.document.addEventListener('DOMContentLoaded', () => {
+            // Request fullscreen after a short delay
+            setTimeout(() => {
+              if (newWindow.document.documentElement.requestFullscreen) {
+                newWindow.document.documentElement.requestFullscreen().catch(() => {
+                  // Fullscreen request failed, but window is still open
+                });
+              }
+            }, 500);
+          });
+        }
+      }
+    } else {
+      // Fallback to modal if no meeting link
+      setShowLiveClass(classId);
+    }
   };
 
   const handleEndClass = (classId: string) => {
     dispatch(updateClassStatus({ classId, status: 'past' }));
     dispatch(setCurrentLiveClass(null));
     setShowLiveClass(null);
-    
-    // Add a mock recording
+  };
+
+  const handleAddRecording = (classId: string) => {
     const classItem = classes.find(c => c.id === classId);
     if (classItem) {
       dispatch(addRecording({
         classId,
         recording: {
           id: `rec_${Date.now()}`,
-          url: `https://example.com/recording/${classId}`,
+          url: `/recordings/${classId}`,
           duration: `${classItem.duration} min`,
           createdAt: new Date().toISOString(),
         },
@@ -186,8 +291,7 @@ export function ClassesContent() {
       category: classItem.category,
       courseId: classItem.courseId || '',
       courseName: classItem.courseName || '',
-      classType: classItem.classType || 'live',
-      platform: classItem.platform || 'zoom',
+      classType: classItem.classType,
       videoUrl: classItem.videoUrl || '',
     });
     setShowScheduleForm(true);
@@ -218,14 +322,19 @@ export function ClassesContent() {
     return attendance.filter(a => a.classId === classId);
   };
 
+  const getAverageRating = (feedbacks: typeof classes[0]['feedback']) => {
+    if (feedbacks.length === 0) return 0;
+    return feedbacks.reduce((sum, f) => sum + f.rating, 0) / feedbacks.length;
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Schedule & Manage Classes</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Classes</h2>
           <p className="text-slate-600 dark:text-slate-400">
-            Create classes for live courses. Only courses with enrolled students can have classes scheduled.
+            Schedule and manage live classes for your courses
           </p>
         </div>
         <Button 
@@ -237,190 +346,162 @@ export function ClassesContent() {
               date: '',
               time: '',
               duration: 60,
-              category: '',
+              category: 'programming',
               courseId: '',
               courseName: '',
               classType: 'live',
-              platform: 'zoom',
               videoUrl: '',
             });
             setShowScheduleForm(true);
           }}
-          className="bg-green-600 hover:bg-green-700"
+          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
         >
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-5 h-5 mr-2" />
           Schedule New Class
         </Button>
       </div>
 
       {/* Schedule New Class Form */}
       {showScheduleForm && (
-        <Card className="border-2 border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
+        <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-900/10 dark:to-slate-800 shadow-xl">
           <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>{editingClass ? 'Edit Class' : 'Schedule New Class'}</CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => {
-                setShowScheduleForm(false);
-                setEditingClass(null);
-              }}>
-                <X className="w-4 h-4" />
-              </Button>
-            </div>
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
+              {editingClass ? 'Edit Class' : 'Schedule New Class'}
+            </CardTitle>
+            <CardDescription>
+              {editingClass ? 'Update class details' : 'Create a new live class session'}
+            </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmitClass} className="space-y-6">
+            <form onSubmit={handleSubmitClass} className="space-y-4">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="classType" className="mb-2 block">Class Type *</Label>
-                  <select
-                    id="classType"
-                    value={formData.classType}
-                    onChange={(e) => setFormData({ 
-                      ...formData, 
-                      classType: e.target.value as 'recorded' | 'live' | 'one-to-one',
-                      platform: e.target.value === 'recorded' ? 'zoom' : formData.platform,
-                      videoUrl: e.target.value === 'recorded' ? '' : formData.videoUrl,
-                    })}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                    required
-                  >
-                    <option value="recorded">Recorded Class</option>
-                    <option value="live">Live Class</option>
-                    <option value="one-to-one">One-to-One Session</option>
-                  </select>
-                </div>
-                <div>
-                  <Label htmlFor="topic" className="mb-2 block">Topic *</Label>
+                  <Label htmlFor="topic">Topic *</Label>
                   <Input
                     id="topic"
                     value={formData.topic}
                     onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+                    placeholder="e.g., Introduction to React Hooks"
                     required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                    placeholder="e.g., React Development Session"
                   />
                 </div>
+
                 <div>
-                  <Label htmlFor="category" className="mb-2 block">Category *</Label>
-                  <Input
+                  <Label htmlFor="category">Category *</Label>
+                  <select
                     id="category"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                     required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                    placeholder="e.g., Programming, Career"
+                  >
+                    {categories.map((cat) => (
+                      <option key={cat.value} value={cat.value}>
+                        {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <Label htmlFor="date">Date *</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    value={formData.date}
+                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
+                    required
+                    min={new Date().toISOString().split('T')[0]}
                   />
                 </div>
-                {formData.classType === 'recorded' ? (
-                  <div>
-                    <Label htmlFor="videoUrl" className="mb-2 block">Video URL *</Label>
-                    <Input
-                      id="videoUrl"
-                      value={formData.videoUrl}
-                      onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                      required
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
-                      placeholder="https://youtube.com/... or upload video link"
-                    />
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <Label htmlFor="date" className="mb-2 block">Date *</Label>
-                      <Input
-                        id="date"
-                        type="date"
-                        value={formData.date}
-                        onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                        required
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="time" className="mb-2 block">Time *</Label>
-                      <Input
-                        id="time"
-                        type="time"
-                        value={formData.time}
-                        onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                        required
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="platform" className="mb-2 block">Platform *</Label>
-                      <select
-                        id="platform"
-                        value={formData.platform}
-                        onChange={(e) => setFormData({ ...formData, platform: e.target.value as 'zoom' | 'jitsi' })}
-                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                        required
-                      >
-                        <option value="zoom">Zoom</option>
-                        <option value="jitsi">Jitsi</option>
-                      </select>
-                    </div>
-                  </>
-                )}
+
                 <div>
-                  <Label htmlFor="duration" className="mb-2 block">Duration (minutes) *</Label>
+                  <Label htmlFor="time">Time *</Label>
+                  <Input
+                    id="time"
+                    type="time"
+                    value={formData.time}
+                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="duration">Duration (minutes) *</Label>
                   <Input
                     id="duration"
                     type="number"
                     value={formData.duration}
                     onChange={(e) => setFormData({ ...formData, duration: parseInt(e.target.value) || 60 })}
-                    required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
                     min={15}
-                    step={15}
+                    max={240}
+                    required
                   />
                 </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="courseId" className="mb-2 block">Link to Course (Optional)</Label>
-                  <select
-                    id="courseId"
-                    value={formData.courseId}
-                    onChange={(e) => {
-                      const course = allCourses.find(c => c.id === e.target.value);
-                      setFormData({
-                        ...formData,
-                        courseId: e.target.value,
-                        courseName: course?.title || '',
-                      });
-                    }}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
-                  >
-                    <option value="">Select a course (optional)</option>
-                    {liveCoursesWithEnrollments.map((course) => (
-                      <option key={course.id} value={course.id}>{course.title} ({course.enrolledCount} enrolled)</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="md:col-span-2">
-                  <Label htmlFor="description" className="mb-2 block">Description</Label>
-                  <textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
-                    placeholder="Class description..."
-                  />
+
+                <div>
+                  <Label htmlFor="courseId">Link to Course *</Label>
+                  {liveCoursesWithEnrollments.length === 0 ? (
+                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
+                      <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                        No live courses with enrolled students available. Please create a live course first.
+                      </p>
+                    </div>
+                  ) : (
+                    <select
+                      id="courseId"
+                      value={formData.courseId}
+                      onChange={(e) => {
+                        const selectedCourse = allCourses.find(c => c.id === e.target.value);
+                        setFormData({
+                          ...formData,
+                          courseId: e.target.value,
+                          courseName: selectedCourse?.title || '',
+                        });
+                      }}
+                      className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                      required
+                    >
+                      <option value="">Select a course...</option>
+                      {liveCoursesWithEnrollments.map((course) => (
+                        <option key={course.id} value={course.id}>
+                          {course.title} ({course.enrolledCount} students)
+                        </option>
+                      ))}
+                    </select>
+                  )}
                 </div>
               </div>
-              <div className="flex justify-end space-x-2">
+
+              <div>
+                <Label htmlFor="description">Description</Label>
+                <textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  placeholder="Brief description of what will be covered in this class..."
+                  rows={3}
+                  className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+
+              <div className="flex space-x-3 pt-2">
+                <Button
+                  type="submit"
+                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold shadow-lg"
+                >
+                  {editingClass ? 'Update Class' : 'Schedule Class'}
+                </Button>
                 <Button
                   type="button"
-                  variant="outline"
                   onClick={() => {
                     setShowScheduleForm(false);
                     setEditingClass(null);
                   }}
+                  variant="outline"
+                  className="border-slate-300 dark:border-slate-700"
                 >
                   Cancel
-                </Button>
-                <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                  {editingClass ? 'Update Class' : 'Schedule Class'}
                 </Button>
               </div>
             </form>
@@ -429,198 +510,186 @@ export function ClassesContent() {
       )}
 
       {/* Upcoming Classes */}
-      <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Calendar className="w-5 h-5 text-green-600 dark:text-green-400" />
-            <span>Upcoming Classes</span>
-          </CardTitle>
-          <CardDescription>Your scheduled sessions</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {upcomingClasses.length === 0 ? (
-            <p className="text-center text-slate-500 dark:text-slate-400 py-8">No upcoming classes scheduled</p>
-          ) : (
-            upcomingClasses.map((classItem) => (
-              <div key={classItem.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{classItem.topic}</h3>
-                      <span className="px-2 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full text-xs">
-                        {classItem.status}
+      {upcomingClasses.length > 0 && (
+        <div>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+            <Calendar className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
+            Upcoming Classes
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {upcomingClasses.map((classItem) => (
+              <Card key={classItem.id} className="border border-slate-200 dark:border-slate-700 hover:shadow-lg transition-shadow">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <CardTitle className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                        {classItem.topic}
+                      </CardTitle>
+                      <CardDescription className="text-sm">
+                        {classItem.date} at {classItem.time}
+                      </CardDescription>
+                    </div>
+                    <div className="flex space-x-1">
+                      <Button
+                        size="sm"
+                        onClick={() => handleEditClass(classItem)}
+                        className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 border-0"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => handleDeleteClass(classItem.id)}
+                        className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 border-0"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Duration:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white">{classItem.duration} min</span>
+                    </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Enrolled:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white flex items-center">
+                        <Users className="w-4 h-4 mr-1" />
+                        {classItem.enrolledStudents.length}
                       </span>
                     </div>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400 mb-2">
-                      <div className="flex items-center space-x-1">
-                        <Clock className="w-4 h-4" />
-                        <span>{classItem.date} at {classItem.time}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Video className="w-4 h-4" />
-                        <span>{classItem.duration} min • {classItem.platform}</span>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <Users className="w-4 h-4" />
-                        <span>{classItem.enrolledStudents.length} enrolled</span>
-                      </div>
-                      {classItem.courseName && (
-                        <span className="text-xs text-slate-500">Course: {classItem.courseName}</span>
-                      )}
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Course:</span>
+                      <span className="font-semibold text-slate-900 dark:text-white truncate ml-2">{classItem.courseName}</span>
                     </div>
-                    {classItem.description && (
-                      <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">{classItem.description}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center space-x-2 ml-4">
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="border-slate-200 dark:border-slate-700"
-                      onClick={() => handleEditClass(classItem)}
-                    >
-                      <Edit className="w-4 h-4 mr-1" />
-                      Edit
-                    </Button>
-                    <Button 
-                      size="sm" 
-                      className="bg-green-600 hover:bg-green-700"
+                    <Button
                       onClick={() => handleStartClass(classItem.id)}
+                      className="w-full bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold mt-2"
                     >
-                      <Video className="w-4 h-4 mr-1" />
+                      <Play className="w-4 h-4 mr-2" />
                       Start Class
                     </Button>
-                    <Button 
-                      size="sm" 
-                      variant="outline" 
-                      className="border-slate-200 dark:border-slate-700"
-                      onClick={() => handleDeleteClass(classItem.id)}
-                    >
-                      <Trash2 className="w-4 h-4 mr-1" />
-                      Cancel
-                    </Button>
                   </div>
-                </div>
-              </div>
-            ))
-          )}
-        </CardContent>
-      </Card>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Past Classes */}
-      <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
-        <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
-            <Clock className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-            <span>Past Classes</span>
-          </CardTitle>
-          <CardDescription>Recordings and feedback from previous sessions</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          {pastClasses.length === 0 ? (
-            <p className="text-center text-slate-500 dark:text-slate-400 py-8">No past classes</p>
-          ) : (
-            pastClasses.map((classItem) => (
-              <div key={classItem.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-slate-900 dark:text-white mb-2">{classItem.topic}</h3>
-                    <div className="flex flex-wrap items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
-                      <span>{classItem.date} at {classItem.time}</span>
-                      <span>{classItem.duration} min</span>
-                      <span>{classItem.enrolledStudents.length} students</span>
+      {pastClasses.length > 0 && (
+        <div>
+          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+            <Clock className="w-6 h-6 mr-2 text-slate-600 dark:text-slate-400" />
+            Past Classes
+          </h3>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {pastClasses.map((classItem) => (
+              <Card key={classItem.id} className="border border-slate-200 dark:border-slate-700">
+                <CardHeader>
+                  <CardTitle className="text-lg font-bold text-slate-900 dark:text-white">
+                    {classItem.topic}
+                  </CardTitle>
+                  <CardDescription>
+                    {classItem.date} at {classItem.time}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Duration:</span>
+                      <span className="font-semibold">{classItem.duration} min</span>
                     </div>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-slate-600 dark:text-slate-400">Attended:</span>
+                      <span className="font-semibold flex items-center">
+                        <UserCheck className="w-4 h-4 mr-1" />
+                        {getClassAttendance(classItem.id).length}/{classItem.enrolledStudents.length}
+                      </span>
+                    </div>
+                    {classItem.recordings.length > 0 && (
+                      <Button
+                        onClick={() => window.open(classItem.recordings[0].url, '_blank')}
+                        variant="outline"
+                        className="w-full border-slate-300 dark:border-slate-700"
+                      >
+                        <Download className="w-4 h-4 mr-2" />
+                        View Recording
+                      </Button>
+                    )}
+                    {classItem.feedback.length > 0 && (
+                      <div className="flex items-center justify-between text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
+                        <span className="text-slate-600 dark:text-slate-400">Rating:</span>
+                        <span className="font-semibold flex items-center">
+                          <Star className="w-4 h-4 mr-1 text-yellow-500 fill-yellow-500" />
+                          {getAverageRating(classItem.feedback).toFixed(1)}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                </div>
-
-                {/* Recordings */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center">
-                    <Play className="w-4 h-4 mr-2" />
-                    Recordings
-                  </h4>
-                  {classItem.recordings.length === 0 ? (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">No recordings available</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {classItem.recordings.map((recording) => (
-                        <div key={recording.id} className="flex items-center justify-between p-2 bg-slate-50 dark:bg-slate-900/50 rounded">
-                          <div className="flex items-center space-x-2">
-                            <Play className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                            <span className="text-sm text-slate-700 dark:text-slate-300">
-                              {recording.duration} • {new Date(recording.createdAt).toLocaleDateString()}
-                            </span>
-                          </div>
-                          <Button size="sm" variant="outline" className="border-slate-200 dark:border-slate-700">
-                            <Download className="w-4 h-4 mr-1" />
-                            Download
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Feedback Summary */}
-                <div>
-                  <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2 flex items-center">
-                    <Star className="w-4 h-4 mr-2" />
-                    Feedback Summary
-                  </h4>
-                  {classItem.feedback.length === 0 ? (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">No feedback yet</p>
-                  ) : (
-                    <div className="space-y-2">
-                      {classItem.feedback.map((feedback) => (
-                        <div key={feedback.id} className="p-2 bg-slate-50 dark:bg-slate-900/50 rounded">
-                          <div className="flex items-center justify-between mb-1">
-                            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                              {feedback.studentName}
-                            </span>
-                            <div className="flex items-center space-x-1">
-                              {[...Array(5)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className={`w-3 h-3 ${
-                                    i < feedback.rating
-                                      ? 'text-yellow-500 fill-yellow-500'
-                                      : 'text-slate-300 dark:text-slate-600'
-                                  }`}
-                                />
-                              ))}
-                            </div>
-                          </div>
-                          {feedback.comment && (
-                            <p className="text-xs text-slate-600 dark:text-slate-400">{feedback.comment}</p>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Live Class Modal */}
-      {showLiveClass && (
-        <LiveClassModal
-          classId={showLiveClass}
-          classItem={classes.find(c => c.id === showLiveClass)!}
-          dispatch={dispatch}
-          onClose={() => {
-            handleEndClass(showLiveClass);
-          }}
-          chatMessages={getClassChatMessages(showLiveClass)}
-          attendance={getClassAttendance(showLiveClass)}
-          chatInput={chatInput}
-          onChatInputChange={setChatInput}
-          onSendMessage={handleSendChatMessage}
-        />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
       )}
+
+      {/* Empty State */}
+      {upcomingClasses.length === 0 && pastClasses.length === 0 && !showScheduleForm && (
+        <Card className="border border-slate-200 dark:border-slate-700">
+          <CardContent className="p-12 text-center">
+            <Calendar className="w-16 h-16 mx-auto mb-4 text-slate-400" />
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+              No classes scheduled yet
+            </h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-4">
+              Schedule your first class to start teaching students
+            </p>
+            <Button
+              onClick={() => setShowScheduleForm(true)}
+              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Schedule Class
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Jitsi Meet Component with Timer */}
+      {showLiveClass && (() => {
+        const classItem = classes.find(c => c.id === showLiveClass);
+        if (!classItem) return null;
+        
+        return (
+          <JitsiMeetComponent
+            classItem={classItem}
+            chatMessages={getClassChatMessages(showLiveClass)}
+            attendance={getClassAttendance(showLiveClass)}
+            onClose={() => setShowLiveClass(null)}
+            onEndClass={() => handleEndClass(showLiveClass)}
+            onSendChatMessage={(message) => {
+              if (!showLiveClass) return;
+              const storedData = localStorage.getItem('evolvix_registration');
+              const userData = storedData ? JSON.parse(storedData) : { fullName: 'Mentor', email: 'mentor@example.com' };
+              
+              dispatch(addChatMessage({
+                id: `msg_${Date.now()}`,
+                classId: showLiveClass,
+                senderId: 'mentor',
+                senderName: userData.fullName || 'Mentor',
+                message: message,
+                timestamp: new Date().toISOString(),
+              }));
+            }}
+            chatInput={chatInput}
+            onChatInputChange={setChatInput}
+          />
+        );
+      })()}
     </div>
   );
 }
-

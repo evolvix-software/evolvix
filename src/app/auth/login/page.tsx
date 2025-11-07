@@ -2,27 +2,27 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { loginUser } from '@/store/features/auth/authSlice';
+import { authApi } from '@/lib/api';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Mail, Phone, Lock, ArrowRight } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<"email" | "phone">("email");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const dispatch = useAppDispatch();
+  const { isLoading, error } = useAppSelector(state => state.auth);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError("");
     
     // Extract form data immediately before async operations
     const formData = new FormData(e.currentTarget);
@@ -31,42 +31,57 @@ export default function LoginPage() {
     
     // Validate inputs
     if (!identifier || !password) {
-      setError("Please fill in all fields");
-      setIsLoading(false);
       return;
     }
     
-    // Simulate API call
-    setTimeout(() => {
-      setIsLoading(false);
-      // In a real app, handle login logic here
+    try {
+      const result = await dispatch(loginUser({ identifier, password }));
       
-      // Check localStorage for registration data
-      const storedData = localStorage.getItem('evolvix_registration');
-      if (storedData) {
-        const registration = JSON.parse(storedData);
-        if (registration.role) {
-          // Check if survey is completed
-          const surveyKey = `evolvix_survey_${registration.role}`;
-          const surveyData = localStorage.getItem(surveyKey);
-          
-          if (surveyData) {
-            const survey = JSON.parse(surveyData);
-            if (survey.completed) {
-              router.push(`/portal/${registration.role}`);
-            } else {
-              router.push(`/auth/survey?role=${registration.role}`);
-            }
-          } else {
-            router.push(`/auth/survey?role=${registration.role}`);
-          }
-        } else {
+      if (loginUser.fulfilled.match(result)) {
+        const user = result.payload.user;
+        const survey = result.payload.survey;
+        
+        // Check if user needs role selection
+        if (!user.primaryRole || user.primaryRole === '') {
           router.push('/auth/role-selection');
+          return;
         }
-      } else {
-        setError("No account found. Please sign up first.");
+        
+        // Check survey status
+        if (survey && !survey.completed) {
+          router.push(`/auth/survey?role=${user.primaryRole}`);
+        } else {
+          router.push(`/portal/${user.primaryRole}`);
+        }
       }
-    }, 1000);
+    } catch (err) {
+      // Error is handled by Redux state
+      console.error('Login error:', err);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await authApi.signInWithGoogle();
+      const user = result.user;
+      const survey = result.survey;
+      
+      // Check if user needs role selection
+      if (!user.primaryRole || user.primaryRole === '') {
+        router.push('/auth/role-selection');
+        return;
+      }
+      
+      // Check survey status
+      if (survey && !survey.completed) {
+        router.push(`/auth/survey?role=${user.primaryRole}`);
+      } else {
+        router.push(`/portal/${user.primaryRole}`);
+      }
+    } catch (err) {
+      console.error('Google login error:', err);
+      // Error handling can be improved with user-facing error messages
+    }
   };
 
   return (
@@ -144,7 +159,7 @@ export default function LoginPage() {
                     type="button"
                     variant="outline"
                     className="w-full h-12 border-gray-200 dark:border-gray-700"
-                    onClick={() => console.log('Google login')}
+                    onClick={handleGoogleLogin}
                   >
                     <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
                       <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -167,48 +182,16 @@ export default function LoginPage() {
                   </div>
                 </div>
 
-                {/* Login Method Toggle */}
-                <div className="flex space-x-2">
-                  <Button
-                    type="button"
-                    variant={loginMethod === "email" ? "default" : "outline"}
-                    className="flex-1"
-                    onClick={() => setLoginMethod("email")}
-                  >
-                    <Mail className="w-4 h-4 mr-2" />
-                    Email
-                  </Button>
-                  <Button
-                    type="button"
-                    variant={loginMethod === "phone" ? "default" : "outline"}
-                    className="flex-1"
-                    onClick={() => setLoginMethod("phone")}
-                  >
-                    <Phone className="w-4 h-4 mr-2" />
-                    Phone
-                  </Button>
-                </div>
-
-                {/* Email/Phone Input */}
+                {/* Email Input */}
                 <div className="space-y-2">
-                  <Label htmlFor="identifier">
-                    {loginMethod === "email" ? "Email" : "Phone Number"}
-                  </Label>
+                  <Label htmlFor="identifier">Email</Label>
                   <div className="relative">
-                    {loginMethod === "email" ? (
-                      <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    ) : (
-                      <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                    )}
+                    <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                     <Input
                       id="identifier"
                       name="identifier"
-                      type={loginMethod === "email" ? "email" : "tel"}
-                      placeholder={
-                        loginMethod === "email" 
-                          ? "Enter your email" 
-                          : "Enter your phone number"
-                      }
+                      type="email"
+                      placeholder="Enter your email"
                       className="pl-10"
                       required
                     />

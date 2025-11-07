@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import SurveyForm from '@/components/auth/SurveyForm';
 import { useSearchParams } from 'next/navigation';
 
-export default function SurveyPage() {
+function SurveyContent() {
   const searchParams = useSearchParams();
   const role = searchParams.get('role') || '';
   const [mounted, setMounted] = useState(false);
@@ -25,5 +25,20 @@ export default function SurveyPage() {
   }
 
   return <SurveyForm role={role} />;
+}
+
+export default function SurveyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-600 dark:text-gray-400">Loading survey...</p>
+        </div>
+      </div>
+    }>
+      <SurveyContent />
+    </Suspense>
+  );
 }
 

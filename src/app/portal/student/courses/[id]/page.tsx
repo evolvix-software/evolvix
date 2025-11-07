@@ -78,11 +78,12 @@ export default function CourseDetailPage() {
 
   const handleEnroll = () => {
     if (!course) return;
-    if (status !== 'verified') {
-      showAlert('Verification Required', 'Please complete your verification before enrolling in courses.');
-      setTimeout(() => router.push('/portal/verification'), 1500);
-      return;
-    }
+    // TODO: Re-enable verification check after UI is complete
+    // if (status !== 'verified') {
+    //   showAlert('Verification Required', 'Please complete your verification before enrolling in courses.');
+    //   setTimeout(() => router.push('/portal/verification'), 1500);
+    //   return;
+    // }
     setIsEnrolling(true);
     setTimeout(() => {
       dispatch(enrollCourse(course.id));
@@ -102,11 +103,12 @@ export default function CourseDetailPage() {
   };
 
   const handleDownloadStructure = () => {
-    if (status !== 'verified') {
-      showAlert('Verification Required', 'Please complete your verification before downloading course materials.');
-      setTimeout(() => router.push('/portal/verification'), 1500);
-      return;
-    }
+    // TODO: Re-enable verification check after UI is complete
+    // if (status !== 'verified') {
+    //   showAlert('Verification Required', 'Please complete your verification before downloading course materials.');
+    //   setTimeout(() => router.push('/portal/verification'), 1500);
+    //   return;
+    // }
     showAlert('Download Started', 'Your course structure is being downloaded...');
   };
 

@@ -35,7 +35,7 @@ export interface MentorClass {
   courseId?: string;
   courseName?: string;
   classType: 'recorded' | 'live' | 'one-to-one'; // New field
-  platform?: 'zoom' | 'jitsi'; // Optional for recorded classes
+  platform?: 'zoom' | 'jitsi' | 'internal'; // Optional for recorded classes
   meetingLink?: string;
   meetingId?: string;
   meetingPassword?: string;

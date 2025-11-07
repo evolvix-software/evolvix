@@ -40,7 +40,10 @@ import { settingsData, SettingsSection } from '@/data/mock/settingsData';
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
-  role: 'student' | 'mentor';
+  role: 'student' | 'mentor' | 'admin';
+  onViewChange?: (view: string) => void;
+  currentView?: string; // For admin to track current view
+  adminUser?: { fullName?: string; email?: string }; // Admin user info
 }
 
 interface MenuItem {
@@ -51,6 +54,30 @@ interface MenuItem {
   path: string;
   badge?: string;
 }
+
+const adminMenuItems: MenuItem[] = [
+  {
+    id: 'dashboard',
+    label: 'Dashboard',
+    subtitle: 'Overview & Statistics',
+    icon: <LayoutDashboard className="w-5 h-5" />,
+    path: '/admin',
+  },
+  {
+    id: 'users',
+    label: 'User Management',
+    subtitle: 'Manage All Users',
+    icon: <Users className="w-5 h-5" />,
+    path: '/admin',
+  },
+  {
+    id: 'verifications',
+    label: 'Verifications',
+    subtitle: 'Review & Approve',
+    icon: <Shield className="w-5 h-5" />,
+    path: '/admin',
+  },
+];
 
 const studentMenuItems: MenuItem[] = [
   {
@@ -232,13 +259,13 @@ const iconMap: Record<string, any> = {
   Users
 };
 
-export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
+export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView, adminUser }: SidebarProps) {
   const router = useRouter();
   
-  // Get verification level from Redux (only for student)
-  const verificationLevel = useAppSelector((state) => 
-    role === 'student' ? (state.verification.verificationStatus?.level || 0) : 0
-  );
+  // Get verification status from Redux
+  const verificationStatus = useAppSelector((state) => state.verification.verificationStatus);
+  const isVerified = verificationStatus?.status === 'approved';
+  const verificationLevel = verificationStatus?.level || 0;
   
   const [settingsMenuItems, setSettingsMenuItems] = useState<SettingsSection[]>([]);
   const [isSettingsPage, setIsSettingsPage] = useState(false);
@@ -247,16 +274,26 @@ export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
   
   // Get menu items based on role
   const getMenuItems = (): MenuItem[] => {
+    if (role === 'admin') {
+      return adminMenuItems;
+    }
     const items = role === 'student' ? studentMenuItems : mentorMenuItems;
     
-    // Filter menu items based on verification level (only for student)
-    if (role === 'student') {
-      const allowedForLevel1 = ['dashboard', 'courses', 'profile', 'settings'];
-    if (verificationLevel <= 1) {
-        return items.filter(item => allowedForLevel1.includes(item.id));
-      }
-    }
+    // TODO: Re-enable verification-based menu filtering after UI is complete
+    // Filter menu items based on verification status
+    // if (!isVerified) {
+    //   // When not verified, only show limited menu items
+    //   if (role === 'student') {
+    //     const allowedForUnverified = ['dashboard', 'profile', 'settings'];
+    //     return items.filter(item => allowedForUnverified.includes(item.id));
+    //   } else if (role === 'mentor') {
+    //     const allowedForUnverified = ['dashboard', 'profile', 'settings'];
+    //     return items.filter(item => allowedForUnverified.includes(item.id));
+    //   }
+    // }
     
+    // If verified, show all menu items
+    // For now, show all menu items regardless of verification status
     return items;
   };
   
@@ -271,10 +308,12 @@ export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
   const activeBarColor = 'bg-primary';
   const activeIconColor = 'text-primary';
   const activeBadgeBg = 'bg-primary';
-  const portalTitle = role === 'student' ? 'Student Portal' : 'Mentor Portal';
+  const portalTitle = role === 'student' ? 'Student Portal' : role === 'mentor' ? 'Mentor Portal' : 'Admin Portal';
   const headerIcon = role === 'student' 
     ? <GraduationCap className="w-6 h-6 text-white" />
-    : <User className="w-6 h-6 text-white" />;
+    : role === 'mentor'
+    ? <User className="w-6 h-6 text-white" />
+    : <Shield className="w-6 h-6 text-white" />;
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -323,8 +362,13 @@ export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
     }
   }, [isSettingsPage, role]);
 
-  const handleNavigation = (path: string) => {
-    router.push(path);
+  const handleNavigation = (path: string, itemId?: string) => {
+    if (role === 'admin' && onViewChange && itemId) {
+      // For admin, use view change callback instead of routing
+      onViewChange(itemId);
+    } else {
+      router.push(path);
+    }
   };
 
   return (
@@ -449,11 +493,19 @@ export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
         ) : (
           // Regular menu items
           visibleMenuItems.map((item) => {
-            const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
-          return (
+            // For admin, check view state; for others, check path
+            let isActive = false;
+            if (role === 'admin') {
+              // Admin uses view state from parent
+              isActive = currentView === item.id;
+            } else {
+              isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
+            }
+            
+            return (
             <button
               key={item.id}
-              onClick={() => handleNavigation(item.path)}
+              onClick={() => handleNavigation(item.path, item.id)}
                 className={`group relative w-full ${
                   !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
                 } px-3 py-2.5 rounded-lg transition-all duration-200 ${
@@ -510,34 +562,67 @@ export function Sidebar({ isCollapsed, onToggle, role }: SidebarProps) {
 
       {/* User Profile Section */}
       <div className={`${!isCollapsed ? 'p-4' : 'p-2'} border-t border-border flex-shrink-0 space-y-2`}>
-        <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
-          <div className="relative flex-shrink-0">
-            <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-foreground" />
-            </div>
-            <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
-          </div>
-          {!isCollapsed && (
-            <div className="flex-1 min-w-0 text-left">
-              <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
-                {role === 'student' ? 'John Doe' : 'Mentor Name'}
-              </p>
-              <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
-                {role === 'student' ? 'john@example.com' : 'mentor@example.com'}
-              </p>
-              <div className="flex items-center space-x-1 mt-0.5">
-                <div className="w-2 h-2 bg-primary rounded-full"></div>
-                <span className="text-xs text-primary font-medium">Online</span>
+        {role === 'admin' && adminUser ? (
+          <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
+            <div className="relative flex-shrink-0">
+              <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                <Shield className="w-5 h-5 text-foreground" />
               </div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
             </div>
-          )}
-        </div>
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                  {adminUser.fullName || 'Admin'}
+                </p>
+                <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                  {adminUser.email || 'admin@evolvix.com'}
+                </p>
+                <div className="flex items-center space-x-1 mt-0.5">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span className="text-xs text-primary font-medium">Online</span>
+                </div>
+              </div>
+            )}
+          </div>
+        ) : role !== 'admin' && (
+          <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
+            <div className="relative flex-shrink-0">
+              <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                <User className="w-5 h-5 text-foreground" />
+              </div>
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
+            </div>
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0 text-left">
+                <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                  {role === 'student' ? 'John Doe' : 'Mentor Name'}
+                </p>
+                <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                  {role === 'student' ? 'john@example.com' : 'mentor@example.com'}
+                </p>
+                <div className="flex items-center space-x-1 mt-0.5">
+                  <div className="w-2 h-2 bg-primary rounded-full"></div>
+                  <span className="text-xs text-primary font-medium">Online</span>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Logout Button */}
         <button
           onClick={() => {
-            localStorage.clear();
-            window.location.href = '/auth/signin';
+            if (role === 'admin') {
+              // Admin logout - clear admin token
+              if (typeof window !== 'undefined') {
+                localStorage.removeItem('admin_jwt_token');
+                window.location.href = '/admin/login';
+              }
+            } else {
+              localStorage.clear();
+              window.location.href = '/auth/signin';
+            }
           }}
           className={`w-full ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'} bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-lg px-3 py-2.5 transition-all`}
           title={isCollapsed ? 'Logout' : undefined}

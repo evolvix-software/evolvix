@@ -7,6 +7,7 @@ import coursesReducer from './features/courses/coursesSlice';
 import surveyReducer from './features/survey/surveySlice';
 import classesReducer from './features/classes/classesSlice';
 import projectsReducer from './features/projects/projectsSlice';
+import notificationsReducer from './features/notifications/notificationsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +19,7 @@ export const store = configureStore({
     survey: surveyReducer,
     classes: classesReducer,
     projects: projectsReducer,
+    notifications: notificationsReducer,
   },
 });
 

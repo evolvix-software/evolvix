@@ -8,10 +8,13 @@ import { Sidebar } from './Sidebar';
 interface LayoutProps {
   children: React.ReactNode;
   title: string;
-  role: 'student' | 'mentor';
+  role: 'student' | 'mentor' | 'admin';
+  onViewChange?: (view: string) => void;
+  currentView?: string; // For admin to track current view
+  adminUser?: { fullName?: string; email?: string }; // Admin user info
 }
 
-export function Layout({ children, title, role }: LayoutProps) {
+export function Layout({ children, title, role, onViewChange, currentView, adminUser }: LayoutProps) {
   const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -36,6 +39,9 @@ export function Layout({ children, title, role }: LayoutProps) {
           isCollapsed={sidebarCollapsed} 
           onToggle={toggleSidebar}
           role={role}
+          onViewChange={onViewChange}
+          currentView={currentView}
+          adminUser={adminUser}
         />
       </div>
 
@@ -48,6 +54,9 @@ export function Layout({ children, title, role }: LayoutProps) {
               isCollapsed={false} 
               onToggle={toggleMobileMenu}
               role={role}
+              onViewChange={onViewChange}
+              currentView={currentView}
+              adminUser={adminUser}
             />
           </div>
         </div>

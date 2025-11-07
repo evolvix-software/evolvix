@@ -18,10 +18,16 @@ interface ProjectEvaluationProps {
 
 export function ProjectEvaluation({ submission, project, onEvaluated }: ProjectEvaluationProps) {
   const dispatch = useAppDispatch();
-  const [evaluation, setEvaluation] = useState({
+  const [evaluation, setEvaluation] = useState<{
+    score: number;
+    feedback: string;
+    status: 'reviewed' | 'returned';
+  }>({
     score: submission.score || 0,
     feedback: submission.mentorFeedback || '',
-    status: submission.status === 'reviewed' ? 'reviewed' as const : 'reviewed' as const,
+    status: submission.status === 'reviewed' || submission.status === 'returned' 
+      ? submission.status 
+      : 'reviewed',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
