@@ -23,30 +23,93 @@ import {
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY || '',
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN || '',
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || '',
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET || '',
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || '',
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || '',
 };
 
-// Initialize Firebase
-let app: FirebaseApp;
-if (getApps().length === 0) {
-  app = initializeApp(firebaseConfig);
-} else {
-  app = getApps()[0];
+// Initialize Firebase only on client side
+let app: FirebaseApp | null = null;
+let authInstance: Auth | null = null;
+
+function initializeFirebaseApp(): FirebaseApp {
+  if (typeof window === 'undefined') {
+    // Server-side: throw error if accessed
+    throw new Error('Firebase can only be initialized on the client side');
+  }
+  
+  if (!app) {
+    if (getApps().length === 0) {
+      // Validate config before initializing
+      if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
+        throw new Error('Firebase configuration is missing. Please check your environment variables.');
+      }
+      app = initializeApp(firebaseConfig);
+    } else {
+      app = getApps()[0];
+    }
+  }
+  return app;
 }
 
-// Initialize Firebase Auth
-export const auth: Auth = getAuth(app);
+function initializeAuth(): Auth {
+  if (typeof window === 'undefined') {
+    throw new Error('Firebase Auth can only be used on the client side');
+  }
+  
+  if (!authInstance) {
+    authInstance = getAuth(initializeFirebaseApp());
+  }
+  return authInstance;
+}
 
-// Google Auth Provider
-export const googleProvider = new GoogleAuthProvider();
-googleProvider.setCustomParameters({
-  prompt: 'select_account',
+// Export auth getter - lazy initialization with SSR safety
+export const auth: Auth = new Proxy({} as Auth, {
+  get(_target, prop) {
+    // During SSR/build, return a no-op or throw
+    if (typeof window === 'undefined') {
+      // Return a no-op for properties that might be accessed during SSR
+      if (prop === 'currentUser') {
+        return null;
+      }
+      // For methods, return a function that throws
+      if (typeof prop === 'string') {
+        return () => {
+          throw new Error('Firebase Auth can only be used on the client side');
+        };
+      }
+      return undefined;
+    }
+    
+    // Client-side: initialize and return the actual auth instance
+    const authInstance = initializeAuth();
+    const value = authInstance[prop as keyof Auth];
+    if (typeof value === 'function') {
+      return value.bind(authInstance);
+    }
+    return value;
+  }
 });
+
+// Google Auth Provider - lazy initialization
+let googleProviderInstance: GoogleAuthProvider | null = null;
+
+export const getGoogleProvider = (): GoogleAuthProvider => {
+  if (typeof window === 'undefined') {
+    throw new Error('Google Auth Provider can only be used on the client side');
+  }
+  
+  if (!googleProviderInstance) {
+    googleProviderInstance = new GoogleAuthProvider();
+    googleProviderInstance.setCustomParameters({
+      prompt: 'select_account',
+    });
+  }
+  return googleProviderInstance;
+};
 
 /**
  * Get current Firebase user
@@ -99,7 +162,7 @@ export const signIn = async (email: string, password: string) => {
  * Sign in with Google
  */
 export const signInWithGoogle = async () => {
-  return await signInWithPopup(auth, googleProvider);
+  return await signInWithPopup(initializeAuth(), getGoogleProvider());
 };
 
 /**
@@ -144,5 +207,10 @@ export const onAuthStateChange = (callback: (user: FirebaseUser | null) => void)
   return onAuthStateChanged(auth, callback);
 };
 
-export default app;
+export default function getFirebaseApp(): FirebaseApp | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  return initializeFirebaseApp();
+}
 
