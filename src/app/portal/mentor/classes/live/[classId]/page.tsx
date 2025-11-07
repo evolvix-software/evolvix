@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addChatMessage } from '@/store/features/classes/classesSlice';
-import { JitsiMeetComponent } from '@/components/mentor/components/classes/JitsiMeetComponent';
+import { JitsiMeetComponent } from '@/components/pages/mentor/classes/components';
 
 export default function LiveClassPage() {
   const params = useParams();

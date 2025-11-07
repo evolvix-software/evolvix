@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch } from '@/store/hooks';
+import { useAppDispatch } from '@/hooks';
 import { selectRole } from '@/store/features/auth/authSlice';
 import { 
   GraduationCap, 
@@ -16,7 +16,7 @@ import {
   Sparkles
 } from 'lucide-react';
 
-import { Button } from '@/components/forms/Button';
+import { Button } from '@/components/common/forms/Button';
 
 const roles = [
   {

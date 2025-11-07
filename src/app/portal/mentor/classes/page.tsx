@@ -1,12 +1,10 @@
-"use client";
+import { Layout } from '@/components/common/layout/Layout';
+import { MentorClassesPage } from '@/components/pages/mentor/classes';
 
-import { Layout } from '@/components/layout/Layout';
-import { ClassesContent } from '@/components/mentor/components';
-
-export default function MentorClassesPage() {
+export default function ClassesPage() {
   return (
     <Layout title="Classes" role="mentor">
-      <ClassesContent />
+      <MentorClassesPage />
     </Layout>
   );
 }

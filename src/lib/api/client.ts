@@ -3,7 +3,7 @@
  * Handles API requests with Firebase token management and error handling
  */
 
-import { API_BASE_URL } from './config';
+import { API_BASE_URL } from '@/config/api';
 import { ApiResponse, ApiError } from './types';
 import { getIdToken } from '../firebase';
 

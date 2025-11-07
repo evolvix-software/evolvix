@@ -3,7 +3,7 @@
  */
 
 import { adminApiClient } from './adminClient';
-import { API_ENDPOINTS } from './config';
+import { API_ENDPOINTS } from '@/config/api';
 import { ApiResponse } from './types';
 
 export interface AdminLoginRequest {

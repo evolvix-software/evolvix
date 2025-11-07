@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect } from 'react';
-import { Layout } from '@/components/layout/Layout';
+import { Layout } from '@/components/common/layout/Layout';
 import { CourseFilters } from '@/components/courses/CourseFilters';
 import { CourseCard } from '@/components/courses/CourseCard';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCourses, setFilters } from '@/store/features/courses/coursesSlice';
 import { coursesData } from '@/data/mock/coursesData';
 import { Course } from '@/data/mock/coursesData';

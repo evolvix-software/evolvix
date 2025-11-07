@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect, Suspense } from 'react';
-import { Layout } from '@/components/layout/Layout';
-import { SettingsContent } from '@/components/settings/SettingsContent';
+import { Layout } from '@/components/common/layout/Layout';
+import { SettingsContent } from '@/components/common/settings/SettingsContent';
 
 function SettingsContentWrapper() {
   const [activeSection, setActiveSection] = useState('basic');

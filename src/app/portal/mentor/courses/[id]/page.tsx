@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
-import { useAppSelector } from '@/store/hooks';
+import { Layout } from '@/components/common/layout/Layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
+import { useAppSelector } from '@/hooks';
 import { Course } from '@/data/mock/coursesData';
-import { ProjectEvaluation } from '@/components/projects/ProjectEvaluation';
-import { ProjectsLeaderboard } from '@/components/projects/ProjectsLeaderboard';
+import { ProjectEvaluation } from '@/components/common/projects/ProjectEvaluation';
+import { ProjectsLeaderboard } from '@/components/common/projects/ProjectsLeaderboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Code, FileText, Users, Trophy, Calendar, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, Play, Video, BookOpen } from 'lucide-react';
 

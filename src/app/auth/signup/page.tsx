@@ -6,12 +6,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight } from 'lucide-react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { signupUser } from '@/store/features/auth/authSlice';
 import { authApi } from '@/lib/api';
 
-import { Button } from '@/components/forms/Button';
-import { Input } from '@/components/forms/Input';
+import { Button } from '@/components/common/forms/Button';
+import { Input } from '@/components/common/forms/Input';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),

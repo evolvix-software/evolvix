@@ -3,7 +3,7 @@
  * Separate client for admin endpoints using JWT tokens instead of Firebase
  */
 
-import { API_BASE_URL } from './config';
+import { API_BASE_URL } from '@/config/api';
 import { ApiResponse, ApiError } from './types';
 
 class AdminApiClient {

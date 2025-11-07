@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminApi } from '@/lib/api';
-import { Button } from '@/components/forms/Button';
-import { Input } from '@/components/forms/Input';
+import { Button } from '@/components/common/forms/Button';
+import { Input } from '@/components/common/forms/Input';
 import { Shield, Lock, Mail, AlertCircle } from 'lucide-react';
 
 export default function AdminLogin() {

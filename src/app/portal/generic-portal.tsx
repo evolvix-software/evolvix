@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/forms/Button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
+import { Button } from '@/components/common/forms/Button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
 import { 
   LogOut, 
   TrendingUp, 

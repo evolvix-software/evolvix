@@ -12,9 +12,9 @@ import {
   TrendingUp,
   Sparkles 
 } from 'lucide-react';
-import { Button } from '@/components/forms/Button';
-import { Card } from '@/components/forms/Card';
-import { cn } from '@/lib/utils';
+import { Button } from '@/components/common/forms/Button';
+import { Card } from '@/components/common/forms/Card';
+import { cn } from '@/utils';
 
 interface SurveyFormProps {
   role: string;

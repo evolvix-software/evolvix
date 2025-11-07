@@ -9,7 +9,7 @@ export { surveyApi } from './survey';
 export { adminApi } from './admin';
 export { verificationApi } from './verification';
 export * from './types';
-export * from './config';
+export * from '@/config/api';
 export * from './admin';
 export * from './verification';
 

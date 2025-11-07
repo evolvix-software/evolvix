@@ -1,12 +1,10 @@
-"use client";
+import { Layout } from '@/components/common/layout/Layout';
+import { MentorStudentsPage } from '@/components/pages/mentor/students';
 
-import { Layout } from '@/components/layout/Layout';
-import { StudentsContent } from '@/components/mentor/components';
-
-export default function MentorStudentsPage() {
+export default function StudentsPage() {
   return (
     <Layout title="Student Management" role="mentor">
-      <StudentsContent />
+      <MentorStudentsPage />
     </Layout>
   );
 }

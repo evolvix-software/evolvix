@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { loadVerificationData, submitVerificationData, checkVerificationStatus } from '@/store/features/verification/verificationThunks';
-import { Layout } from '@/components/layout/Layout';
-import { VerificationLevel } from '@/components/verification/VerificationLevel';
-import { StudentVerificationForm } from '@/components/verification/StudentVerificationForm';
-import { MentorVerificationForm } from '@/components/verification/MentorVerificationForm';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
+import { Layout } from '@/components/common/layout/Layout';
+import { VerificationLevel } from '@/components/common/verification/VerificationLevel';
+import { StudentVerificationForm } from '@/components/common/verification/StudentVerificationForm';
+import { MentorVerificationForm } from '@/components/common/verification/MentorVerificationForm';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
 import { AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
 
 export default function VerificationPage() {

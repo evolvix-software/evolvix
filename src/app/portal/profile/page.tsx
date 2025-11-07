@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { loadVerificationData, checkVerificationStatus } from '@/store/features/verification/verificationThunks';
-import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
-import { Input } from '@/components/forms/Input';
-import { VerificationLevel } from '@/components/verification/VerificationLevel';
+import { Layout } from '@/components/common/layout/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
+import { Input } from '@/components/common/forms/Input';
+import { VerificationLevel } from '@/components/common/verification/VerificationLevel';
 import { 
   User, 
   Mail, 

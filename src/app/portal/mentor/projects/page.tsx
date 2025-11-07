@@ -1,12 +1,10 @@
-"use client";
+import { Layout } from '@/components/common/layout/Layout';
+import { MentorProjectsPage } from '@/components/pages/mentor/projects';
 
-import { Layout } from '@/components/layout/Layout';
-import { ProjectsContent } from '@/components/mentor/components';
-
-export default function MentorProjectsPage() {
+export default function ProjectsPage() {
   return (
     <Layout title="Project Mentorship" role="mentor">
-      <ProjectsContent />
+      <MentorProjectsPage />
     </Layout>
   );
 }

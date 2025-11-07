@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Eye, EyeOff, Mail, Phone, Lock, ArrowRight } from 'lucide-react';
 
-import { Button } from '@/components/forms/Button';
-import { Input } from '@/components/forms/Input';
+import { Button } from '@/components/common/forms/Button';
+import { Input } from '@/components/common/forms/Input';
 import { signIn, signInWithGoogle } from '@/lib/firebase';
 import { authApi } from '@/lib/api/auth';
 

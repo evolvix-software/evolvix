@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
+import { Layout } from '@/components/common/layout/Layout';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
 import { Calendar, Clock, Users, Video, Play, BookOpen } from 'lucide-react';
-import { useAppSelector } from '@/store/hooks';
+import { useAppSelector } from '@/hooks';
 import { MentorClass } from '@/store/features/classes/classesSlice';
-import { JoinClassComponent } from '@/components/student/components/JoinClassComponent';
+import { JoinClassComponent } from '@/components/pages/student/classes/components';
 
 export default function StudentClassesPage() {
   const { classes } = useAppSelector((state) => state.classes);

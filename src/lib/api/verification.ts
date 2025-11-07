@@ -4,7 +4,7 @@
  */
 
 import { apiClient } from './client';
-import { API_ENDPOINTS } from './config';
+import { API_ENDPOINTS } from '@/config/api';
 
 export type VerificationStatus = 'pending' | 'approved' | 'rejected' | 'incomplete';
 export type VerificationRole = 'student' | 'mentor' | 'employer' | 'investor' | 'sponsor' | 'entrepreneur';

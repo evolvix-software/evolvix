@@ -1,12 +1,10 @@
-"use client";
+import { Layout } from '@/components/common/layout/Layout';
+import { MentorInterviewsPage } from '@/components/pages/mentor/interviews';
 
-import { Layout } from '@/components/layout/Layout';
-import { InterviewsContent } from '@/components/mentor/components';
-
-export default function MentorInterviewsPage() {
+export default function InterviewsPage() {
   return (
     <Layout title="Interview Evaluation" role="mentor">
-      <InterviewsContent />
+      <MentorInterviewsPage />
     </Layout>
   );
 }

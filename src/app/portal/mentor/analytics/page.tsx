@@ -1,12 +1,10 @@
-"use client";
+import { Layout } from '@/components/common/layout/Layout';
+import { MentorAnalyticsPage } from '@/components/pages/mentor/analytics';
 
-import { Layout } from '@/components/layout/Layout';
-import { AnalyticsContent } from '@/components/mentor/components';
-
-export default function MentorAnalyticsPage() {
+export default function AnalyticsPage() {
   return (
     <Layout title="Analytics" role="mentor">
-      <AnalyticsContent />
+      <MentorAnalyticsPage />
     </Layout>
   );
 }

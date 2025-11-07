@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
-import { Layout } from '@/components/layout/Layout';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/forms/Card';
-import { Button } from '@/components/forms/Button';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { Layout } from '@/components/common/layout/Layout';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
 import { 
   User, 
   GraduationCap, 

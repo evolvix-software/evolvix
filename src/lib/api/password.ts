@@ -3,7 +3,7 @@
  */
 
 import { apiClient } from './client';
-import { API_ENDPOINTS } from './config';
+import { API_ENDPOINTS } from '@/config/api';
 import {
   ForgotPasswordRequest,
   ForgotPasswordResponse,

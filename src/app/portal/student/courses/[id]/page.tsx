@@ -2,14 +2,14 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Layout } from '@/components/layout/Layout';
-import { Button } from '@/components/forms/Button';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { Layout } from '@/components/common/layout/Layout';
+import { Button } from '@/components/common/forms/Button';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { enrollCourse, completeLesson, setCurrentLesson } from '@/store/features/courses/coursesSlice';
 import { Course } from '@/data/mock/coursesData';
 import { Clock, Users, Star, Shield, BookOpen, CheckCircle, Play, Lock, User, ChevronDown, ChevronLeft, ChevronRight, MessageSquare, Award, Download, X, Code, Trophy } from 'lucide-react';
-import { ProjectSubmission as ProjectSubmissionComponent } from '@/components/projects/ProjectSubmission';
-import { ProjectsLeaderboard } from '@/components/projects/ProjectsLeaderboard';
+import { ProjectSubmission as ProjectSubmissionComponent } from '@/components/common/projects/ProjectSubmission';
+import { ProjectsLeaderboard } from '@/components/common/projects/ProjectsLeaderboard';
 
 export default function CourseDetailPage() {
   const params = useParams();

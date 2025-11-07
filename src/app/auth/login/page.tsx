@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks';
 import { loginUser } from '@/store/features/auth/authSlice';
 import { authApi } from '@/lib/api';
 import { Button } from "@/components/ui/button";
