@@ -190,7 +190,7 @@ export function MentorStudentsPage() {
                   // Export selected students
                 }
               }}
-              selectedStudentId={selectedStudent?.id}
+              selectedStudentId={undefined}
             />
           </TabsContent>
 

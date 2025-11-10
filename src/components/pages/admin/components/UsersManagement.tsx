@@ -23,7 +23,7 @@ interface UsersManagementProps {
   onPageChange: (page: number) => void;
   onCreateUser: () => void;
   onUserSelect: (user: AdminUser) => void;
-  getStatusBadge: (user: AdminUser) => JSX.Element;
+  getStatusBadge: (user: AdminUser) => React.ReactElement;
 }
 
 export function UsersManagement({

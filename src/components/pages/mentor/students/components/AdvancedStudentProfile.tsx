@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { StudentTestCompletion } from '@/interfaces/students';
 import {
   User,
   Mail,
@@ -76,7 +77,7 @@ export function AdvancedStudentProfile({
     router.push(`/portal/mentor/assignments?${params.toString()}`);
   };
 
-  const handleViewTestResult = (testCompletion: StudentCourseProgress['testCompletions'][0]) => {
+  const handleViewTestResult = (testCompletion: StudentTestCompletion) => {
     const test = mockModuleTests.find(t => t.id === testCompletion.testId);
     const attempt = mockTestAttempts.find(a => 
       a.testId === testCompletion.testId && a.studentId === student.id

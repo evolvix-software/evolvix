@@ -141,6 +141,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
         </CardHeader>
         <CardContent>
           <LineChart
+            title="Revenue Trend"
             data={revenueData.map(r => ({
               label: `${r.month} ${r.year}`,
               value: r.earnings,

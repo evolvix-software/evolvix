@@ -20,8 +20,8 @@ export function PerformanceInsights({ revenueData }: PerformanceInsightsProps) {
   const topCourses = useMemo(() => {
     return [...courses]
       .sort((a, b) => {
-        const aScore = (a.enrolledCount || 0) + (a.completionRate || 0);
-        const bScore = (b.enrolledCount || 0) + (b.completionRate || 0);
+        const aScore = (a.enrolledCount || 0) + (a.rating || 0) * 10;
+        const bScore = (b.enrolledCount || 0) + (b.rating || 0) * 10;
         return bScore - aScore;
       })
       .slice(0, 5);
@@ -33,8 +33,8 @@ export function PerformanceInsights({ revenueData }: PerformanceInsightsProps) {
       .filter(c => {
         const lowEnrollment = (c.enrolledCount || 0) < 5;
         const lowRating = c.rating < 3.5;
-        const highDropOff = (c.enrolledCount || 0) > 0 && (c.completionRate || 0) < 50;
-        return lowEnrollment || lowRating || highDropOff;
+        const lowEngagement = (c.enrolledCount || 0) > 0 && (c.ratingCount || 0) < (c.enrolledCount || 0) * 0.1;
+        return lowEnrollment || lowRating || lowEngagement;
       })
       .slice(0, 3);
   }, [courses]);
@@ -165,7 +165,7 @@ export function PerformanceInsights({ revenueData }: PerformanceInsightsProps) {
                 const issues = [];
                 if ((course.enrolledCount || 0) < 5) issues.push('Low enrollment');
                 if (course.rating < 3.5) issues.push('Low rating');
-                if ((course.enrolledCount || 0) > 0 && (course.completionRate || 0) < 50) issues.push('High drop-off');
+                if ((course.enrolledCount || 0) > 0 && (course.ratingCount || 0) < (course.enrolledCount || 0) * 0.1) issues.push('Low engagement');
                 
                 return (
                   <div 

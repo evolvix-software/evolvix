@@ -137,7 +137,8 @@ export function CoursesPage() {
         case 'rating':
           return b.rating - a.rating;
         case 'completion':
-          return (b.completionRate || 0) - (a.completionRate || 0);
+          // Sort by enrollment count (higher enrollment = better completion potential)
+          return (b.enrolledCount || 0) - (a.enrolledCount || 0);
         case 'date':
         default:
           return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();

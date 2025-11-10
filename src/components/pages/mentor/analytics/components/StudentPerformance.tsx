@@ -33,7 +33,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Improvement</p>
-                <p className={`text-2xl font-bold ${getImprovementColor(averageImprovement)}`}>
+                <p className={`text-2xl font-bold ${getImprovementColor()}`}>
                   +{averageImprovement.toFixed(1)}%
                 </p>
               </div>
@@ -47,7 +47,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Current Score</p>
-                <p className={`text-2xl font-bold ${getScoreColor(averageCurrentScore)}`}>
+                <p className={`text-2xl font-bold ${getScoreColor()}`}>
                   {averageCurrentScore.toFixed(1)}%
                 </p>
               </div>
@@ -61,7 +61,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Assignment Score</p>
-                <p className={`text-2xl font-bold ${getScoreColor(averageAssignmentScore)}`}>
+                <p className={`text-2xl font-bold ${getScoreColor()}`}>
                   {averageAssignmentScore.toFixed(1)}%
                 </p>
               </div>
@@ -148,19 +148,19 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <span className={`text-sm font-semibold ${getScoreColor(student.initialScore)}`}>
+                      <span className={`text-sm font-semibold ${getScoreColor()}`}>
                         {student.initialScore}%
                       </span>
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <span className={`text-sm font-semibold ${getScoreColor(student.currentScore)}`}>
+                      <span className={`text-sm font-semibold ${getScoreColor()}`}>
                         {student.currentScore}%
                       </span>
                     </td>
                     <td className="py-3 px-4 text-center">
                       <div className="flex items-center justify-center space-x-1">
-                        <TrendingUp className={`w-4 h-4 ${getImprovementColor(student.improvement)}`} />
-                        <span className={`text-sm font-bold ${getImprovementColor(student.improvement)}`}>
+                        <TrendingUp className={`w-4 h-4 ${getImprovementColor()}`} />
+                        <span className={`text-sm font-bold ${getImprovementColor()}`}>
                           +{student.improvement.toFixed(1)}%
                         </span>
                       </div>
@@ -171,7 +171,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                       </span>
                     </td>
                     <td className="py-3 px-4 text-center">
-                      <span className={`text-sm font-semibold ${getScoreColor(student.averageAssignmentScore)}`}>
+                      <span className={`text-sm font-semibold ${getScoreColor()}`}>
                         {student.averageAssignmentScore}%
                       </span>
                     </td>
@@ -198,19 +198,19 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
           <div className="mt-6 pt-6 border-t border-slate-200 dark:border-slate-700 grid md:grid-cols-3 gap-4">
             <div className="text-center p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Average Improvement</p>
-              <p className={`text-xl font-bold ${getImprovementColor(averageImprovement)}`}>
+              <p className={`text-xl font-bold ${getImprovementColor()}`}>
                 +{averageImprovement.toFixed(1)}%
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Average Current Score</p>
-              <p className={`text-xl font-bold ${getScoreColor(averageCurrentScore)}`}>
+              <p className={`text-xl font-bold ${getScoreColor()}`}>
                 {averageCurrentScore.toFixed(1)}%
               </p>
             </div>
             <div className="text-center p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Average Assignment Score</p>
-              <p className={`text-xl font-bold ${getScoreColor(averageAssignmentScore)}`}>
+              <p className={`text-xl font-bold ${getScoreColor()}`}>
                 {averageAssignmentScore.toFixed(1)}%
               </p>
             </div>

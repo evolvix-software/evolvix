@@ -379,6 +379,13 @@ export function ClassesPage() {
               courseName: '',
               classType: 'live',
               videoUrl: '',
+              timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+              recurringPattern: 'none' as 'none' | 'daily' | 'weekly' | 'monthly',
+              recurringEndDate: '',
+              maxCapacity: undefined,
+              agenda: [],
+              preparationChecklist: [],
+              preClassAnnouncement: '',
             });
             setShowScheduleForm(true);
           }}

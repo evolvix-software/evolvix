@@ -20,7 +20,7 @@ import {
   Eye,
   XCircle,
 } from 'lucide-react';
-import { Student, StudentCourseProgress } from '@/interfaces/students';
+import { Student, StudentCourseProgress, StudentTestCompletion } from '@/interfaces/students';
 import { useAppSelector } from '@/hooks';
 import { useState } from 'react';
 import { StudentTestResults } from './StudentTestResults';
@@ -66,7 +66,7 @@ export function StudentProfile({
     router.push(`/portal/mentor/assignments?${params.toString()}`);
   };
 
-  const handleViewTestResult = (testCompletion: StudentCourseProgress['testCompletions'][0]) => {
+  const handleViewTestResult = (testCompletion: StudentTestCompletion) => {
     const test = mockModuleTests.find(t => t.id === testCompletion.testId);
     const attempt = mockTestAttempts.find(a => 
       a.testId === testCompletion.testId && a.studentId === student.id

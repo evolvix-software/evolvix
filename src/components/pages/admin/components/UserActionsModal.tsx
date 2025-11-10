@@ -9,7 +9,7 @@ interface UserActionsModalProps {
   user: AdminUser | null;
   error: string;
   actionLoading: string | null;
-  getStatusBadge: (user: AdminUser) => JSX.Element;
+  getStatusBadge: (user: AdminUser) => React.ReactElement;
   onClose: () => void;
   onAction: (userId: string, action: string, reason?: string) => void;
 }

@@ -261,7 +261,12 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
         </CardHeader>
         <CardContent>
           <AnimatedBarChart
-            data={scoreDistribution.map(d => ({ label: d.label, value: d.count }))}
+            title="Score Distribution"
+            data={scoreDistribution.map(d => ({ 
+              label: d.label, 
+              value: d.count,
+              maxValue: Math.max(...scoreDistribution.map(s => s.count))
+            }))}
             height={300}
           />
         </CardContent>

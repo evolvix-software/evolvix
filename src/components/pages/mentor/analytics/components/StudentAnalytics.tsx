@@ -14,9 +14,10 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
   const activeStudents = Math.floor(performance.length * 0.75);
   const inactiveStudents = performance.length - activeStudents;
 
+  const maxEngagement = Math.max(activeStudents, inactiveStudents, performance.length);
   const engagementData = [
-    { label: 'Active', value: activeStudents },
-    { label: 'Inactive', value: inactiveStudents },
+    { label: 'Active', value: activeStudents, maxValue: maxEngagement },
+    { label: 'Inactive', value: inactiveStudents, maxValue: maxEngagement },
   ];
 
   const loginFrequency = [
@@ -143,6 +144,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
         </CardHeader>
         <CardContent>
           <AnimatedBarChart
+            title="Student Engagement"
             data={engagementData}
             height={300}
           />
@@ -233,7 +235,12 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
         </CardHeader>
         <CardContent>
           <AnimatedBarChart
-            data={testScoreDistribution.map(d => ({ label: d.range, value: d.count }))}
+            title="Test Score Distribution"
+            data={testScoreDistribution.map(d => ({ 
+              label: d.range, 
+              value: d.count,
+              maxValue: Math.max(...testScoreDistribution.map(t => t.count))
+            }))}
             height={300}
           />
         </CardContent>

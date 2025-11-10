@@ -35,7 +35,9 @@ export function StatsGrid({ stats }: StatsGridProps) {
   
   // Calculate course statistics
   const courseStats = useMemo(() => {
-    const mentorCourses = courses.filter(c => c.instructor.id === 'suhxil14@gmail.com' || c.instructor.id === localStorage.getItem('evolvix_registration')?.includes('email') ? JSON.parse(localStorage.getItem('evolvix_registration') || '{}').email : '');
+    const storedRegistration = typeof window !== 'undefined' ? localStorage.getItem('evolvix_registration') : null;
+    const mentorEmail = storedRegistration ? JSON.parse(storedRegistration).email : '';
+    const mentorCourses = courses.filter(c => c.instructor.id === 'suhxil14@gmail.com' || c.instructor.id === mentorEmail);
     
     return {
       total: mentorCourses.length,

@@ -11,7 +11,7 @@ interface UsersTableProps {
   totalPages: number;
   onPageChange: (page: number) => void;
   onUserSelect: (user: AdminUser) => void;
-  getStatusBadge: (user: AdminUser) => JSX.Element;
+  getStatusBadge: (user: AdminUser) => React.ReactElement;
 }
 
 export function UsersTable({

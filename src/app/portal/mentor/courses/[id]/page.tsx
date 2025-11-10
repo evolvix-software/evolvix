@@ -31,7 +31,7 @@ export default function MentorCourseDetailPage() {
   const handleCourseUpdate = (updates: Partial<Course>) => {
     if (course) {
       const updatedCourse = { ...course, ...updates };
-      dispatch(updateCourse({ id: course.id, ...updatedCourse }));
+      dispatch(updateCourse({ id: course.id, ...updates }));
       setCourse(updatedCourse);
     }
   };

@@ -165,6 +165,7 @@ export const mockApplications: CourseApplication[] = [
     coverLetter: 'I have 8 years of experience in full-stack development and have taught over 500 students. I believe I can create an excellent master course.',
     portfolio: 'https://portfolio.example.com/johndoe',
     experience: '8 years full-stack development, 3 years teaching experience',
+    qualifications: 'B.S. in Computer Science, M.S. in Software Engineering, Certified React Developer, AWS Solutions Architect',
     status: 'pending',
     createdAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString()
   }

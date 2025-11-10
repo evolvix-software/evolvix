@@ -202,8 +202,6 @@ export function TestTakingPage() {
     // Disable common screenshot methods
     document.body.style.userSelect = 'none';
     document.body.style.webkitUserSelect = 'none';
-    document.body.style.mozUserSelect = 'none';
-    document.body.style.msUserSelect = 'none';
 
     // Cleanup
     return () => {
@@ -217,8 +215,6 @@ export function TestTakingPage() {
       clearInterval(devToolsInterval);
       document.body.style.userSelect = '';
       document.body.style.webkitUserSelect = '';
-      document.body.style.mozUserSelect = '';
-      document.body.style.msUserSelect = '';
     };
   }, []);
 

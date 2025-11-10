@@ -131,6 +131,7 @@ export function CourseAnalytics() {
         </CardHeader>
         <CardContent>
           <LineChart
+            title="Enrollment Trends"
             data={enrollmentTrends}
             height={300}
           />
