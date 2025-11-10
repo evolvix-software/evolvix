@@ -31,16 +31,14 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Earnings</p>
-                <p className="text-2xl font-bold text-green-600 dark:text-green-400">
+                <p className="text-2xl font-bold text-slate-900 dark:text-white">
                   ${(totalEarnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                   {earningsGrowth >= 0 ? '+' : ''}{earningsGrowth.toFixed(1)}% vs last month
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                <DollarSign className="w-6 h-6 text-green-600 dark:text-green-400" />
-              </div>
+              <DollarSign className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -57,9 +55,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                   {currentMonth.students} students
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </div>
+              <TrendingUp className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -76,9 +72,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                   Over {revenueData.length} months
                 </p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <CreditCard className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-              </div>
+              <CreditCard className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -95,9 +89,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                   {currentMonth.courses} active courses
                 </p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-                <Users className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-              </div>
+              <Users className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -136,8 +128,8 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                       <div
                         className={`w-full rounded-t-lg transition-all duration-300 hover:opacity-80 cursor-pointer ${
                           isCurrentMonth
-                            ? 'bg-gradient-to-t from-green-600 to-green-400'
-                            : 'bg-gradient-to-t from-blue-600 to-blue-400'
+                            ? 'bg-slate-600 dark:bg-slate-500'
+                            : 'bg-slate-500 dark:bg-slate-600'
                         }`}
                         style={{ height: `${Math.max(height, 5)}%` }}
                       />
@@ -149,9 +141,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                     </div>
                     
                     {/* Value Label */}
-                    <div className={`mt-1 text-xs font-semibold ${
-                      isCurrentMonth ? 'text-green-600 dark:text-green-400' : 'text-slate-600 dark:text-slate-400'
-                    }`}>
+                    <div className="mt-1 text-xs font-semibold text-slate-600 dark:text-slate-400">
                       ${(month.earnings / 1000).toFixed(0)}K
                     </div>
                   </div>
@@ -202,7 +192,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <span className="text-sm font-semibold text-green-600 dark:text-green-400">
+                          <span className="text-sm font-semibold text-slate-900 dark:text-white">
                             ${month.earnings.toLocaleString()}
                           </span>
                         </td>
@@ -223,9 +213,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                         </td>
                         <td className="py-3 px-4 text-right">
                           {previousMonthData && (
-                            <span className={`text-sm font-semibold ${
-                              growth >= 0 ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
-                            }`}>
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">
                               {growth >= 0 ? '+' : ''}{growth.toFixed(1)}%
                             </span>
                           )}

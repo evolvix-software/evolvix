@@ -1,4 +1,5 @@
-import { Student, StudentCourseProgress, StudentFeedback, ChatConversation } from '@/interfaces/students';
+import { Student, StudentCourseProgress, StudentFeedback, ChatConversation, StudentTestCompletion } from '@/interfaces/students';
+import { mockTestAttempts, mockModuleTests } from './testAttempts';
 
 // Mock students data - All enrolled in mentor's courses (IDs: 5, 6, 7, 8, 9)
 export const mockStudents: Student[] = [
@@ -61,6 +62,18 @@ export const mockStudents: Student[] = [
     lastActive: '1 hour ago',
     joinedAt: '2024-11-05',
     rating: 5.0
+  },
+  {
+    id: 'student_6',
+    name: 'Rasmi Off',
+    email: 'rasmioff@gmail.com',
+    enrolledCourses: ['7'], // Python Data Science
+    overallProgress: 60,
+    assignmentsCompleted: 5,
+    assignmentsTotal: 7,
+    lastActive: '30 minutes ago',
+    joinedAt: '2024-12-01',
+    rating: 4.7
   }
 ];
 
@@ -75,7 +88,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 15,
       assignmentsCompleted: 7,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-15'
+      enrolledAt: '2024-11-15',
+      testCompletions: []
     },
     {
       courseId: '6',
@@ -85,7 +99,34 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 9,
       assignmentsCompleted: 5,
       assignmentsTotal: 5,
-      enrolledAt: '2024-11-20'
+      enrolledAt: '2024-11-20',
+      testCompletions: []
+    },
+    {
+      courseId: '7',
+      courseTitle: 'Complete Python Data Science & Machine Learning',
+      progress: 75,
+      completedLessons: 8,
+      totalLessons: 12,
+      assignmentsCompleted: 4,
+      assignmentsTotal: 7,
+      enrolledAt: '2024-11-18',
+      testCompletions: [
+        {
+          testId: 'test_module1_course7',
+          testTitle: 'Module 1 Assessment',
+          moduleTitle: 'Python for Data Science',
+          courseId: '7',
+          courseTitle: 'Complete Python Data Science & Machine Learning',
+          score: 90,
+          maxScore: 100,
+          percentage: 90,
+          passed: true,
+          timeSpent: 12,
+          completedAt: '2024-12-15T10:12:00Z',
+          wrongAnswers: 1,
+        }
+      ]
     }
   ],
   student_2: [
@@ -97,7 +138,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 15,
       assignmentsCompleted: 4,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-20'
+      enrolledAt: '2024-11-20',
+      testCompletions: []
     },
     {
       courseId: '8',
@@ -107,7 +149,34 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 10,
       assignmentsCompleted: 4,
       assignmentsTotal: 5,
-      enrolledAt: '2024-11-25'
+      enrolledAt: '2024-11-25',
+      testCompletions: []
+    },
+    {
+      courseId: '7',
+      courseTitle: 'Complete Python Data Science & Machine Learning',
+      progress: 60,
+      completedLessons: 6,
+      totalLessons: 12,
+      assignmentsCompleted: 3,
+      assignmentsTotal: 7,
+      enrolledAt: '2024-11-22',
+      testCompletions: [
+        {
+          testId: 'test_module1_course7',
+          testTitle: 'Module 1 Assessment',
+          moduleTitle: 'Python for Data Science',
+          courseId: '7',
+          courseTitle: 'Complete Python Data Science & Machine Learning',
+          score: 50,
+          maxScore: 100,
+          percentage: 50,
+          passed: false,
+          timeSpent: 18,
+          completedAt: '2024-12-15T14:18:00Z',
+          wrongAnswers: 5,
+        }
+      ]
     }
   ],
   student_3: [
@@ -119,7 +188,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 9,
       assignmentsCompleted: 5,
       assignmentsTotal: 5,
-      enrolledAt: '2024-11-10'
+      enrolledAt: '2024-11-10',
+      testCompletions: []
     },
     {
       courseId: '7',
@@ -129,7 +199,23 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 12,
       assignmentsCompleted: 6,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-12'
+      enrolledAt: '2024-11-12',
+      testCompletions: [
+        {
+          testId: 'test_module2_course7',
+          testTitle: 'Module 2 Assessment',
+          moduleTitle: 'Data Visualization',
+          courseId: '7',
+          courseTitle: 'Complete Python Data Science & Machine Learning',
+          score: 100,
+          maxScore: 100,
+          percentage: 100,
+          passed: true,
+          timeSpent: 15,
+          completedAt: '2024-12-14T09:15:00Z',
+          wrongAnswers: 0,
+        }
+      ]
     },
     {
       courseId: '9',
@@ -139,7 +225,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 9,
       assignmentsCompleted: 4,
       assignmentsTotal: 6,
-      enrolledAt: '2024-11-15'
+      enrolledAt: '2024-11-15',
+      testCompletions: []
     }
   ],
   student_4: [
@@ -151,7 +238,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 12,
       assignmentsCompleted: 5,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-25'
+      enrolledAt: '2024-11-25',
+      testCompletions: []
     },
     {
       courseId: '8',
@@ -161,7 +249,23 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 10,
       assignmentsCompleted: 5,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-26'
+      enrolledAt: '2024-11-26',
+      testCompletions: [
+        {
+          testId: 'test_module1_course8',
+          testTitle: 'Module 1 Assessment',
+          moduleTitle: 'Design Fundamentals',
+          courseId: '8',
+          courseTitle: 'Complete UI/UX Design Masterclass',
+          score: 70,
+          maxScore: 100,
+          percentage: 70,
+          passed: true,
+          timeSpent: 14,
+          completedAt: '2024-12-13T11:14:00Z',
+          wrongAnswers: 3,
+        }
+      ]
     }
   ],
   student_5: [
@@ -173,7 +277,8 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 15,
       assignmentsCompleted: 7,
       assignmentsTotal: 7,
-      enrolledAt: '2024-11-05'
+      enrolledAt: '2024-11-05',
+      testCompletions: []
     },
     {
       courseId: '9',
@@ -183,7 +288,23 @@ export const mockStudentProgress: Record<string, StudentCourseProgress[]> = {
       totalLessons: 9,
       assignmentsCompleted: 11,
       assignmentsTotal: 13,
-      enrolledAt: '2024-11-08'
+      enrolledAt: '2024-11-08',
+      testCompletions: [
+        {
+          testId: 'test_module1_course9',
+          testTitle: 'Module 1 Assessment',
+          moduleTitle: 'Advanced JavaScript Concepts',
+          courseId: '9',
+          courseTitle: 'Advanced JavaScript & Modern Web Development',
+          score: 100,
+          maxScore: 100,
+          percentage: 100,
+          passed: true,
+          timeSpent: 11,
+          completedAt: '2024-12-12T16:11:00Z',
+          wrongAnswers: 0,
+        }
+      ]
     }
   ]
 };

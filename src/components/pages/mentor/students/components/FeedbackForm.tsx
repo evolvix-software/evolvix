@@ -108,8 +108,8 @@ export function FeedbackForm({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border-2 border-blue-500 dark:border-blue-400">
-        <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+      <Card className="w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-300 dark:border-slate-600">
+        <CardHeader className="bg-slate-700 dark:bg-slate-800 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {student.avatar ? (
@@ -144,12 +144,12 @@ export function FeedbackForm({
         <CardContent className="flex-1 overflow-y-auto p-6">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Overall Rating Display */}
-            <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
+            <div className="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Overall Rating</p>
                   <div className="flex items-center space-x-2">
-                    <span className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                    <span className="text-3xl font-bold text-slate-900 dark:text-white">
                       {overallRating}
                     </span>
                     <span className="text-slate-500 dark:text-slate-400">/ 5.0</span>
@@ -223,7 +223,7 @@ export function FeedbackForm({
               </Button>
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
                 disabled={participation === 0 || skills === 0 || communication === 0}
               >
                 <Send className="w-4 h-4 mr-2" />

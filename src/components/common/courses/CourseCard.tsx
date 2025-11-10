@@ -60,11 +60,11 @@ export function CourseCard({ course }: CourseCardProps) {
 
   return (
     <Card 
-      className="group hover:shadow-xl transition-all duration-300 border border-slate-200 dark:border-slate-700 cursor-pointer overflow-hidden"
+      className="group hover:shadow-xl transition-all duration-300 border border-border cursor-pointer overflow-hidden"
       onClick={() => router.push(`/portal/student/courses/${course.id}`)}
     >
       {/* Compact Image Header */}
-      <div className="relative h-48 bg-gradient-to-br from-[#635bff] to-blue-600 overflow-hidden">
+      <div className="relative h-48 bg-gradient-to-br from-primary to-primary/80 overflow-hidden">
         <img 
           src={course.thumbnail} 
           alt={course.title}
@@ -72,23 +72,23 @@ export function CourseCard({ course }: CourseCardProps) {
         />
         {/* Badges */}
         {isEnrolled && (
-          <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-semibold">
+          <div className="absolute top-3 right-3 bg-card/20 backdrop-blur-sm text-card-foreground px-2 py-1 rounded-full text-xs font-semibold">
             Enrolled
           </div>
         )}
-        <div className="absolute top-3 left-3 bg-white/20 backdrop-blur-sm text-white px-2 py-1 rounded-full text-xs font-semibold uppercase">
+        <div className="absolute top-3 left-3 bg-card/20 backdrop-blur-sm text-card-foreground px-2 py-1 rounded-full text-xs font-semibold uppercase">
           {course.level}
         </div>
       </div>
 
       <CardContent className="p-5">
         {/* Minimal Title */}
-        <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 line-clamp-2 group-hover:text-[#635bff] transition-colors">
+        <h3 className="text-lg font-bold text-foreground mb-3 line-clamp-2 group-hover:text-primary transition-colors">
           {course.title}
         </h3>
 
         {/* Quick Stats Row */}
-        <div className="flex items-center space-x-4 text-xs text-slate-600 dark:text-slate-400 mb-4">
+        <div className="flex items-center space-x-4 text-xs text-muted-foreground mb-4">
           <div className="flex items-center space-x-1">
             <Star className="w-3 h-3 text-yellow-500 fill-yellow-500" />
             <span className="font-semibold">{course.rating}</span>
@@ -106,20 +106,20 @@ export function CourseCard({ course }: CourseCardProps) {
         {/* Progress Indicator */}
         {isEnrolled && enrollment && (
           <div className="space-y-2">
-            <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1.5">
+            <div className="w-full bg-secondary rounded-full h-1.5">
               <div 
-                className="bg-[#635bff] h-1.5 rounded-full transition-all duration-300"
+                className="bg-primary h-1.5 rounded-full transition-all duration-300"
                 style={{ width: `${enrollment.progress}%` }}
               />
             </div>
-            <p className="text-xs text-slate-600 dark:text-slate-400 text-center">{enrollment.progress}% Complete</p>
+            <p className="text-xs text-muted-foreground text-center">{enrollment.progress}% Complete</p>
           </div>
         )}
 
         {/* View Details Button */}
-        <div className="pt-3 border-t border-slate-200 dark:border-slate-700">
+        <div className="pt-3 border-t border-border">
           <button 
-            className="w-full px-4 py-2 bg-[#635bff] hover:bg-[#4f48cc] text-white text-sm font-semibold rounded-lg transition-colors"
+            className="w-full px-4 py-2 bg-primary hover:bg-primary/90 text-primary-foreground text-sm font-semibold rounded-lg transition-colors"
           >
             View Details
           </button>

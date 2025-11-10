@@ -53,7 +53,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('video')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'video'
-                ? 'border-b-2 border-green-600 text-green-600 dark:text-green-400'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -64,7 +64,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('chat')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'chat'
-                ? 'border-b-2 border-green-600 text-green-600 dark:text-green-400'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -75,7 +75,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('attendance')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'attendance'
-                ? 'border-b-2 border-green-600 text-green-600 dark:text-green-400'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -98,7 +98,7 @@ export function LiveClassModal({
                     href={classItem.meetingLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg"
+                    className="inline-block px-4 py-2 bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 rounded-lg border-0"
                   >
                     Open in Zoom
                   </a>
@@ -140,7 +140,7 @@ export function LiveClassModal({
                     placeholder="Type a message..."
                     className="flex-1"
                   />
-                  <Button onClick={onSendMessage} className="bg-green-600 hover:bg-green-700">
+                  <Button onClick={onSendMessage} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 border-0">
                     Send
                   </Button>
                 </div>
@@ -174,7 +174,7 @@ export function LiveClassModal({
                       </div>
                       <div className="flex items-center space-x-2">
                         {attendanceRecord?.joinedAt ? (
-                          <span className="text-sm text-green-600 dark:text-green-400 flex items-center">
+                          <span className="text-sm text-slate-600 dark:text-slate-400 flex items-center">
                             <UserCheck className="w-4 h-4 mr-1" />
                             Present
                           </span>

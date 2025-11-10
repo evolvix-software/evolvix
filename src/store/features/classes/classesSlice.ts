@@ -34,18 +34,35 @@ export interface MentorClass {
   category: string;
   courseId?: string;
   courseName?: string;
-  classType: 'recorded' | 'live' | 'one-to-one'; // New field
-  platform?: 'zoom' | 'jitsi' | 'internal'; // Optional for recorded classes
+  classType: 'recorded' | 'live' | 'one-to-one';
+  platform?: 'zoom' | 'jitsi' | 'internal';
   meetingLink?: string;
   meetingId?: string;
   meetingPassword?: string;
-  videoUrl?: string; // For recorded classes
+  videoUrl?: string;
   enrolledStudents: EnrolledStudent[];
   status: 'upcoming' | 'live' | 'past';
   recordings: ClassRecording[];
   feedback: ClassFeedback[];
   createdAt: string;
   updatedAt: string;
+  // Enhanced fields
+  timezone?: string;
+  recurringPattern?: 'none' | 'daily' | 'weekly' | 'monthly';
+  recurringEndDate?: string;
+  maxCapacity?: number;
+  waitlist?: EnrolledStudent[];
+  classMaterials?: Array<{ id: string; name: string; url: string; type: string }>;
+  agenda?: string[];
+  preparationChecklist?: string[];
+  preClassAnnouncement?: string;
+  classNotes?: string;
+  followUpAssignmentId?: string;
+  analytics?: {
+    attendanceRate: number;
+    averageEngagement: number;
+    peakEngagementTime: number;
+  };
 }
 
 export interface ChatMessage {

@@ -63,3 +63,51 @@ export interface AssignmentNotification {
   read: boolean;
 }
 
+export interface AssignmentTemplate {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  courseId?: string;
+  instructions: string;
+  maxScore: number;
+  rubric?: Rubric;
+  createdBy: string;
+  createdAt: string;
+  isShared: boolean;
+}
+
+export interface Rubric {
+  id: string;
+  name: string;
+  criteria: RubricCriterion[];
+  totalPoints: number;
+}
+
+export interface RubricCriterion {
+  id: string;
+  name: string;
+  description: string;
+  maxPoints: number;
+  levels: RubricLevel[];
+}
+
+export interface RubricLevel {
+  id: string;
+  name: string;
+  description: string;
+  points: number;
+}
+
+export interface AssignmentAnalytics {
+  assignmentId: string;
+  totalStudents: number;
+  submittedCount: number;
+  submissionRate: number;
+  averageScore: number;
+  averageTimeToComplete: number; // in hours
+  lateSubmissions: number;
+  commonMistakes: string[];
+  gradeDistribution: { range: string; count: number }[];
+}
+

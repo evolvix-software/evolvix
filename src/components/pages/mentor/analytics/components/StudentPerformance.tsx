@@ -21,17 +21,8 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
     ? performance.reduce((sum, p) => sum + p.averageAssignmentScore, 0) / performance.length
     : 0;
 
-  const getImprovementColor = (improvement: number) => {
-    if (improvement >= 30) return 'text-green-600 dark:text-green-400';
-    if (improvement >= 20) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-orange-600 dark:text-orange-400';
-  };
-
-  const getScoreColor = (score: number) => {
-    if (score >= 85) return 'text-green-600 dark:text-green-400';
-    if (score >= 70) return 'text-yellow-600 dark:text-yellow-400';
-    return 'text-red-600 dark:text-red-400';
-  };
+  const getImprovementColor = () => 'text-slate-900 dark:text-white';
+  const getScoreColor = () => 'text-slate-900 dark:text-white';
 
   return (
     <div className="space-y-6">
@@ -46,9 +37,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                   +{averageImprovement.toFixed(1)}%
                 </p>
               </div>
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
-              </div>
+              <TrendingUp className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -62,9 +51,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                   {averageCurrentScore.toFixed(1)}%
                 </p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-lg flex items-center justify-center">
-                <Target className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </div>
+              <Target className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -78,9 +65,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                   {averageAssignmentScore.toFixed(1)}%
                 </p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-lg flex items-center justify-center">
-                <Award className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-              </div>
+              <Award className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -94,9 +79,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                   {performance.length}
                 </p>
               </div>
-              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-lg flex items-center justify-center">
-                <BarChart3 className="w-6 h-6 text-orange-600 dark:text-orange-400" />
-              </div>
+              <BarChart3 className="w-8 h-8 text-slate-600 dark:text-slate-400" />
             </div>
           </CardContent>
         </Card>
@@ -149,8 +132,8 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                   >
                     <td className="py-3 px-4">
                       <div className="flex items-center space-x-2">
-                        <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <span className="text-white text-xs font-bold">
+                        <div className="w-8 h-8 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-600">
+                          <span className="text-slate-700 dark:text-slate-300 text-xs font-semibold">
                             {student.studentName.charAt(0).toUpperCase()}
                           </span>
                         </div>
@@ -196,10 +179,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                       <div className="flex items-center justify-center space-x-2">
                         <div className="w-16 bg-slate-200 dark:bg-slate-700 rounded-full h-2">
                           <div
-                            className={`h-2 rounded-full transition-all duration-500 ${
-                              student.progress >= 80 ? 'bg-green-500' :
-                              student.progress >= 50 ? 'bg-yellow-500' : 'bg-red-500'
-                            }`}
+                            className="h-2 rounded-full transition-all duration-500 bg-slate-600 dark:bg-slate-500"
                             style={{ width: `${student.progress}%` }}
                           />
                         </div>

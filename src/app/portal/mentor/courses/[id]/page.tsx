@@ -5,22 +5,36 @@ import { useParams, useRouter } from 'next/navigation';
 import { Layout } from '@/components/common/layout/Layout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
-import { useAppSelector } from '@/hooks';
+import { useAppSelector, useAppDispatch } from '@/hooks';
+import { updateCourse } from '@/store/features/courses/coursesSlice';
 import { Course } from '@/data/mock/coursesData';
 import { ProjectEvaluation } from '@/components/common/projects/ProjectEvaluation';
 import { ProjectsLeaderboard } from '@/components/common/projects/ProjectsLeaderboard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Code, FileText, Users, Trophy, Calendar, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, Play, Video, BookOpen } from 'lucide-react';
+import { Code, FileText, Users, Trophy, Calendar, CheckCircle2, Clock, XCircle, ChevronDown, ChevronUp, Play, Video, BookOpen, TrendingUp, Settings as SettingsIcon, MessageSquare, BarChart } from 'lucide-react';
+import { CourseSettings } from '@/components/pages/mentor/courses/components/CourseSettings';
+import { CourseCommunication } from '@/components/pages/mentor/courses/components/CourseCommunication';
+import { CoursePerformance } from '@/components/pages/mentor/courses/components/CoursePerformance';
+import { CourseSubmission } from '@/components/pages/mentor/courses/components/CourseSubmission';
 
 export default function MentorCourseDetailPage() {
   const params = useParams();
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const { courses } = useAppSelector(state => state.courses);
   const { submissions, doubtClearingSessions } = useAppSelector(state => state.projects);
   
   const [course, setCourse] = useState<Course | null>(null);
   const [activeTab, setActiveTab] = useState('modules');
   const [expandedModules, setExpandedModules] = useState<Set<string>>(new Set());
+
+  const handleCourseUpdate = (updates: Partial<Course>) => {
+    if (course) {
+      const updatedCourse = { ...course, ...updates };
+      dispatch(updateCourse({ id: course.id, ...updatedCourse }));
+      setCourse(updatedCourse);
+    }
+  };
 
   useEffect(() => {
     const foundCourse = courses.find(c => c.id === params.id);
@@ -85,28 +99,44 @@ export default function MentorCourseDetailPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
             <TabsTrigger value="modules" className="flex items-center space-x-2">
               <FileText className="w-4 h-4" />
-              <span>Modules</span>
+              <span className="hidden sm:inline">Modules</span>
             </TabsTrigger>
             <TabsTrigger value="projects" className="flex items-center space-x-2">
               <Code className="w-4 h-4" />
-              <span>Projects</span>
+              <span className="hidden sm:inline">Projects</span>
               {pendingSubmissions.length > 0 && (
                 <span className="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">
                   {pendingSubmissions.length}
                 </span>
               )}
             </TabsTrigger>
+            <TabsTrigger value="analytics" className="flex items-center space-x-2" onClick={() => router.push(`/portal/mentor/courses/${course.id}/analytics`)}>
+              <TrendingUp className="w-4 h-4" />
+              <span className="hidden sm:inline">Analytics</span>
+            </TabsTrigger>
+            <TabsTrigger value="settings" className="flex items-center space-x-2">
+              <SettingsIcon className="w-4 h-4" />
+              <span className="hidden sm:inline">Settings</span>
+            </TabsTrigger>
+            <TabsTrigger value="communication" className="flex items-center space-x-2">
+              <MessageSquare className="w-4 h-4" />
+              <span className="hidden sm:inline">Communication</span>
+            </TabsTrigger>
+            <TabsTrigger value="performance" className="flex items-center space-x-2">
+              <BarChart className="w-4 h-4" />
+              <span className="hidden sm:inline">Performance</span>
+            </TabsTrigger>
             <TabsTrigger value="leaderboard" className="flex items-center space-x-2">
               <Trophy className="w-4 h-4" />
-              <span>Leaderboard</span>
+              <span className="hidden sm:inline">Leaderboard</span>
             </TabsTrigger>
             {course.enableSundayDoubtClearing && (
               <TabsTrigger value="doubt-sessions" className="flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
-                <span>Doubt Sessions</span>
+                <span className="hidden sm:inline">Doubt Sessions</span>
               </TabsTrigger>
             )}
           </TabsList>
@@ -434,6 +464,36 @@ export default function MentorCourseDetailPage() {
                 </CardContent>
               </Card>
             )}
+          </TabsContent>
+
+          {/* Analytics Tab */}
+          <TabsContent value="analytics">
+            <div className="text-center py-8">
+              <p className="text-muted-foreground mb-4">Redirecting to analytics page...</p>
+              <Button onClick={() => router.push(`/portal/mentor/courses/${course.id}/analytics`)}>
+                View Full Analytics
+              </Button>
+            </div>
+          </TabsContent>
+
+          {/* Settings Tab */}
+          <TabsContent value="settings">
+            <div className="space-y-6">
+              {course.isBundleCourse && (
+                <CourseSubmission course={course} onSubmitted={() => window.location.reload()} />
+              )}
+              <CourseSettings course={course} onUpdate={handleCourseUpdate} />
+            </div>
+          </TabsContent>
+
+          {/* Communication Tab */}
+          <TabsContent value="communication">
+            <CourseCommunication course={course} />
+          </TabsContent>
+
+          {/* Performance Tab */}
+          <TabsContent value="performance">
+            <CoursePerformance course={course} />
           </TabsContent>
 
           {/* Doubt Sessions Tab */}

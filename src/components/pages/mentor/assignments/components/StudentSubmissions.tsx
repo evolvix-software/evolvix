@@ -47,11 +47,11 @@ export function StudentSubmissions({
   }, [submissions, searchQuery, statusFilter]);
 
   const getStatusColor = (status: SubmissionStatus, isLate: boolean) => {
-    if (isLate) return 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
-    if (status === 'graded') return 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400';
-    if (status === 'returned') return 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400';
-    if (status === 'submitted') return 'bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400';
-    return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400';
+    if (isLate) return 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+    if (status === 'graded') return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
+    if (status === 'returned') return 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
+    if (status === 'submitted') return 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300';
+    return 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300';
   };
 
   const getStatusIcon = (status: SubmissionStatus, isLate: boolean) => {
@@ -94,7 +94,7 @@ export function StudentSubmissions({
               placeholder="Search submissions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
             />
           </div>
 
@@ -145,8 +145,8 @@ export function StudentSubmissions({
                     <div className="flex-1">
                       {/* Student Info */}
                       <div className="flex items-center space-x-3 mb-2">
-                        <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                          <span className="text-white font-bold">
+                        <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-600">
+                          <span className="text-slate-700 dark:text-slate-300 font-semibold">
                             {submission.studentName.charAt(0).toUpperCase()}
                           </span>
                         </div>

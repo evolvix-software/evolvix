@@ -1,20 +1,25 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/hooks';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
 import { Input } from '@/components/common/forms/Input';
 import { Label } from '@/components/ui/label';
-import { X, Save, Plus, Trash2, Upload, FileText, Video, FileQuestion, Clock, Calendar, ChevronLeft, ChevronRight, CheckCircle2, BookOpen, FolderTree, Settings as SettingsIcon, Eye, Image as ImageIcon } from 'lucide-react';
+import { X, Save, Plus, Trash2, Upload, FileText, Video, FileQuestion, Clock, Calendar, ChevronLeft, ChevronRight, CheckCircle2, BookOpen, FolderTree, Settings as SettingsIcon, Eye, Image as ImageIcon, ClipboardCheck, ExternalLink } from 'lucide-react';
 import { Course, Instructor, Module, CourseSchedule, Lesson, VideoTimestamp, LessonAssignment, LessonTest, CourseProject, Prerequisite } from '@/data/mock/coursesData';
 import { ProjectsConfig } from '@/components/common/projects/ProjectsConfig';
+import { determineCourseCategory, requiresVacancy, allowsScholarship } from '@/utils/courseUtils';
 
 interface CourseFormProps {
   mentorInfo: Instructor;
   editingCourse: Course | null;
   onSave: (course: Course) => void;
   onCancel: () => void;
+  isBundleCourse?: boolean; // Is this a bundle/master course
+  vacancyId?: string; // Associated vacancy ID
+  applicationId?: string; // Associated application ID
 }
 
 const DAYS_OF_WEEK = [
@@ -36,11 +41,35 @@ const STEPS = [
   { id: 6, title: 'Review', icon: Eye, description: 'Review & submit' },
 ];
 
-export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: CourseFormProps) {
+export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBundleCourse = false, vacancyId, applicationId }: CourseFormProps) {
+  const router = useRouter();
   const allCourses = useAppSelector((state) => state.courses.courses);
   const [currentStep, setCurrentStep] = useState(1);
   const [completedSteps, setCompletedSteps] = useState<number[]>([]);
   const [courseType, setCourseType] = useState<'live' | 'recorded'>(editingCourse?.courseType || 'recorded');
+  
+  // Determine course category
+  const detectedCategory = editingCourse?.courseCategory || (isBundleCourse ? 'bundle' : undefined);
+  const [courseCategory, setCourseCategory] = useState<'crash' | 'skill-focused' | 'bootcamp' | 'bundle' | undefined>(detectedCategory);
+  
+  // Auto-detect category from duration when duration changes
+  const handleDurationChange = (duration: string) => {
+    setFormData({ ...formData, duration });
+    
+    // Auto-detect category if not manually set and not editing
+    if (!editingCourse && !isBundleCourse && duration) {
+      const autoCategory = determineCourseCategory(duration);
+      setCourseCategory(autoCategory);
+      setFormData(prev => ({
+        ...prev,
+        duration,
+        scholarshipAvailable: allowsScholarship(autoCategory),
+      }));
+    }
+  };
+  
+  // Check if vacancy is required
+  const needsVacancy = courseCategory && requiresVacancy(courseCategory);
   
   const [formData, setFormData] = useState({
     title: editingCourse?.title || '',
@@ -49,14 +78,15 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
     category: (editingCourse?.category || 'development') as 'development' | 'design' | 'business' | 'data-science' | 'other',
     level: (editingCourse?.level || 'beginner') as 'beginner' | 'intermediate' | 'advanced',
     skills: editingCourse?.skills.join(', ') || '',
-    price: editingCourse?.price || 0,
-    scholarshipAvailable: editingCourse?.scholarshipAvailable || false,
+    price: editingCourse?.adminPricing || editingCourse?.price || 0,
+    scholarshipAvailable: allowsScholarship(courseCategory),
     language: editingCourse?.language || 'English',
-    duration: editingCourse?.duration || '10 hours',
+    duration: editingCourse?.duration || '', // Optional - can be blank
     requirements: editingCourse?.requirements.join('\n') || '',
     allowStudentPreferences: editingCourse?.allowStudentPreferences || false,
     image: editingCourse?.image || '',
     thumbnail: editingCourse?.thumbnail || '',
+    installmentEnabled: editingCourse?.installmentEnabled !== undefined ? editingCourse.installmentEnabled : true,
   });
 
   // Image file states
@@ -365,8 +395,16 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
       })),
     }));
 
+    const courseId = editingCourse?.id || `course_${Date.now()}`;
+
+    // Determine if this is a bundle/bootcamp course
+    const isBundleOrBootcamp = courseCategory === 'bundle' || courseCategory === 'bootcamp';
+    
+    // Auto-detect category from duration if not manually set
+    const finalCategory = courseCategory || (formData.duration ? determineCourseCategory(formData.duration) : 'skill-focused');
+    
     const newCourse: Course = {
-      id: editingCourse?.id || `course_${Date.now()}`,
+      id: courseId,
       title: formData.title,
       description: formData.description,
       shortDescription: formData.shortDescription,
@@ -375,9 +413,9 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
       level: formData.level,
       skills: formData.skills.split(',').map(s => s.trim()).filter(Boolean),
       price: formData.price,
-      scholarshipAvailable: formData.scholarshipAvailable,
+      scholarshipAvailable: allowsScholarship(finalCategory),
       language: formData.language,
-      duration: formData.duration,
+      duration: formData.duration || '', // Optional - can be blank
       requirements: formData.requirements.split('\n').filter(Boolean),
       modules: newModules,
       rating: editingCourse?.rating || 0,
@@ -394,6 +432,22 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
       projects: projects.length > 0 ? projects : undefined,
       enableSundayDoubtClearing: courseType === 'recorded' ? enableSundayDoubtClearing : undefined,
       doubtClearingSessions: courseType === 'recorded' ? (editingCourse?.doubtClearingSessions || []) : undefined,
+      // Course Category System (with auto-detection)
+      courseCategory: finalCategory,
+      requiresVacancy: requiresVacancy(finalCategory),
+      allowsScholarship: allowsScholarship(finalCategory),
+      // Installment Payment System
+      installmentEnabled: formData.price > 0 ? formData.installmentEnabled : false,
+      installmentOptions: formData.price > 0 ? [3, 4] : undefined,
+      // Bundle course fields (for backward compatibility)
+      isBundleCourse: isBundleOrBootcamp,
+      bundleDuration: courseCategory === 'bundle' ? (editingCourse?.bundleDuration || '4-months') : undefined,
+      scholarshipOnly: undefined,
+      adminPricing: isBundleOrBootcamp ? formData.price : undefined,
+      commissionSplit: isBundleOrBootcamp ? (editingCourse?.commissionSplit || { evolvix: 30, mentor: 70 }) : undefined,
+      courseStatus: isBundleOrBootcamp ? (editingCourse?.courseStatus || 'draft') : undefined,
+      vacancyId: isBundleOrBootcamp ? (vacancyId || editingCourse?.vacancyId) : undefined,
+      applicationId: isBundleOrBootcamp ? (applicationId || editingCourse?.applicationId) : undefined,
     };
 
     onSave(newCourse);
@@ -410,6 +464,117 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Course Basic Information</h3>
               <p className="text-slate-600 dark:text-slate-400">Let's start with the essential details about your course</p>
             </div>
+
+            {/* Course Category Selection */}
+            {!editingCourse && !isBundleCourse && (
+              <div>
+                <Label htmlFor="courseCategory" className="mb-2 block text-base font-semibold">Course Category *</Label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCourseCategory('crash');
+                      setFormData({ ...formData, scholarshipAvailable: false });
+                    }}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      courseCategory === 'crash'
+                        ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                        : 'border-slate-300 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-700'
+                    }`}
+                  >
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Crash Course</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Free or Paid • No vacancy needed</p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCourseCategory('skill-focused');
+                      setFormData({ ...formData, scholarshipAvailable: false });
+                    }}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      courseCategory === 'skill-focused'
+                        ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                        : 'border-slate-300 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-700'
+                    }`}
+                  >
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Skill-Focused</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Free or Paid • No vacancy needed</p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCourseCategory('bootcamp');
+                      setFormData({ ...formData, scholarshipAvailable: true });
+                      // Redirect to vacancies if not coming from vacancy
+                      if (!vacancyId) {
+                        setTimeout(() => {
+                          router.push('/portal/mentor/vacancies?category=bootcamp');
+                        }, 500);
+                      }
+                    }}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      courseCategory === 'bootcamp'
+                        ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                        : 'border-slate-300 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'
+                    }`}
+                  >
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Full Career Bootcamp</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Scholarship-based • Requires vacancy</p>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCourseCategory('bundle');
+                      setFormData({ ...formData, scholarshipAvailable: true });
+                      // Redirect to vacancies if not coming from vacancy
+                      if (!vacancyId) {
+                        setTimeout(() => {
+                          router.push('/portal/mentor/vacancies?category=bundle');
+                        }, 500);
+                      }
+                    }}
+                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                      courseCategory === 'bundle'
+                        ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
+                        : 'border-slate-300 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
+                    }`}
+                  >
+                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Masterclass/Bundle</h4>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Scholarship-based • Requires vacancy</p>
+                  </button>
+                </div>
+                {needsVacancy && !vacancyId && (
+                  <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
+                    <p className="text-sm text-blue-800 dark:text-blue-200">
+                      <strong>Note:</strong> This course type requires applying through vacancies first. You'll be redirected to browse available vacancies.
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Show category info if editing or from vacancy */}
+            {(editingCourse || isBundleCourse) && courseCategory && (
+              <div className={`p-4 rounded-xl border-2 ${
+                courseCategory === 'bundle' || courseCategory === 'bootcamp'
+                  ? 'border-blue-200 dark:border-blue-800 bg-blue-50 dark:bg-blue-900/20'
+                  : 'border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50'
+              }`}>
+                <div className="flex items-center space-x-2">
+                  <BookOpen className="w-5 h-5" />
+                  <span className="font-semibold text-slate-900 dark:text-white">
+                    Course Category: {courseCategory === 'crash' ? 'Crash Course' : 
+                                     courseCategory === 'skill-focused' ? 'Skill-Focused' :
+                                     courseCategory === 'bootcamp' ? 'Full Career Bootcamp' : 'Masterclass/Bundle'}
+                  </span>
+                </div>
+                {allowsScholarship(courseCategory) && (
+                  <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+                    This course supports scholarship applications for eligible students.
+                  </p>
+                )}
+              </div>
+            )}
 
             <div>
               <Label htmlFor="courseType" className="mb-2 block text-base font-semibold">Course Type *</Label>
@@ -503,7 +668,14 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
               </div>
 
               <div>
-                <Label htmlFor="price" className="mb-2 block text-base font-semibold">Price ($) *</Label>
+                <Label htmlFor="price" className="mb-2 block text-base font-semibold">
+                  Course Price ($) *
+                  {(courseCategory === 'bundle' || courseCategory === 'bootcamp' || isBundleCourse) && (
+                    <span className="ml-2 text-sm font-normal text-muted-foreground">
+                      (Regular enrollment price - students can also apply for scholarship)
+                    </span>
+                  )}
+                </Label>
                 <Input
                   id="price"
                   type="number"
@@ -514,18 +686,34 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
                   min={0}
                   step={0.01}
                 />
+                {(courseCategory === 'bundle' || courseCategory === 'bootcamp' || isBundleCourse) && (
+                  <p className="mt-2 text-sm text-blue-600 dark:text-blue-400">
+                    💡 This course supports both regular enrollment and scholarship applications. Students with high college scores or from lower middle class backgrounds can apply for scholarship.
+                  </p>
+                )}
               </div>
 
               <div>
-                <Label htmlFor="duration" className="mb-2 block text-base font-semibold">Duration *</Label>
+                <Label htmlFor="duration" className="mb-2 block text-base font-semibold">
+                  Duration (Optional)
+                </Label>
                 <Input
                   id="duration"
                   value={formData.duration}
-                  onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                  required
+                  onChange={(e) => handleDurationChange(e.target.value)}
                   className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
-                  placeholder="e.g., 10 hours"
+                  placeholder="e.g., 10 hours, 4 weeks, 6 months (optional)"
                 />
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                  Duration is optional. Category will auto-detect: Crash (≤5h), Skill-Focused (≤20h), Bootcamp (≤60h), Bundle (4+ months)
+                </p>
+                {formData.duration && courseCategory && !editingCourse && (
+                  <p className="mt-1 text-xs text-green-600 dark:text-green-400">
+                    ✓ Auto-detected category: {courseCategory === 'crash' ? 'Crash Course' : 
+                                               courseCategory === 'skill-focused' ? 'Skill-Focused' :
+                                               courseCategory === 'bootcamp' ? 'Full Career Bootcamp' : 'Masterclass/Bundle'}
+                  </p>
+                )}
               </div>
 
               <div>
@@ -728,18 +916,20 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
               </div>
             </div>
 
-            <div className="flex items-center space-x-3 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
-              <input
-                type="checkbox"
-                id="scholarshipAvailable"
-                checked={formData.scholarshipAvailable}
-                onChange={(e) => setFormData({ ...formData, scholarshipAvailable: e.target.checked })}
-                className="w-5 h-5 text-green-600 rounded focus:ring-2 focus:ring-green-500"
-              />
-              <Label htmlFor="scholarshipAvailable" className="cursor-pointer text-base font-medium">
-                Scholarship Available
-              </Label>
-            </div>
+            {/* Scholarship option only available for bundle/master courses */}
+            {(courseCategory === 'bundle' || courseCategory === 'bootcamp' || isBundleCourse) && (
+              <div className="flex items-center space-x-3 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-200 dark:border-blue-800">
+                <CheckCircle2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <div>
+                  <Label className="text-base font-medium text-blue-900 dark:text-blue-100">
+                    Scholarship Available
+                  </Label>
+                  <p className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+                    This course supports scholarship applications for eligible students
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         );
 
@@ -1018,6 +1208,47 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
                             </span>
                           )}
                         </div>
+
+                        {/* Module Test Creation (Recorded Courses Only) */}
+                        {courseType === 'recorded' && (
+                          <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
+                            <div className="flex items-center justify-between mb-2">
+                              <Label className="text-base font-semibold flex items-center">
+                                <ClipboardCheck className="w-4 h-4 mr-2" />
+                                Module Test
+                              </Label>
+                              <Button
+                                type="button"
+                                size="sm"
+                                variant="outline"
+                                onClick={() => {
+                                  // Store course and module info temporarily for test creation
+                                  const courseId = editingCourse?.id || `course_${Date.now()}`;
+                                  const courseTitle = formData.title || 'Untitled Course';
+                                  
+                                  // Store in sessionStorage for test creation page
+                                  sessionStorage.setItem('pending_test_course', JSON.stringify({
+                                    courseId,
+                                    courseTitle,
+                                    moduleId: module.id,
+                                    moduleTitle: module.title,
+                                  }));
+                                  
+                                  // Redirect to test creation page
+                                  router.push(`/portal/mentor/tests?courseId=${courseId}&moduleId=${module.id}&create=true`);
+                                }}
+                                className="bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/30 border-blue-200 dark:border-blue-800"
+                              >
+                                <ClipboardCheck className="w-4 h-4 mr-1" />
+                                Create Module Test
+                                <ExternalLink className="w-3 h-3 ml-1" />
+                              </Button>
+                            </div>
+                            <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
+                              Upload module document and generate AI-powered MCQ questions for this module
+                            </p>
+                          </div>
+                        )}
 
                         {/* Lessons Section */}
                         <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
@@ -1577,7 +1808,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel }: Cour
           </div>
           <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3 overflow-hidden">
             <div 
-              className="h-full bg-gradient-to-r from-green-500 to-green-600 transition-all duration-500 ease-out rounded-full"
+              className="h-full bg-slate-600 dark:bg-slate-500 transition-all duration-500 ease-out rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>

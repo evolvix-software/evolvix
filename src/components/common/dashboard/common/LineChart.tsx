@@ -26,14 +26,14 @@ export function LineChart({ title, description, data, height = 200, color = 'gre
 
   if (!data || data.length === 0) {
     return (
-      <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+      <Card className="border border-border bg-card shadow-sm">
         <CardHeader>
-          <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">{title}</CardTitle>
-          {description && <CardDescription className="text-slate-600 dark:text-slate-400">{description}</CardDescription>}
+          <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
+          {description && <CardDescription className="text-muted-foreground">{description}</CardDescription>}
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-center" style={{ height: `${height}px` }}>
-            <p className="text-sm text-slate-500 dark:text-slate-400">No data available</p>
+            <p className="text-sm text-muted-foreground">No data available</p>
           </div>
         </CardContent>
       </Card>
@@ -53,10 +53,10 @@ export function LineChart({ title, description, data, height = 200, color = 'gre
   const pathData = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
 
   return (
-    <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+    <Card className="border border-border bg-card shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">{title}</CardTitle>
-        {description && <CardDescription className="text-slate-600 dark:text-slate-400">{description}</CardDescription>}
+        <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
+        {description && <CardDescription className="text-muted-foreground">{description}</CardDescription>}
       </CardHeader>
       <CardContent>
         <div style={{ height: `${height}px` }} className="relative">
@@ -102,7 +102,7 @@ export function LineChart({ title, description, data, height = 200, color = 'gre
             ))}
           </svg>
           {/* X-axis labels */}
-          <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-slate-500 dark:text-slate-400 px-2">
+          <div className="absolute bottom-0 left-0 right-0 flex justify-between text-xs text-muted-foreground px-2">
             {data.slice(0, 5).map((item, i) => (
               <span key={i} className="truncate">{item.label}</span>
             ))}

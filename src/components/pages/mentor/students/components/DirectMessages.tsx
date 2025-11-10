@@ -120,7 +120,7 @@ export function DirectMessages({
                   onClick={() => setSelectedConversation(conversation.studentId)}
                   className={`w-full p-4 text-left hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${
                     selectedConversation === conversation.studentId
-                      ? 'bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500'
+                      ? 'bg-slate-100 dark:bg-slate-800 border-l-4 border-slate-600 dark:border-slate-500'
                       : ''
                   }`}
                 >
@@ -132,8 +132,8 @@ export function DirectMessages({
                         className="w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <span className="text-white font-bold">
+                      <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center flex-shrink-0 border border-slate-300 dark:border-slate-600">
+                        <span className="text-slate-700 dark:text-slate-300 font-semibold">
                           {conversation.studentName.charAt(0).toUpperCase()}
                         </span>
                       </div>
@@ -144,7 +144,7 @@ export function DirectMessages({
                           {conversation.studentName}
                         </h4>
                         {conversation.unreadCount > 0 && (
-                          <span className="ml-2 px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full flex-shrink-0">
+                          <span className="ml-2 px-2 py-0.5 bg-slate-700 dark:bg-slate-600 text-white text-xs rounded-full flex-shrink-0">
                             {conversation.unreadCount}
                           </span>
                         )}
@@ -179,8 +179,8 @@ export function DirectMessages({
                       className="w-10 h-10 rounded-full object-cover"
                     />
                   ) : (
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold">
+                    <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-600">
+                      <span className="text-slate-700 dark:text-slate-300 font-semibold">
                         {currentConversation.studentName.charAt(0).toUpperCase()}
                       </span>
                     </div>
@@ -221,23 +221,17 @@ export function DirectMessages({
                         <div
                           className={`max-w-[70%] rounded-lg px-4 py-2 ${
                             isMentor
-                              ? 'bg-blue-600 text-white'
+                              ? 'bg-slate-700 dark:bg-slate-600 text-white'
                               : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700'
                           }`}
                         >
                           <p className="text-sm">{message.message}</p>
                           <div className="flex items-center justify-end space-x-1 mt-1">
-                            <span
-                              className={`text-xs ${
-                                isMentor
-                                  ? 'text-blue-100'
-                                  : 'text-slate-500 dark:text-slate-400'
-                              }`}
-                            >
+                            <span className="text-xs text-slate-200 dark:text-slate-300">
                               {formatTime(message.timestamp)}
                             </span>
                             {isMentor && (
-                              <span className="text-blue-100">
+                              <span className="text-slate-200 dark:text-slate-300">
                                 {message.read ? (
                                   <CheckCheck className="w-3 h-3" />
                                 ) : (
@@ -276,7 +270,7 @@ export function DirectMessages({
                 <Button
                   onClick={handleSendMessage}
                   disabled={!messageInput.trim()}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
                 >
                   <Send className="w-5 h-5" />
                 </Button>

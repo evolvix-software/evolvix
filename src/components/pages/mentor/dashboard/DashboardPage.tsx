@@ -15,39 +15,72 @@ import {
   QuickActions,
   NotificationsFeed,
   UpcomingSessions,
+  PerformanceInsights,
 } from './components';
+import type { Notification } from './components/NotificationsFeed';
+import { Calendar } from '@/components/common/calendar';
+import { generateMockEventsForMonth } from '@/data/mock/calendarEvents';
+import { useMemo } from 'react';
+import { mockSubmissions } from '@/data/mock/assignments';
 
 interface MentorStats {
   totalClasses: number;
   totalStudents: number;
+  activeStudents: number;
   averageRating: number;
   pendingReviews: number;
   pendingPayments: number;
+  totalRevenue: {
+    thisMonth: number;
+    thisYear: number;
+    allTime: number;
+  };
+  upcomingClasses: number;
+  pendingGrading: number;
+  completionRate: number;
+  responseTime: number; // in hours
+  retentionRate: number;
 }
 
 const defaultStats: MentorStats = {
   totalClasses: 0,
   totalStudents: 0,
+  activeStudents: 0,
   averageRating: 0,
   pendingReviews: 0,
   pendingPayments: 0,
+  totalRevenue: {
+    thisMonth: 0,
+    thisYear: 0,
+    allTime: 0,
+  },
+  upcomingClasses: 0,
+  pendingGrading: 0,
+  completionRate: 0,
+  responseTime: 0,
+  retentionRate: 0,
 };
 
 const verifiedStats: MentorStats = {
   totalClasses: 156,
   totalStudents: 24,
+  activeStudents: 18,
   averageRating: 4.9,
   pendingReviews: 5,
   pendingPayments: 2340,
+  totalRevenue: {
+    thisMonth: 12500,
+    thisYear: 145000,
+    allTime: 425000,
+  },
+  upcomingClasses: 7,
+  pendingGrading: 12,
+  completionRate: 78,
+  responseTime: 2.5,
+  retentionRate: 85,
 };
 
-const defaultNotifications: Array<{
-  id: string;
-  type: 'assignment' | 'milestone' | 'payment';
-  title: string;
-  description: string;
-  time: string;
-}> = [];
+const defaultNotifications: Notification[] = [];
 
 const defaultSessions: Array<{
   id: string;
@@ -57,27 +90,48 @@ const defaultSessions: Array<{
   time: string;
 }> = [];
 
-const verifiedNotifications = [
+const verifiedNotifications: Notification[] = [
   {
     id: '1',
-    type: 'assignment' as const,
-    title: 'New student assignment',
-    description: 'Alex Johnson has been assigned to your mentorship',
-    time: '2 hours ago',
+    type: 'enrollment' as const,
+    title: 'New student enrollment',
+    description: 'Michael Brown enrolled in Live Full-Stack Web Development Bootcamp',
+    time: '30 minutes ago',
   },
   {
     id: '2',
-    type: 'milestone' as const,
-    title: 'Project milestone update',
-    description: 'Sarah Chen\'s project has reached milestone 3',
-    time: '5 hours ago',
+    type: 'assignment_submission' as const,
+    title: 'Assignment submitted',
+    description: 'Alex Johnson submitted "Personal Portfolio Page" assignment',
+    time: '1 hour ago',
   },
   {
     id: '3',
+    type: 'test_completion' as const,
+    title: 'Test completed',
+    description: 'Sarah Chen completed "JavaScript Fundamentals" test',
+    time: '2 hours ago',
+  },
+  {
+    id: '4',
+    type: 'message' as const,
+    title: 'Message requires response',
+    description: 'David Wilson sent a message about project requirements',
+    time: '3 hours ago',
+  },
+  {
+    id: '5',
     type: 'payment' as const,
-    title: 'Payment processed',
-    description: 'Your payout for last week has been processed',
+    title: 'Payment notification',
+    description: 'Your payout for last week has been processed ($2,340)',
     time: '1 day ago',
+  },
+  {
+    id: '6',
+    type: 'announcement' as const,
+    title: 'System announcement',
+    description: 'New feature: Enhanced grading system now available',
+    time: '2 days ago',
   },
 ];
 
@@ -102,8 +156,41 @@ export function MentorDashboardPage() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { verificationStatus } = useAppSelector((state) => state.verification);
+  const { courses } = useAppSelector((state) => state.courses);
   const [userData, setUserData] = useState<any>(null);
   const [isVerified, setIsVerified] = useState(false);
+  
+  // Get calendar events for current month
+  const currentDate = new Date();
+  const calendarEvents = generateMockEventsForMonth(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    'mentor'
+  );
+
+  // Calculate upcoming classes (next 7 days)
+  const upcomingClassesCount = useMemo(() => {
+    const now = new Date();
+    const sevenDaysFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    
+    return calendarEvents.filter(event => {
+      const eventDate = new Date(event.startTime);
+      return eventDate >= now && eventDate <= sevenDaysFromNow && 
+             (event.type === 'course' || event.title.toLowerCase().includes('class'));
+    }).length;
+  }, [calendarEvents]);
+
+  // Calculate pending grading (assignments + tests)
+  const pendingGradingCount = useMemo(() => {
+    // Count submissions that are submitted/late but not graded
+    const pendingSubmissions = mockSubmissions.filter(
+      sub => sub.status === 'submitted' || sub.status === 'late'
+    ).length;
+    
+    // TODO: Add test completions that need grading
+    // For now, just return assignment submissions
+    return pendingSubmissions;
+  }, []);
 
   useEffect(() => {
     // Get stored registration data
@@ -123,6 +210,12 @@ export function MentorDashboardPage() {
       router.push('/auth/signup');
     }
   }, [router, dispatch]);
+  
+  // Get mentor's courses for filter (after userData is set)
+  const mentorCourses = useMemo(() => {
+    if (!userData) return [];
+    return courses.filter(c => c.instructor.id === userData.email || c.instructor.id === 'suhxil14@gmail.com');
+  }, [courses, userData]);
 
   useEffect(() => {
     if (verificationStatus?.status === 'approved') {
@@ -137,15 +230,25 @@ export function MentorDashboardPage() {
       <Layout title="Dashboard" role="mentor">
         <div className="flex items-center justify-center h-64">
         <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Loading dashboard...</h2>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+            <h2 className="text-xl font-semibold text-foreground">Loading dashboard...</h2>
         </div>
       </div>
       </Layout>
     );
   }
 
-  const stats = isVerified ? verifiedStats : defaultStats;
+  // Merge verified stats with calculated values
+  const stats = isVerified ? {
+    ...verifiedStats,
+    upcomingClasses: upcomingClassesCount,
+    pendingGrading: pendingGradingCount,
+  } : {
+    ...defaultStats,
+    upcomingClasses: upcomingClassesCount,
+    pendingGrading: pendingGradingCount,
+  };
+  
   const notifications = isVerified ? verifiedNotifications : defaultNotifications;
   const sessions = isVerified ? verifiedSessions : defaultSessions;
 
@@ -276,32 +379,50 @@ export function MentorDashboardPage() {
         {isVerified ? (
           <>
             <StatsGrid stats={stats} />
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
                 <ChartsSection />
+                <PerformanceInsights />
                 <NotificationsFeed notifications={notifications} />
-          </div>
-          <div className="space-y-6">
+              </div>
+              <div className="space-y-6">
                 <QuickActions isVerified={isVerified} />
                 <UpcomingSessions sessions={sessions} />
-                  </div>
-                </div>
+              </div>
+            </div>
+            {/* Calendar - Full Width */}
+            <div className="w-full">
+              <Calendar 
+                events={calendarEvents}
+                role="mentor"
+                courses={mentorCourses.map(c => ({ id: c.id, title: c.title }))}
+              />
+            </div>
           </>
         ) : (
           // TODO: Re-enable verification required message after UI is complete
           // Temporarily showing full content even when not verified
           <>
             <StatsGrid stats={stats} />
-        <div className="grid lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 space-y-6">
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2 space-y-6">
                 <ChartsSection />
+                <PerformanceInsights />
                 <NotificationsFeed notifications={notifications} />
-          </div>
-          <div className="space-y-6">
+              </div>
+              <div className="space-y-6">
                 <QuickActions isVerified={isVerified} />
                 <UpcomingSessions sessions={sessions} />
-                  </div>
-                </div>
+              </div>
+            </div>
+            {/* Calendar - Full Width */}
+            <div className="w-full">
+              <Calendar 
+                events={calendarEvents}
+                role="mentor"
+                courses={mentorCourses.map(c => ({ id: c.id, title: c.title }))}
+              />
+            </div>
             {/* TODO: Re-enable verification required message after UI is complete */}
             {/* <Card className="border-0 shadow-sm bg-gray-50 dark:bg-gray-800/50">
             <CardContent className="p-8">

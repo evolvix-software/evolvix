@@ -12,6 +12,44 @@ export interface Student {
   lastActive: string;
   joinedAt: string;
   rating?: number;
+  // Enhanced fields
+  phone?: string;
+  location?: string;
+  timezone?: string;
+  loginFrequency?: number; // times per week
+  timeSpentLearning?: number; // hours
+  assignmentSubmissionRate?: number; // percentage
+  discussionParticipation?: number; // count
+  classAttendanceRate?: number; // percentage
+  gpa?: number;
+  certificates?: string[];
+  badges?: string[];
+  tags?: string[];
+  status?: 'enrolled' | 'completed' | 'dropped' | 'at-risk';
+  paymentStatus?: 'paid' | 'unpaid' | 'partial';
+  engagementLevel?: 'high' | 'medium' | 'low';
+  performanceLevel?: 'high' | 'medium' | 'low';
+  strengths?: string[];
+  weaknesses?: string[];
+  learningPace?: 'fast' | 'average' | 'slow';
+  recommendedCourses?: string[];
+  careerGoals?: string[];
+  supportTickets?: number;
+}
+
+export interface StudentTestCompletion {
+  testId: string;
+  testTitle: string;
+  moduleTitle: string;
+  courseId: string;
+  courseTitle: string;
+  score: number;
+  maxScore: number;
+  percentage: number;
+  passed: boolean;
+  timeSpent: number; // in minutes
+  completedAt: string;
+  wrongAnswers: number;
 }
 
 export interface StudentCourseProgress {
@@ -23,6 +61,7 @@ export interface StudentCourseProgress {
   assignmentsCompleted: number;
   assignmentsTotal: number;
   enrolledAt: string;
+  testCompletions?: StudentTestCompletion[];
 }
 
 export interface StudentFeedback {

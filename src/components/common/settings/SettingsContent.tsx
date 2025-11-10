@@ -361,6 +361,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <input
                         type="tel"
                         value={personalInfo.phone}
+                        readOnly
                         onChange={(e) => setPersonalInfo({ ...personalInfo, phone: e.target.value })}
                         className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
                       />
@@ -997,7 +998,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 <div className="space-y-2 mt-3">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-600 dark:text-slate-400">Google</span>
-                    <span className="text-green-600">Connected</span>
+                    <span className="text-slate-600 dark:text-slate-400">Connected</span>
                   </div>
                 </div>
               </div>
@@ -1053,7 +1054,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <User className="w-5 h-5 text-green-600" />
+              <User className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Profile Settings</span>
             </CardTitle>
             <CardDescription>Manage your professional profile and information</CardDescription>
@@ -1079,19 +1080,19 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               return (
                 <Card className={`border-2 ${
                   verificationStatus === 'approved' 
-                    ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
+                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
                     : verificationStatus === 'pending'
-                    ? 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
+                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
                     : verificationStatus === 'rejected'
-                    ? 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
-                    : 'bg-gray-50 dark:bg-gray-900/20 border-gray-200 dark:border-gray-800'
+                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
+                    : 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
                 }`}>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className="flex-shrink-0">
                           {verificationStatus === 'approved' ? (
-                            <CheckCircle2 className="w-12 h-12 text-green-600 dark:text-green-400" />
+                            <CheckCircle2 className="w-12 h-12 text-slate-600 dark:text-slate-400" />
                           ) : verificationStatus === 'pending' ? (
                             <Clock className="w-12 h-12 text-yellow-600 dark:text-yellow-400" />
                           ) : verificationStatus === 'rejected' ? (
@@ -1103,12 +1104,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                         <div className="flex-1">
                           <h3 className={`text-lg font-semibold ${
                             verificationStatus === 'approved'
-                              ? 'text-green-900 dark:text-green-400'
+                              ? 'text-slate-900 dark:text-white'
                               : verificationStatus === 'pending'
-                              ? 'text-yellow-900 dark:text-yellow-400'
+                              ? 'text-slate-900 dark:text-white'
                               : verificationStatus === 'rejected'
-                              ? 'text-red-900 dark:text-red-400'
-                              : 'text-gray-900 dark:text-white'
+                              ? 'text-slate-900 dark:text-white'
+                              : 'text-slate-900 dark:text-white'
                           }`}>
                             {verificationStatus === 'approved' 
                               ? 'Verification Complete!' 
@@ -1120,12 +1121,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           </h3>
                           <p className={`text-sm mt-1 ${
                             verificationStatus === 'approved'
-                              ? 'text-green-700 dark:text-green-300'
+                              ? 'text-slate-600 dark:text-slate-400'
                               : verificationStatus === 'pending'
-                              ? 'text-yellow-700 dark:text-yellow-300'
+                              ? 'text-slate-600 dark:text-slate-400'
                               : verificationStatus === 'rejected'
-                              ? 'text-red-700 dark:text-red-300'
-                              : 'text-gray-700 dark:text-gray-300'
+                              ? 'text-slate-600 dark:text-slate-400'
+                              : 'text-slate-600 dark:text-slate-400'
                           }`}>
                             {verificationStatus === 'approved'
                               ? 'You are now a verified mentor with full access to all features.'
@@ -1142,7 +1143,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           router.push('/portal/mentor/settings?section=kyc');
                         }}
                         variant={verificationStatus !== 'approved' ? 'default' : 'outline'}
-                        className={verificationStatus !== 'approved' ? 'bg-green-600 hover:bg-green-700' : ''}
+                        className={verificationStatus !== 'approved' ? 'bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0' : ''}
                       >
                         {verificationStatus === 'incomplete' || verificationStatus === 'rejected' 
                           ? 'Complete Verification' 
@@ -1217,7 +1218,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Expertise / Skills</h3>
               <div className="flex flex-wrap gap-2 mb-4">
                 {professionalInfo.expertise.map((skill, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300 rounded-full text-sm flex items-center space-x-2">
+                  <span key={idx} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full text-sm flex items-center space-x-2">
                     <span>{skill}</span>
                     <XCircle 
                       className="w-3 h-3 cursor-pointer hover:text-red-600" 
@@ -1319,11 +1320,11 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             <div>
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Picture</h3>
               <div className="flex items-center space-x-6">
-                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-green-600">
+                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-slate-300 dark:border-slate-600">
                   <User className="w-16 h-16 text-slate-400" />
                 </div>
                 <div className="flex-1 space-y-3">
-                  <Button className="bg-green-600 hover:bg-green-700">
+                  <Button className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Photo
                   </Button>
@@ -1341,7 +1342,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Social Links</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
-                  <Linkedin className="w-5 h-5 text-blue-600" />
+                  <Linkedin className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   <input
                     type="text"
                     placeholder="LinkedIn URL"
@@ -1361,7 +1362,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                   />
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Globe className="w-5 h-5 text-green-600" />
+                  <Globe className="w-5 h-5 text-slate-600 dark:text-slate-400" />
                   <input
                     type="text"
                     placeholder="Portfolio URL"
@@ -1375,7 +1376,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
               <Button variant="outline">Cancel</Button>
-              <Button onClick={() => alert('Profile settings saved!')} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={() => alert('Profile settings saved!')} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>
@@ -1388,7 +1389,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-600" />
+              <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>KYC & Verification</span>
             </CardTitle>
             <CardDescription>Manage your KYC & Verification settings</CardDescription>
@@ -1418,7 +1419,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Lock className="w-5 h-5 text-green-600" />
+              <Lock className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Account & Security</span>
             </CardTitle>
             <CardDescription>Manage your login and security credentials</CardDescription>
@@ -1436,9 +1437,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     <input
                       type="email"
                       value={personalInfo.email}
-                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      readOnly
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white cursor-not-allowed opacity-75"
                     />
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
+                    <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
@@ -1456,9 +1458,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     <input
                       type="tel"
                       value={personalInfo.phone}
-                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      readOnly
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white cursor-not-allowed opacity-75"
                     />
-                    <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
+                    <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
@@ -1486,7 +1489,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Confirm New Password</label>
                   <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
                 </div>
-                <Button className="bg-green-600 hover:bg-green-700">
+                <Button className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
                   <Save className="w-4 h-4 mr-2" />
                   Update Password
                 </Button>
@@ -1502,7 +1505,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" checked={profile.twoFactorAuth} onChange={handleToggleTwoFactor} />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             </div>
@@ -1519,7 +1522,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">Google</span>
-                  <span className="text-green-600">Connected</span>
+                  <span className="text-slate-600 dark:text-slate-400">Connected</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">LinkedIn</span>
@@ -1549,7 +1552,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <CreditCard className="w-5 h-5 text-green-600" />
+              <CreditCard className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Payout & Financials</span>
             </CardTitle>
             <CardDescription>Manage your payment and financial information</CardDescription>
@@ -1675,7 +1678,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
               <Button variant="outline">Cancel</Button>
-              <Button onClick={() => alert('Payout settings saved!')} className="bg-green-600 hover:bg-green-700">
+              <Button onClick={() => alert('Payout settings saved!')} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>
@@ -1688,7 +1691,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Bell className="w-5 h-5 text-green-600" />
+              <Bell className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Notification Settings</span>
             </CardTitle>
             <CardDescription>Control what notifications you receive</CardDescription>
@@ -1712,7 +1715,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     checked={(profile.notifications as any)[item.key] || false}
                     onChange={(e) => handleNotificationToggle(item.key as any, e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             ))}
@@ -1724,7 +1727,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Shield className="w-5 h-5 text-green-600" />
+              <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Privacy & Security</span>
             </CardTitle>
             <CardDescription>Manage your privacy settings and data control</CardDescription>
@@ -1762,7 +1765,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     checked={(profile.privacySettings as any).reviewsVisibility !== false}
                     onChange={(e) => handlePrivacyChange('reviewsVisibility' as any, e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-600/30 dark:peer-focus:ring-green-600/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             </div>
@@ -1802,7 +1805,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center space-x-2">
-              <Palette className="w-5 h-5 text-green-600" />
+              <Palette className="w-5 h-5 text-slate-600 dark:text-slate-400" />
               <span>Preferences</span>
             </CardTitle>
             <CardDescription>Customize your app appearance and settings</CardDescription>
@@ -1812,7 +1815,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
               <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition p-2 rounded">
                 <div className="flex items-center space-x-3">
-                  {theme === 'dark' ? <Moon className="w-5 h-5 text-green-600" /> : <Sun className="w-5 h-5 text-green-600" />}
+                  {theme === 'dark' ? <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" /> : <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />}
                   <div>
                     <p className="font-medium text-slate-900 dark:text-white">Theme</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Currently using {theme} mode</p>

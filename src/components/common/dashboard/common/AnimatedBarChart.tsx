@@ -31,18 +31,18 @@ export function AnimatedBarChart({ title, description, data, height = 200 }: Ani
   const maxValue = Math.max(...data.map(d => d.maxValue));
 
   return (
-    <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+    <Card className="border border-border bg-card shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">{title}</CardTitle>
+        <CardTitle className="text-lg font-semibold text-foreground">{title}</CardTitle>
         {description && (
-          <CardDescription className="text-slate-600 dark:text-slate-400">{description}</CardDescription>
+          <CardDescription className="text-muted-foreground">{description}</CardDescription>
         )}
       </CardHeader>
       <CardContent>
         <div className="space-y-4" style={{ minHeight: `${height}px` }}>
           {animatedData.length === 0 ? (
             <div className="flex items-center justify-center h-full">
-              <p className="text-sm text-slate-500 dark:text-slate-400">No data available</p>
+              <p className="text-sm text-muted-foreground">No data available</p>
             </div>
           ) : (
             animatedData.map((item, index) => {
@@ -50,10 +50,10 @@ export function AnimatedBarChart({ title, description, data, height = 200 }: Ani
               return (
                 <div key={index} className="space-y-1.5">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-slate-700 dark:text-slate-300">{item.label}</span>
-                    <span className="font-semibold text-slate-900 dark:text-white">{item.value}</span>
+                    <span className="font-medium text-foreground">{item.label}</span>
+                    <span className="font-semibold text-foreground">{item.value}</span>
                   </div>
-                  <div className="w-full h-2.5 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+                  <div className="w-full h-2.5 bg-muted rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-600 rounded-full transition-all duration-1000 ease-out"
                       style={{

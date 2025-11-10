@@ -5,4 +5,5 @@ export { ChartsSection } from './ChartsSection';
 export { QuickActions } from './QuickActions';
 export { NotificationsFeed } from './NotificationsFeed';
 export { UpcomingSessions } from './UpcomingSessions';
+export { PerformanceInsights } from './PerformanceInsights';
 

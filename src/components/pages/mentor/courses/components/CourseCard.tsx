@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { Card, CardContent } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
-import { Edit, Trash2, Users, Star, BookOpen, Clock, DollarSign, ChevronRight } from 'lucide-react';
+import { Edit, Trash2, Users, Star, BookOpen, Clock, DollarSign, ChevronRight, FileText, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 import { Course } from '@/data/mock/coursesData';
 
 interface CourseCardProps {
@@ -56,10 +56,25 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
         )}
         
         {/* Course Type Badge */}
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 flex flex-col space-y-1">
           <span className={`px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-md ${courseTypeColor}`}>
             {course.courseType === 'live' ? 'LIVE' : 'RECORDED'}
           </span>
+          {course.isBundleCourse && course.courseStatus && (
+            <span className={`px-2.5 py-1 rounded-full text-xs font-bold text-white shadow-md ${
+              course.courseStatus === 'draft' ? 'bg-gray-600' :
+              course.courseStatus === 'pending-verification' ? 'bg-yellow-600' :
+              course.courseStatus === 'verified' ? 'bg-blue-600' :
+              course.courseStatus === 'published' ? 'bg-green-600' :
+              'bg-red-600'
+            }`}>
+              {course.courseStatus === 'draft' ? 'DRAFT' :
+               course.courseStatus === 'pending-verification' ? 'PENDING' :
+               course.courseStatus === 'verified' ? 'VERIFIED' :
+               course.courseStatus === 'published' ? 'PUBLISHED' :
+               'REJECTED'}
+            </span>
+          )}
         </div>
 
         {/* Action Buttons */}
@@ -87,13 +102,25 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
         </div>
 
         {/* Category & Level Badges */}
-        <div className="absolute bottom-3 left-3 right-3 flex items-center space-x-2">
+        <div className="absolute bottom-3 left-3 right-3 flex items-center space-x-2 flex-wrap gap-1">
           <span className={`px-2 py-0.5 rounded text-xs font-semibold ${categoryColors[course.category] || categoryColors['other']}`}>
             {course.category.replace('-', ' ').toUpperCase()}
           </span>
           <span className={`px-2 py-0.5 rounded text-xs font-semibold ${levelColors[course.level] || levelColors['beginner']}`}>
             {course.level.toUpperCase()}
           </span>
+          {course.courseCategory && (
+            <span className={`px-2 py-0.5 rounded text-xs font-semibold ${
+              course.courseCategory === 'crash' ? 'bg-gray-100 dark:bg-gray-900/30 text-gray-700 dark:text-gray-300' :
+              course.courseCategory === 'skill-focused' ? 'bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300' :
+              course.courseCategory === 'bootcamp' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' :
+              'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+            }`}>
+              {course.courseCategory === 'crash' ? 'CRASH' :
+               course.courseCategory === 'skill-focused' ? 'SKILL' :
+               course.courseCategory === 'bootcamp' ? 'BOOTCAMP' : 'BUNDLE'}
+            </span>
+          )}
         </div>
       </div>
 
@@ -107,39 +134,72 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
         </p>
         
         {/* Quick Stats */}
-        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-3">
+        <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mb-3 flex-wrap gap-2">
           <div className="flex items-center space-x-1">
             <Users className="w-3.5 h-3.5" />
-            <span>{course.enrolledCount}</span>
+            <span>{course.enrolledCount || 0}</span>
+            <span className="text-slate-400">students</span>
           </div>
           <div className="flex items-center space-x-1">
             <Star className="w-3.5 h-3.5 text-yellow-500 fill-yellow-500" />
             <span>{course.rating.toFixed(1)}</span>
+            <span className="text-slate-400">({course.ratingCount})</span>
           </div>
           <div className="flex items-center space-x-1">
             <BookOpen className="w-3.5 h-3.5" />
-            <span>{totalLessons}</span>
+            <span>{totalLessons} lessons</span>
           </div>
-          <div className="flex items-center space-x-1">
-            <Clock className="w-3.5 h-3.5" />
-            <span>{course.duration}</span>
-          </div>
+          {course.duration && (
+            <div className="flex items-center space-x-1">
+              <Clock className="w-3.5 h-3.5" />
+              <span>{course.duration}</span>
+            </div>
+          )}
+          {/* Completion Rate */}
+          {course.enrolledCount > 0 && (
+            <div className="flex items-center space-x-1">
+              <CheckCircle2 className="w-3.5 h-3.5 text-green-500" />
+              <span>{Math.round((course.enrolledCount || 0) * 0.75)}% complete</span>
+            </div>
+          )}
         </div>
 
-        {/* Price */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200 dark:border-slate-700">
-          <div className="flex items-center space-x-1">
-            <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
-            <span className="text-lg font-bold text-green-600 dark:text-green-400">
-              ${course.price}
-            </span>
-            {course.scholarshipAvailable && (
-              <span className="px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded">
-                Scholarship
+        {/* Price and Revenue */}
+        <div className="space-y-2 pt-2 border-t border-slate-200 dark:border-slate-700">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-1 flex-wrap gap-1">
+              <DollarSign className="w-4 h-4 text-green-600 dark:text-green-400" />
+              <span className="text-lg font-bold text-green-600 dark:text-green-400">
+                {course.price === 0 ? 'Free' : `$${course.adminPricing || course.price}`}
               </span>
-            )}
+              {(course.allowsScholarship || (course.isBundleCourse && course.scholarshipAvailable)) && (
+                <span className="px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded">
+                  Scholarship
+                </span>
+              )}
+              {course.installmentEnabled && course.price > 0 && (
+                <span className="px-1.5 py-0.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 text-xs font-semibold rounded">
+                  Installments
+                </span>
+              )}
+              {(course.courseCategory === 'bundle' || course.isBundleCourse) && (
+                <span className="px-1.5 py-0.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-xs font-semibold rounded">
+                  Master
+                </span>
+              )}
+            </div>
+            <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
           </div>
-          <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors" />
+          
+          {/* Revenue Display (if paid course) */}
+          {course.price > 0 && course.enrolledCount > 0 && (
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              Revenue: <span className="font-semibold text-green-600 dark:text-green-400">
+                ${((course.enrolledCount || 0) * (course.adminPricing || course.price) * 0.7).toLocaleString()}
+              </span>
+              <span className="text-slate-400 ml-1">(est. 70% commission)</span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

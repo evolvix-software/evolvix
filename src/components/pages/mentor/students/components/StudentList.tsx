@@ -12,9 +12,11 @@ import {
   User,
   CheckCircle2,
   Clock,
-  Star
+  Star,
+  ClipboardCheck
 } from 'lucide-react';
 import { Student } from '@/interfaces/students';
+import { mockStudentProgress } from '@/data/mock/students';
 
 interface StudentListProps {
   students: Student[];
@@ -100,7 +102,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'name' | 'progress' | 'recent')}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="name">Sort by Name</option>
             <option value="progress">Sort by Progress</option>
@@ -111,7 +113,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
           <select
             value={filterByProgress}
             onChange={(e) => setFilterByProgress(e.target.value as 'all' | 'high' | 'medium' | 'low')}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Progress</option>
             <option value="high">High (80%+)</option>
@@ -139,10 +141,10 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
           {filteredAndSortedStudents.map((student) => (
             <Card
               key={student.id}
-              className={`border-2 transition-all duration-200 cursor-pointer hover:shadow-lg ${
+              className={`border transition-all duration-200 cursor-pointer hover:shadow-md ${
                 selectedStudentId === student.id
-                  ? 'border-blue-500 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/20'
-                  : 'border-slate-200 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'
+                  ? 'border-slate-400 dark:border-slate-500 bg-slate-50 dark:bg-slate-800/50'
+                  : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600'
               }`}
               onClick={() => onSelectStudent(student)}
             >
@@ -157,13 +159,13 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                         className="w-12 h-12 rounded-full object-cover"
                       />
                     ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                        <span className="text-white font-bold text-lg">
+                      <div className="w-12 h-12 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-600">
+                        <span className="text-slate-700 dark:text-slate-300 font-semibold text-lg">
                           {student.name.charAt(0).toUpperCase()}
                         </span>
                       </div>
                     )}
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-400 dark:bg-slate-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
                   </div>
                   
                   <div className="flex-1 min-w-0">
@@ -189,7 +191,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                       Overall Progress
                     </span>
                     <div className="flex items-center space-x-2">
-                      <span className={`text-sm font-bold ${getProgressColor(student.overallProgress).replace('bg-', 'text-')}`}>
+                      <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
                         {student.overallProgress}%
                       </span>
                       <span className="text-xs text-slate-500 dark:text-slate-400">
@@ -209,7 +211,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   <div className="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2">
                     <div className="flex items-center space-x-1 mb-1">
-                      <CheckCircle2 className="w-3 h-3 text-green-600 dark:text-green-400" />
+                      <CheckCircle2 className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Assignments</span>
                     </div>
                     <p className="text-sm font-bold text-slate-900 dark:text-white">
@@ -218,7 +220,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                   </div>
                   <div className="bg-slate-50 dark:bg-slate-900/50 rounded-lg p-2">
                     <div className="flex items-center space-x-1 mb-1">
-                      <User className="w-3 h-3 text-blue-600 dark:text-blue-400" />
+                      <User className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Courses</span>
                     </div>
                     <p className="text-sm font-bold text-slate-900 dark:text-white">
@@ -226,6 +228,34 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                     </p>
                   </div>
                 </div>
+
+                {/* Test Completions Badge */}
+                {(() => {
+                  const studentProgress = mockStudentProgress[student.id] || [];
+                  const totalTests = studentProgress.reduce((sum, p) => sum + (p.testCompletions?.length || 0), 0);
+                  const passedTests = studentProgress.reduce((sum, p) => 
+                    sum + (p.testCompletions?.filter(t => t.passed).length || 0), 0
+                  );
+                  
+                  if (totalTests > 0) {
+                    return (
+                      <div className="mb-4 pb-4 border-b border-slate-200 dark:border-slate-700">
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center space-x-2">
+                            <ClipboardCheck className="w-4 h-4 text-slate-600 dark:text-slate-400" />
+                            <span className="text-xs text-slate-600 dark:text-slate-400">Module Tests</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                              {passedTests}/{totalTests} passed
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  return null;
+                })()}
 
                 {/* Rating */}
                 {student.rating && (
@@ -245,7 +275,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                   <Button
                     variant="outline"
                     size="sm"
-                    className="flex-1 border-slate-200 dark:border-slate-700 hover:bg-blue-50 dark:hover:bg-blue-900/20"
+                    className="flex-1 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800"
                     onClick={(e) => {
                       e.stopPropagation();
                       onSelectStudent(student);

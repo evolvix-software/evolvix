@@ -4,11 +4,11 @@ import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { UploadAssignment, StudentSubmissions, GradeAssignment } from './components';
+import { UploadAssignment, StudentSubmissions, GradeAssignment, AssignmentTemplates } from './components';
 import { Assignment, AssignmentSubmission } from '@/interfaces/assignments';
 import { mockAssignments, mockSubmissions } from '@/data/mock/assignments';
 import { useSearchParams } from 'next/navigation';
-import { FileText, Upload, Users, CheckCircle2 } from 'lucide-react';
+import { FileText, Upload, Users, CheckCircle2, FolderOpen, BarChart3 } from 'lucide-react';
 
 export function MentorAssignmentsPage() {
   const searchParams = useSearchParams();
@@ -21,6 +21,7 @@ export function MentorAssignmentsPage() {
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [selectedSubmission, setSelectedSubmission] = useState<AssignmentSubmission | null>(null);
   const [showGradeModal, setShowGradeModal] = useState(false);
+  const [templates] = useState<any[]>([]); // Mock templates - would come from API
 
   // Filter submissions based on URL params
   const filteredSubmissions = useMemo(() => {
@@ -149,7 +150,7 @@ export function MentorAssignmentsPage() {
         {activeTab === 'upload' && (
           <Button
             onClick={() => setShowUploadForm(!showUploadForm)}
-            className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+            className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
           >
             <Upload className="w-4 h-4 mr-2" />
             {showUploadForm ? 'Cancel' : 'New Assignment'}
@@ -159,19 +160,27 @@ export function MentorAssignmentsPage() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="submissions" className="flex items-center space-x-2">
             <Users className="w-4 h-4" />
-            <span>Student Submissions</span>
+            <span>Submissions</span>
             {filteredSubmissions.length > 0 && (
-              <span className="ml-2 px-2 py-0.5 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-xs">
+              <span className="ml-2 px-2 py-0.5 bg-slate-600 dark:bg-slate-500 text-white rounded-full text-xs">
                 {filteredSubmissions.length}
               </span>
             )}
           </TabsTrigger>
           <TabsTrigger value="upload" className="flex items-center space-x-2">
             <Upload className="w-4 h-4" />
-            <span>Upload Assignments</span>
+            <span>Create</span>
+          </TabsTrigger>
+          <TabsTrigger value="templates" className="flex items-center space-x-2">
+            <FolderOpen className="w-4 h-4" />
+            <span>Templates</span>
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="flex items-center space-x-2">
+            <BarChart3 className="w-4 h-4" />
+            <span>Analytics</span>
           </TabsTrigger>
         </TabsList>
 
@@ -203,7 +212,7 @@ export function MentorAssignmentsPage() {
                 </p>
                 <Button
                   onClick={() => setShowUploadForm(true)}
-                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white"
+                  className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
                 >
                   <Upload className="w-4 h-4 mr-2" />
                   Create Assignment
@@ -211,6 +220,42 @@ export function MentorAssignmentsPage() {
               </CardContent>
             </Card>
           )}
+        </TabsContent>
+
+        {/* Templates Tab */}
+        <TabsContent value="templates" className="mt-6">
+          <AssignmentTemplates
+            templates={templates}
+            onSelectTemplate={(template) => {
+              // Use template to create assignment
+              setShowUploadForm(true);
+              // Pre-fill form with template data
+            }}
+            onDeleteTemplate={(templateId) => {
+              console.log('Delete template:', templateId);
+            }}
+            onShareTemplate={(templateId) => {
+              console.log('Share template:', templateId);
+            }}
+          />
+        </TabsContent>
+
+        {/* Analytics Tab */}
+        <TabsContent value="analytics" className="mt-6">
+          <Card className="border border-slate-200 dark:border-slate-700">
+            <CardContent className="p-12 text-center">
+              <BarChart3 className="w-16 h-16 mx-auto mb-4 text-slate-400" />
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                Assignment Analytics
+              </h3>
+              <p className="text-slate-600 dark:text-slate-400">
+                View submission rates, average scores, and performance metrics for your assignments.
+              </p>
+              <p className="text-sm text-slate-500 dark:text-slate-500 mt-4">
+                Analytics dashboard coming soon...
+              </p>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
 

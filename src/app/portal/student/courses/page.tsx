@@ -1,9 +1,8 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Layout } from '@/components/common/layout/Layout';
-import { CourseFilters } from '@/components/courses/CourseFilters';
-import { CourseCard } from '@/components/courses/CourseCard';
+import { CourseFilters, CourseCard } from '@/components/common/courses';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { setCourses, setFilters } from '@/store/features/courses/coursesSlice';
 import { coursesData } from '@/data/mock/coursesData';
@@ -12,8 +11,15 @@ import { Course } from '@/data/mock/coursesData';
 export default function CoursesPage() {
   const dispatch = useAppDispatch();
   const { courses, filters } = useAppSelector(state => state.courses);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isClient) return;
+    
     // Load courses - merge mock data with mentor-created courses from localStorage
     const storedCourses = localStorage.getItem('evolvix_courses');
     const mentorCourses = storedCourses ? JSON.parse(storedCourses) : [];
@@ -37,10 +43,10 @@ export default function CoursesPage() {
         dispatch({ type: 'courses/enrollCourse', payload: enrollment.courseId });
       });
     }
-  }, [dispatch]);
+  }, [dispatch, isClient]);
 
   // Filter courses
-  const filteredCourses = courses.filter(course => {
+  const filteredCourses = isClient ? courses.filter(course => {
     // Category filter
     if (filters.category !== 'all' && course.category !== filters.category) {
       return false;
@@ -66,7 +72,7 @@ export default function CoursesPage() {
     }
 
     return true;
-  });
+  }) : [];
 
   return (
     <Layout title="Courses" role="student">
@@ -78,16 +84,25 @@ export default function CoursesPage() {
               Course Catalog
             </h1>
             <p className="text-slate-600 dark:text-slate-400">
-              <span className="font-semibold text-slate-900 dark:text-white">{filteredCourses.length}</span> courses available
+              {isClient ? (
+                <span className="font-semibold text-slate-900 dark:text-white">{filteredCourses.length}</span>
+              ) : (
+                <span className="font-semibold text-slate-900 dark:text-white">0</span>
+              )} courses available
             </p>
           </div>
         </div>
 
         {/* Filters - Compact */}
-        <CourseFilters />
+        {isClient && <CourseFilters />}
 
         {/* Courses Grid */}
-        {filteredCourses.length > 0 ? (
+        {!isClient ? (
+          <div className="text-center py-16">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Loading courses...</h3>
+          </div>
+        ) : filteredCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredCourses.map(course => (
               <CourseCard key={course.id} course={course} />

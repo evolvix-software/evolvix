@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Menu, ArrowLeft } from 'lucide-react';
 import { Sidebar } from './Sidebar';
+import { Header } from './Header';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -12,9 +13,11 @@ interface LayoutProps {
   onViewChange?: (view: string) => void;
   currentView?: string; // For admin to track current view
   adminUser?: { fullName?: string; email?: string }; // Admin user info
+  noPaddingX?: boolean; // Remove horizontal padding for full-width content
+  noCard?: boolean; // Remove card wrapper for full-width content
 }
 
-export function Layout({ children, title, role, onViewChange, currentView, adminUser }: LayoutProps) {
+export function Layout({ children, title, role, onViewChange, currentView, adminUser, noPaddingX = false, noCard = false }: LayoutProps) {
   const router = useRouter();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -33,17 +36,23 @@ export function Layout({ children, title, role, onViewChange, currentView, admin
 
   return (
     <div className="h-screen flex overflow-hidden bg-background">
-      {/* Desktop Sidebar */}
-      <div className="hidden lg:flex">
-        <Sidebar 
-          isCollapsed={sidebarCollapsed} 
-          onToggle={toggleSidebar}
-          role={role}
-          onViewChange={onViewChange}
-          currentView={currentView}
-          adminUser={adminUser}
-        />
-      </div>
+      {/* Desktop Sidebar - Full Height */}
+      {!sidebarCollapsed && (
+        <div className="hidden lg:flex h-full">
+          <Sidebar 
+            isCollapsed={sidebarCollapsed} 
+            onToggle={toggleSidebar}
+            role={role}
+            onViewChange={onViewChange}
+            currentView={currentView}
+            adminUser={adminUser}
+          />
+        </div>
+      )}
+      {/* Collapsed sidebar - fully hidden */}
+      {sidebarCollapsed && (
+        <div className="hidden lg:block w-0"></div>
+      )}
 
       {/* Mobile Sidebar Overlay */}
       {mobileMenuOpen && (
@@ -63,29 +72,44 @@ export function Layout({ children, title, role, onViewChange, currentView, admin
       )}
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col overflow-hidden relative bg-background">
-        {/* Mobile Menu Button */}
-        <button
-          onClick={toggleMobileMenu}
-          className="lg:hidden absolute top-4 left-4 z-10 p-2 bg-card border border-border rounded-lg shadow-lg"
-        >
-          <Menu className="w-6 h-6 text-foreground" />
-        </button>
+      <div className="flex-1 flex flex-col overflow-hidden h-full">
+        {/* Header - Touches Sidebar */}
+        <Header onMenuToggle={toggleSidebar} title={title} />
 
-        {/* Page Content - Card */}
-        <main className="flex-1 overflow-y-auto p-3 lg:p-6">
-          <div className="bg-card rounded-3xl shadow-2xl border border-border h-full p-6 lg:p-8 overflow-y-auto content-scroll">
-            {/* Back Button */}
-            <button
-              onClick={handleBack}
-              className="flex items-center justify-center w-10 h-10 rounded-lg bg-secondary hover:bg-accent transition-colors group mb-4"
-              aria-label="Go back"
-            >
-              <ArrowLeft className="w-5 h-5 text-foreground group-hover:text-foreground transition-colors" />
-            </button>
-            {children}
+        {/* Main Content with Navigation */}
+        <div className="flex-1 flex flex-col overflow-hidden">
+          {/* Text Navigation Bar - Inside Body */}
+          <div className="bg-navbar border-b border-border px-4 py-2">
+            <div className="text-xs text-navbar-text lowercase">
+              <button onClick={() => router.push('/portal/student')} className="hover:text-navbar-text-hover">
+                dashboard
+              </button>
+              <span> - </span>
+              <button onClick={() => router.push('/portal/student/courses')} className="hover:text-navbar-text-hover">
+                my courses
+              </button>
+              {title && (
+                <>
+                  <span> - </span>
+                  <span className="text-navbar-text-active">{title.toLowerCase()}</span>
+                </>
+              )}
+            </div>
           </div>
-        </main>
+
+          {/* Page Content */}
+          <main className={`flex-1 overflow-y-auto bg-background ${noPaddingX ? '' : 'p-3 lg:p-6'}`}>
+            {noCard ? (
+              <div className="h-full overflow-y-auto content-scroll">
+                {children}
+              </div>
+            ) : (
+              <div className="bg-card rounded-3xl shadow-2xl border border-border h-full p-6 lg:p-8 overflow-y-auto content-scroll">
+                {children}
+              </div>
+            )}
+          </main>
+        </div>
       </div>
     </div>
   );

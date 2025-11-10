@@ -67,6 +67,13 @@ export function ClassesPage() {
     courseName: '',
     classType: 'live' as 'recorded' | 'live' | 'one-to-one',
     videoUrl: '',
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    recurringPattern: 'none' as 'none' | 'daily' | 'weekly' | 'monthly',
+    recurringEndDate: '',
+    maxCapacity: undefined as number | undefined,
+    agenda: [] as string[],
+    preparationChecklist: [] as string[],
+    preClassAnnouncement: '',
   });
 
   const categories = [
@@ -147,6 +154,13 @@ export function ClassesPage() {
       updatedAt: new Date().toISOString(),
       feedback: [],
       recordings: [],
+      timezone: formData.timezone,
+      recurringPattern: formData.recurringPattern,
+      recurringEndDate: formData.recurringEndDate || undefined,
+      maxCapacity: formData.maxCapacity,
+      agenda: formData.agenda,
+      preparationChecklist: formData.preparationChecklist,
+      preClassAnnouncement: formData.preClassAnnouncement || undefined,
     };
 
     if (editingClass) {
@@ -206,6 +220,13 @@ export function ClassesPage() {
       courseName: '',
       classType: 'live',
       videoUrl: '',
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      recurringPattern: 'none',
+      recurringEndDate: '',
+      maxCapacity: undefined,
+      agenda: [],
+      preparationChecklist: [],
+      preClassAnnouncement: '',
     });
     setShowScheduleForm(false);
     setEditingClass(null);
@@ -293,6 +314,13 @@ export function ClassesPage() {
       courseName: classItem.courseName || '',
       classType: classItem.classType,
       videoUrl: classItem.videoUrl || '',
+      timezone: classItem.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
+      recurringPattern: classItem.recurringPattern || 'none',
+      recurringEndDate: classItem.recurringEndDate || '',
+      maxCapacity: classItem.maxCapacity,
+      agenda: classItem.agenda || [],
+      preparationChecklist: classItem.preparationChecklist || [],
+      preClassAnnouncement: classItem.preClassAnnouncement || '',
     });
     setShowScheduleForm(true);
   };
@@ -354,7 +382,7 @@ export function ClassesPage() {
             });
             setShowScheduleForm(true);
           }}
-          className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+          className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold shadow-md hover:shadow-lg transition-all duration-300 border-0"
         >
           <Plus className="w-5 h-5 mr-2" />
           Schedule New Class
@@ -363,7 +391,7 @@ export function ClassesPage() {
 
       {/* Schedule New Class Form */}
       {showScheduleForm && (
-        <Card className="border-2 border-blue-200 dark:border-blue-800 bg-gradient-to-br from-blue-50/50 to-white dark:from-blue-900/10 dark:to-slate-800 shadow-xl">
+        <Card className="border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-lg">
           <CardHeader>
             <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
               {editingClass ? 'Edit Class' : 'Schedule New Class'}
@@ -392,7 +420,7 @@ export function ClassesPage() {
                     id="category"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                     required
                   >
                     {categories.map((cat) => (
@@ -442,8 +470,8 @@ export function ClassesPage() {
                 <div>
                   <Label htmlFor="courseId">Link to Course *</Label>
                   {liveCoursesWithEnrollments.length === 0 ? (
-                    <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
-                      <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    <div className="p-3 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700 rounded-lg">
+                      <p className="text-sm text-slate-700 dark:text-slate-300">
                         No live courses with enrolled students available. Please create a live course first.
                       </p>
                     </div>
@@ -459,7 +487,7 @@ export function ClassesPage() {
                           courseName: selectedCourse?.title || '',
                         });
                       }}
-                      className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                       required
                     >
                       <option value="">Select a course...</option>
@@ -481,14 +509,115 @@ export function ClassesPage() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Brief description of what will be covered in this class..."
                   rows={3}
-                  className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                 />
+              </div>
+
+              {/* Advanced Scheduling Options */}
+              <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <h4 className="font-semibold text-slate-900 dark:text-white">Advanced Options</h4>
+                
+                {/* Timezone */}
+                <div>
+                  <Label htmlFor="timezone">Timezone</Label>
+                  <select
+                    id="timezone"
+                    value={formData.timezone}
+                    onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  >
+                    {Intl.supportedValuesOf('timeZone').slice(0, 50).map(tz => (
+                      <option key={tz} value={tz}>{tz}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Recurring Pattern */}
+                <div>
+                  <Label htmlFor="recurringPattern">Recurring Pattern</Label>
+                  <select
+                    id="recurringPattern"
+                    value={formData.recurringPattern}
+                    onChange={(e) => setFormData({ ...formData, recurringPattern: e.target.value as any })}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  >
+                    <option value="none">No Recurrence</option>
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </div>
+
+                {formData.recurringPattern !== 'none' && (
+                  <div>
+                    <Label htmlFor="recurringEndDate">Recurring End Date</Label>
+                    <Input
+                      id="recurringEndDate"
+                      type="date"
+                      value={formData.recurringEndDate}
+                      onChange={(e) => setFormData({ ...formData, recurringEndDate: e.target.value })}
+                      min={formData.date}
+                    />
+                  </div>
+                )}
+
+                {/* Max Capacity */}
+                <div>
+                  <Label htmlFor="maxCapacity">Max Capacity (Optional)</Label>
+                  <Input
+                    id="maxCapacity"
+                    type="number"
+                    value={formData.maxCapacity || ''}
+                    onChange={(e) => setFormData({ ...formData, maxCapacity: e.target.value ? parseInt(e.target.value) : undefined })}
+                    placeholder="Leave empty for unlimited"
+                    min={1}
+                  />
+                </div>
+
+                {/* Agenda Builder */}
+                <div>
+                  <Label htmlFor="agenda">Class Agenda (Optional)</Label>
+                  <textarea
+                    id="agenda"
+                    value={formData.agenda.join('\n')}
+                    onChange={(e) => setFormData({ ...formData, agenda: e.target.value.split('\n').filter(item => item.trim()) })}
+                    placeholder="Enter agenda items, one per line..."
+                    rows={4}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  />
+                </div>
+
+                {/* Preparation Checklist */}
+                <div>
+                  <Label htmlFor="preparationChecklist">Student Preparation Checklist (Optional)</Label>
+                  <textarea
+                    id="preparationChecklist"
+                    value={formData.preparationChecklist.join('\n')}
+                    onChange={(e) => setFormData({ ...formData, preparationChecklist: e.target.value.split('\n').filter(item => item.trim()) })}
+                    placeholder="Enter checklist items, one per line..."
+                    rows={3}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  />
+                </div>
+
+                {/* Pre-Class Announcement */}
+                <div>
+                  <Label htmlFor="preClassAnnouncement">Pre-Class Announcement (Optional)</Label>
+                  <textarea
+                    id="preClassAnnouncement"
+                    value={formData.preClassAnnouncement}
+                    onChange={(e) => setFormData({ ...formData, preClassAnnouncement: e.target.value })}
+                    placeholder="Announcement to send to students before class..."
+                    rows={2}
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  />
+                </div>
               </div>
 
               <div className="flex space-x-3 pt-2">
                 <Button
                   type="submit"
-                  className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold shadow-lg"
+                  className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold shadow-md border-0"
                 >
                   {editingClass ? 'Update Class' : 'Schedule Class'}
                 </Button>
@@ -513,7 +642,7 @@ export function ClassesPage() {
       {upcomingClasses.length > 0 && (
         <div>
           <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
-            <Calendar className="w-6 h-6 mr-2 text-blue-600 dark:text-blue-400" />
+            <Calendar className="w-6 h-6 mr-2 text-slate-600 dark:text-slate-400" />
             Upcoming Classes
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -533,14 +662,14 @@ export function ClassesPage() {
                       <Button
                         size="sm"
                         onClick={() => handleEditClass(classItem)}
-                        className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200 dark:hover:bg-blue-900/50 border-0"
+                        className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border-0"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
                       <Button
                         size="sm"
                         onClick={() => handleDeleteClass(classItem.id)}
-                        className="bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50 border-0"
+                        className="bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 border-0"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>
@@ -624,7 +753,7 @@ export function ClassesPage() {
                       <div className="flex items-center justify-between text-sm pt-2 border-t border-slate-200 dark:border-slate-700">
                         <span className="text-slate-600 dark:text-slate-400">Rating:</span>
                         <span className="font-semibold flex items-center">
-                          <Star className="w-4 h-4 mr-1 text-yellow-500 fill-yellow-500" />
+                          <Star className="w-4 h-4 mr-1 text-slate-600 dark:text-slate-400 fill-slate-600 dark:fill-slate-400" />
                           {getAverageRating(classItem.feedback).toFixed(1)}
                         </span>
                       </div>
@@ -650,7 +779,7 @@ export function ClassesPage() {
             </p>
             <Button
               onClick={() => setShowScheduleForm(true)}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white"
+              className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
             >
               <Plus className="w-4 h-4 mr-2" />
               Schedule Class

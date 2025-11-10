@@ -9,7 +9,7 @@ import {
   User,
   FileText
 } from 'lucide-react';
-import { StudentList, StudentProfile, FeedbackForm, DirectMessages } from './components';
+import { StudentList, StudentProfile, AdvancedStudentList, AdvancedStudentProfile, FeedbackForm, DirectMessages } from './components';
 import { Student, StudentFeedback, ChatConversation, ChatMessage } from '@/interfaces/students';
 import { 
   mockStudents, 
@@ -143,8 +143,8 @@ export function MentorStudentsPage() {
 
       {/* Main Content */}
       {selectedStudent ? (
-        // Show Student Profile
-        <StudentProfile
+        // Show Advanced Student Profile
+        <AdvancedStudentProfile
           student={selectedStudent}
           courseProgress={selectedStudentProgress}
           onBack={handleBackToList}
@@ -159,7 +159,7 @@ export function MentorStudentsPage() {
               <Users className="w-4 h-4" />
               <span>Student List</span>
               {enrolledStudents.length > 0 && (
-                <span className="ml-2 px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full">
+                <span className="ml-2 px-2 py-0.5 bg-slate-600 dark:bg-slate-500 text-white text-xs rounded-full">
                   {enrolledStudents.length}
                 </span>
               )}
@@ -168,7 +168,7 @@ export function MentorStudentsPage() {
               <MessageSquare className="w-4 h-4" />
               <span>Direct Messages</span>
               {conversations.some(c => c.unreadCount > 0) && (
-                <span className="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">
+                <span className="ml-2 px-2 py-0.5 bg-slate-600 dark:bg-slate-500 text-white text-xs rounded-full">
                   {conversations.reduce((sum, c) => sum + c.unreadCount, 0)}
                 </span>
               )}
@@ -176,9 +176,21 @@ export function MentorStudentsPage() {
           </TabsList>
 
           <TabsContent value="list" className="mt-6">
-            <StudentList
+            <AdvancedStudentList
               students={enrolledStudents}
               onSelectStudent={handleSelectStudent}
+              onBulkAction={(action, studentIds) => {
+                console.log('Bulk action:', action, studentIds);
+                // Handle bulk actions
+                if (action === 'message') {
+                  // Open message dialog for selected students
+                } else if (action === 'email') {
+                  // Open email dialog
+                } else if (action === 'export') {
+                  // Export selected students
+                }
+              }}
+              selectedStudentId={selectedStudent?.id}
             />
           </TabsContent>
 

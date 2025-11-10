@@ -165,6 +165,183 @@ export interface Course {
   projects?: CourseProject[]; // Projects defined by mentor
   enableSundayDoubtClearing?: boolean; // For recorded courses
   doubtClearingSessions?: DoubtClearingSession[]; // Sunday sessions
+  // Course Settings & Configuration
+  maxStudents?: number; // Enrollment limit
+  visibility?: 'public' | 'private' | 'invite-only'; // Access control
+  autoCertificate?: boolean; // Auto-generate certificates
+  certificateTemplate?: string; // Certificate template
+  badges?: Array<{ id: string; name: string; description: string; criteria: string }>; // Achievement badges
+  coInstructors?: Array<{ id: string; name: string; email: string }>; // Co-instructors
+  teachingAssistants?: Array<{ id: string; name: string; email: string }>; // Teaching assistants
+  // Course Category System
+  courseCategory?: 'crash' | 'skill-focused' | 'bootcamp' | 'bundle'; // Course category type
+  requiresVacancy?: boolean; // Computed: bootcamp || bundle
+  allowsScholarship?: boolean; // Computed: bootcamp || bundle
+  
+  // Bundle/Master Course System
+  isBundleCourse?: boolean; // Is this a bundle/master course (deprecated, use courseCategory)
+  bundleDuration?: '4-months' | '5-months' | '6-months'; // Duration for bundle courses
+  scholarshipOnly?: boolean; // Scholarship-only courses (deprecated)
+  adminPricing?: number; // Pricing set by admin (for bundle courses)
+  commissionSplit?: {
+    evolvix: number; // Percentage
+    mentor: number; // Percentage
+  };
+  courseStatus?: 'draft' | 'pending-verification' | 'verified' | 'published' | 'rejected'; // Course verification status
+  adminNotes?: string; // Admin notes during verification
+  contractDocument?: string; // URL to contract PDF
+  mentorSigned?: boolean; // Has mentor signed the contract
+  adminApproved?: boolean; // Has admin approved the course
+  vacancyId?: string; // Associated vacancy ID
+  applicationId?: string; // Associated application ID
+  submissionId?: string; // Course submission ID
+  mentorSignedAt?: string; // When mentor signed the contract
+  
+  // Installment Payment System
+  installmentEnabled?: boolean; // Allow installment payments (default: true for paid courses)
+  installmentOptions?: number[]; // [3, 4] - number of installments allowed
+  
+  // Career Path System
+  careerPathId?: string; // Associated career path ID
+  careerPathOrder?: number; // Order within career path
+}
+
+// Career Path System
+export interface CareerPath {
+  id: string;
+  title: string;
+  description: string;
+  image?: string;
+  courses: Array<{
+    courseId: string;
+    order: number;
+    required: boolean; // Is this course required for path completion
+  }>;
+  duration: string; // Total duration (e.g., "6 months")
+  outcome: string; // Career outcome (e.g., "Job-ready Full Stack Developer")
+  category: 'development' | 'design' | 'business' | 'data-science' | 'other';
+  level: 'beginner' | 'intermediate' | 'advanced';
+  price?: number; // Optional bundle price for entire path
+  scholarshipAvailable: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Course Progress & Certification System
+export interface CourseProgress {
+  id: string;
+  studentId: string;
+  courseId: string;
+  enrolledAt: string;
+  completedModules: number;
+  totalModules: number;
+  completedLessons: string[]; // Array of lesson IDs
+  progressPercentage: number; // 0-100
+  certificateIssued: boolean;
+  certificateUrl?: string;
+  certificateIssuedAt?: string;
+  mentorSigned?: boolean; // For verified bootcamp/bundle certificates
+  lastAccessedAt: string;
+}
+
+// Mentor Reputation System
+export interface MentorProfile {
+  mentorId: string;
+  name: string;
+  email: string;
+  avatar?: string;
+  bio?: string;
+  totalCourses: number;
+  totalStudents: number;
+  averageRating: number;
+  totalRatings: number;
+  verifiedCourses: number; // Number of verified bootcamp/bundle courses
+  reputationScore: number; // Weighted metric (0-100)
+  specialties: string[]; // Areas of expertise
+  certifications?: Array<{
+    name: string;
+    issuer: string;
+    date: string;
+  }>;
+  joinedAt: string;
+  lastActiveAt: string;
+}
+
+// Commission & Payment Distribution
+export interface PaymentDistribution {
+  id: string;
+  courseId: string;
+  mentorId: string;
+  studentId: string;
+  amount: number; // Total payment amount
+  paymentMethod: 'full' | 'installment';
+  installmentNumber?: number; // If installment payment
+  totalInstallments?: number;
+  platformCut: number; // Evolvix commission
+  mentorCut: number; // Mentor commission
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  distributedAt?: string;
+  createdAt: string;
+}
+
+// Bundle Course System Interfaces
+export interface CourseVacancy {
+  id: string;
+  title: string;
+  category: 'development' | 'design' | 'business' | 'data-science' | 'gaming' | 'cybersecurity' | 'app-development' | 'jewelry-design' | 'other';
+  description: string;
+  requirements: string[];
+  duration: string; // Optional - can be blank or '4-months', '5-months', '6-months', '20-60-hours', etc.
+  courseCategory: 'bootcamp' | 'bundle'; // Determined by admin
+  adminPricing: number;
+  commissionSplit: {
+    evolvix: number; // Percentage
+    mentor: number; // Percentage
+  };
+  status: 'open' | 'closed' | 'filled';
+  applications?: CourseApplication[];
+  createdAt: string;
+  deadline: string;
+  skills: string[];
+  level: 'beginner' | 'intermediate' | 'advanced';
+}
+
+export interface CourseApplication {
+  id: string;
+  vacancyId: string;
+  mentorId: string;
+  mentorName: string;
+  mentorEmail: string;
+  coverLetter: string;
+  portfolio: string; // URL
+  experience: string;
+  qualifications: string; // Detailed qualifications
+  demoClassUrl?: string; // URL to demo class video
+  demoClassFile?: string; // File path/URL if uploaded
+  status: 'pending' | 'accepted' | 'rejected' | 'verified'; // verified = mentor approved, can create gig
+  adminNotes?: string;
+  createdAt: string;
+  reviewedAt?: string;
+  verifiedAt?: string; // When admin verifies qualifications and demo class
+}
+
+export interface CourseSubmission {
+  id: string;
+  courseId: string;
+  vacancyId: string;
+  applicationId: string;
+  mentorId: string;
+  submittedAt: string;
+  status: 'pending' | 'approved' | 'rejected' | 'needs-revision';
+  adminNotes?: string;
+  adminVerifiedAt?: string;
+  contractDocument?: string;
+  mentorSigned: boolean;
+  mentorSignedAt?: string;
+  commissionSplit?: {
+    evolvix: number;
+    mentor: number;
+  };
 }
 
 export const coursesData: Course[] = [

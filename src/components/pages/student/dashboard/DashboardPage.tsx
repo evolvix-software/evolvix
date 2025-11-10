@@ -18,6 +18,8 @@ import {
   NotificationsFeed,
   UpcomingCourses,
 } from './components';
+import { CalendarWidget } from '@/components/common/calendar';
+import { generateMockEventsForMonth } from '@/data/mock/calendarEvents';
 
 const defaultNotifications: Array<{
   id: string;
@@ -86,9 +88,28 @@ export function StudentDashboardPage() {
   } = useAppSelector((state) => state.student);
   
   const { verificationStatus } = useAppSelector((state) => state.verification);
+  const { courses } = useAppSelector((state) => state.courses);
   const [userData, setUserData] = useState<any>(null);
   const [isNewUser, setIsNewUser] = useState(false);
   const [isVerified, setIsVerified] = useState(false);
+  
+  // Get calendar events for current month
+  const currentDate = new Date();
+  const calendarEvents = generateMockEventsForMonth(
+    currentDate.getFullYear(),
+    currentDate.getMonth(),
+    'student'
+  );
+  
+  // Get student's enrolled courses for filter
+  const enrolledCourses = courses.filter(c => {
+    const enrollments = localStorage.getItem('evolvix_enrollments');
+    if (enrollments) {
+      const parsed = JSON.parse(enrollments);
+      return parsed.some((e: any) => e.courseId === c.id);
+    }
+    return false;
+  });
 
   useEffect(() => {
     // Get stored registration data
@@ -304,6 +325,12 @@ export function StudentDashboardPage() {
               </div>
               <div className="space-y-6">
                 <QuickActions />
+                <CalendarWidget 
+                  events={calendarEvents}
+                  role="student"
+                  courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
+                  compact={true}
+                />
                 <UpcomingCourses courses={verifiedCourses} />
               </div>
             </div>
@@ -318,6 +345,12 @@ export function StudentDashboardPage() {
               </div>
               <div className="space-y-6">
                 <QuickActions />
+                <CalendarWidget 
+                  events={calendarEvents}
+                  role="student"
+                  courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
+                  compact={true}
+                />
                 <UpcomingCourses courses={verifiedCourses} />
               </div>
             </div>

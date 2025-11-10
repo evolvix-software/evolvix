@@ -186,8 +186,8 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center space-x-3">
-                    <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
-                      <span className="text-white font-bold">
+                    <div className="w-10 h-10 bg-slate-200 dark:bg-slate-700 rounded-full flex items-center justify-center border border-slate-300 dark:border-slate-600">
+                      <span className="text-slate-700 dark:text-slate-300 font-semibold">
                         {review.studentName.charAt(0).toUpperCase()}
                       </span>
                     </div>

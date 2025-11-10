@@ -21,10 +21,7 @@ export function GradeAssignment({ submission, onClose, onGrade }: GradeAssignmen
   const percentage = maxScore > 0 ? Math.round((score / maxScore) * 100) : 0;
 
   const getGradeColor = (percentage: number) => {
-    if (percentage >= 90) return 'text-green-600 dark:text-green-400';
-    if (percentage >= 70) return 'text-yellow-600 dark:text-yellow-400';
-    if (percentage >= 50) return 'text-orange-600 dark:text-orange-400';
-    return 'text-red-600 dark:text-red-400';
+    return 'text-slate-900 dark:text-white';
   };
 
   const getGradeLabel = (percentage: number) => {
@@ -60,8 +57,8 @@ export function GradeAssignment({ submission, onClose, onGrade }: GradeAssignmen
 
   return (
     <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-      <Card className="w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border-2 border-green-500 dark:border-green-400">
-        <CardHeader className="bg-gradient-to-r from-green-600 to-blue-600 text-white">
+      <Card className="w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border-2 border-slate-300 dark:border-slate-600">
+        <CardHeader className="bg-slate-700 dark:bg-slate-800 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/50">
@@ -294,7 +291,7 @@ export function GradeAssignment({ submission, onClose, onGrade }: GradeAssignmen
               </Button>
               <Button
                 type="submit"
-                className="bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 text-white"
+                className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (

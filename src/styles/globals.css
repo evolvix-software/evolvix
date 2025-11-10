@@ -16,6 +16,13 @@
   --color-sidebar-primary: var(--sidebar-primary);
   --color-sidebar-foreground: var(--sidebar-foreground);
   --color-sidebar: var(--sidebar);
+  --color-navbar: var(--navbar);
+  --color-navbar-text: var(--navbar-text);
+  --color-navbar-text-hover: var(--navbar-text-hover);
+  --color-navbar-text-active: var(--navbar-text-active);
+  --color-header: var(--header);
+  --color-header-foreground: var(--header-foreground);
+  --color-header-border: var(--header-border);
   --color-chart-5: var(--chart-5);
   --color-chart-4: var(--chart-4);
   --color-chart-3: var(--chart-3);
@@ -76,35 +83,45 @@
   --sidebar-accent-foreground: oklch(0.09 0 0);
   --sidebar-border: oklch(0.89 0 0);
   --sidebar-ring: rgb(99, 91, 255); /* #635bff */
+  /* Navbar colors - light mode */
+  --navbar: oklch(0.98 0 0);
+  --navbar-text: oklch(0.5 0 0);
+  --navbar-text-hover: oklch(0.3 0 0);
+  --navbar-text-active: oklch(0.09 0 0);
+  /* Header colors - light mode */
+  --header: oklch(1 0 0);
+  --header-foreground: oklch(0.09 0 0);
+  --header-border: oklch(0.89 0 0);
 }
 
 .dark {
-  /* Very dark gray/black background - primary canvas */
-  --background: oklch(0.12 0 0); /* Dark gray background for main area */
-  --foreground: oklch(1 0 0); /* Pure white text */
-  /* Cards and popovers - same dark background */
-  --card: oklch(0.05 0 0);
-  --card-foreground: oklch(1 0 0);
-  --popover: oklch(0.05 0 0);
-  --popover-foreground: oklch(1 0 0);
-  /* Primary accent - Blue for buttons and important elements */
+  /* ChatGPT Dark Theme Color Palette */
+  /* Main Background (Chat Area) - very dark gray */
+  --background: #343541; /* Main content area background */
+  --foreground: #D1D5DB; /* Primary text color - light gray */
+  /* Cards and popovers - distinct dark gray */
+  --card: #2B2B32; /* Content card background */
+  --card-foreground: #D1D5DB; /* Card text */
+  --popover: #2B2B32;
+  --popover-foreground: #D1D5DB;
+  /* Primary accent - Blue for buttons and important elements (keep same) */
   --primary: rgb(59, 130, 246); /* Blue accent #3b82f6 */
   --primary-foreground: oklch(1 0 0); /* White text on blue */
-  /* Secondary - slightly lighter dark gray for selected items */
-  --secondary: oklch(0.12 0 0); /* Slightly lighter dark gray */
-  --secondary-foreground: oklch(1 0 0);
+  /* Secondary - for selected items (slightly lighter than main background) */
+  --secondary: #3E3F4B; /* Selected/hover state background */
+  --secondary-foreground: #D1D5DB; /* Light gray text */
   /* Muted - for subtle UI elements */
-  --muted: oklch(0.08 0 0); /* Very dark gray */
-  --muted-foreground: oklch(0.7 0 0); /* Light gray for placeholders */
+  --muted: #2B2B32; /* Dark gray for muted backgrounds */
+  --muted-foreground: #8E8E8E; /* Secondary/muted text */
   /* Accent - for hover states */
-  --accent: oklch(0.12 0 0); /* Slightly lighter dark gray */
-  --accent-foreground: oklch(1 0 0);
+  --accent: #3E3F4B; /* Hover state */
+  --accent-foreground: #D1D5DB;
   /* Destructive - Red for warnings/errors */
   --destructive: rgb(239, 68, 68); /* Red #ef4444 */
   --destructive-foreground: oklch(1 0 0);
-  /* Borders and inputs - white outlines */
-  --border: oklch(0.3 0 0); /* Light gray for borders/outlines */
-  --input: oklch(0.08 0 0); /* Dark gray input background */
+  /* Borders and inputs */
+  --border: #40414F; /* Input field and border color */
+  --input: #40414F; /* Input field background */
   --ring: rgb(59, 130, 246); /* Blue focus ring */
   /* Chart colors - bright and distinct */
   --chart-1: oklch(0.646 0.222 41.116);
@@ -112,15 +129,27 @@
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  /* Sidebar - matching dark theme */
-  --sidebar: oklch(0.05 0 0); /* Same dark background */
-  --sidebar-foreground: oklch(1 0 0); /* White text */
+  /* Sidebar - ChatGPT sidebar color */
+  --sidebar: #202123; /* Sidebar background - darker than main */
+  --sidebar-foreground: #D1D5DB; /* Light gray text */
   --sidebar-primary: rgb(59, 130, 246); /* Blue accent */
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.12 0 0); /* Selected state */
-  --sidebar-accent-foreground: oklch(1 0 0);
-  --sidebar-border: oklch(0.3 0 0); /* White-ish borders */
+  --sidebar-accent: #343541; /* Selected state in sidebar */
+  --sidebar-accent-foreground: #D1D5DB;
+  --sidebar-border: #40414F; /* Borders */
   --sidebar-ring: rgb(59, 130, 246); /* Blue focus ring */
+  /* Navbar colors */
+  --navbar: #202123; /* Top bar background (same as sidebar) */
+  --navbar-text: #8E8E8E; /* Secondary text */
+  --navbar-text-hover: #D1D5DB; /* Lighter gray on hover */
+  --navbar-text-active: #D1D5DB; /* White for active */
+  /* Header colors */
+  --header: #202123; /* Header background (same as sidebar) */
+  --header-foreground: #D1D5DB; /* Light gray text */
+  --header-border: #40414F; /* Border color */
+  /* Calendar colors */
+  --calendar-current-day-bg: #1e3a5f; /* Dark blue for current day */
+  --calendar-current-day-foreground: #ffffff; /* White text on current day */
 }
 
 @layer base {

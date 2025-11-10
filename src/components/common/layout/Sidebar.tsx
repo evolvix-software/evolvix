@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/hooks';
-import { Calendar, ChevronDown, ChevronRight } from 'lucide-react';
+import { Calendar } from 'lucide-react';
 import { 
   LayoutDashboard,
   User,
@@ -17,8 +17,6 @@ import {
   Briefcase,
   Trophy,
   Bell,
-  ChevronLeft,
-  ChevronRight as ChevronRightIcon,
   GraduationCap,
   Settings,
   Clock,
@@ -77,6 +75,27 @@ const adminMenuItems: MenuItem[] = [
     icon: <Shield className="w-5 h-5" />,
     path: '/admin',
   },
+  {
+    id: 'vacancies',
+    label: 'Course Vacancies',
+    subtitle: 'Manage Vacancies',
+    icon: <Briefcase className="w-5 h-5" />,
+    path: '/admin/vacancies',
+  },
+  {
+    id: 'applications',
+    label: 'Mentor Applications',
+    subtitle: 'Review Applications',
+    icon: <FileText className="w-5 h-5" />,
+    path: '/admin/applications',
+  },
+  {
+    id: 'course-verification',
+    label: 'Course Verification',
+    subtitle: 'Verify Courses',
+    icon: <CheckCircle className="w-5 h-5" />,
+    path: '/admin/course-verification',
+  },
 ];
 
 const studentMenuItems: MenuItem[] = [
@@ -102,6 +121,13 @@ const studentMenuItems: MenuItem[] = [
     icon: <FileText className="w-5 h-5" />,
     path: '/portal/student/assignments',
     badge: '12'
+  },
+  {
+    id: 'tests',
+    label: 'Tests',
+    subtitle: 'Module Assessments',
+    icon: <ClipboardCheck className="w-5 h-5" />,
+    path: '/portal/student/tests'
   },
   {
     id: 'live-classes',
@@ -163,74 +189,135 @@ const studentMenuItems: MenuItem[] = [
   }
 ];
 
-const mentorMenuItems: MenuItem[] = [
+// Mentor menu items organized by category
+interface MentorMenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+const mentorMenuCategories: MentorMenuCategory[] = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    subtitle: 'Overview & Stats',
-    icon: <LayoutDashboard className="w-5 h-5" />,
-    path: '/portal/mentor',
-    badge: 'Live'
+    category: 'Overview',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        subtitle: 'Overview & Stats',
+        icon: <LayoutDashboard className="w-5 h-5" />,
+        path: '/portal/mentor',
+        badge: 'Live'
+      },
+    ]
   },
   {
-    id: 'courses',
-    label: 'My Courses',
-    subtitle: 'Create & Manage',
-    icon: <BookOpen className="w-5 h-5" />,
-    path: '/portal/mentor/courses'
+    category: 'Teaching',
+    items: [
+      {
+        id: 'courses',
+        label: 'My Courses',
+        subtitle: 'Create & Manage',
+        icon: <BookOpen className="w-5 h-5" />,
+        path: '/portal/mentor/courses'
+      },
+      {
+        id: 'vacancies',
+        label: 'Course Vacancies',
+        subtitle: 'Apply for Bundle Courses',
+        icon: <Briefcase className="w-5 h-5" />,
+        path: '/portal/mentor/vacancies'
+      },
+      {
+        id: 'classes',
+        label: 'Classes',
+        subtitle: 'Schedule & Manage',
+        icon: <Calendar className="w-5 h-5" />,
+        path: '/portal/mentor/classes'
+      },
+      {
+        id: 'tests',
+        label: 'Module Tests',
+        subtitle: 'Create & Manage Tests',
+        icon: <FileText className="w-5 h-5" />,
+        path: '/portal/mentor/tests'
+      },
+    ]
   },
   {
-    id: 'classes',
-    label: 'Classes',
-    subtitle: 'Schedule & Manage',
-    icon: <Calendar className="w-5 h-5" />,
-    path: '/portal/mentor/classes'
+    category: 'Students',
+    items: [
+      {
+        id: 'students',
+        label: 'Student Management',
+        subtitle: 'Students & Feedback',
+        icon: <Users className="w-5 h-5" />,
+        path: '/portal/mentor/students',
+        badge: '24'
+      },
+      {
+        id: 'assignments',
+        label: 'Assignments',
+        subtitle: 'Review Submissions',
+        icon: <FileText className="w-5 h-5" />,
+        path: '/portal/mentor/assignments',
+        badge: '12'
+      },
+    ]
   },
   {
-    id: 'students',
-    label: 'Student Management',
-    subtitle: 'Students & Feedback',
-    icon: <Users className="w-5 h-5" />,
-    path: '/portal/mentor/students',
-    badge: '24'
+    category: 'Communication',
+    items: [
+      {
+        id: 'messages',
+        label: 'Messages',
+        subtitle: 'Unified Inbox',
+        icon: <MessageSquare className="w-5 h-5" />,
+        path: '/portal/mentor/messages',
+        badge: '12'
+      },
+      {
+        id: 'announcements',
+        label: 'Announcements',
+        subtitle: 'Course Updates',
+        icon: <Bell className="w-5 h-5" />,
+        path: '/portal/mentor/announcements'
+      },
+    ]
   },
   {
-    id: 'assignments',
-    label: 'Assignments',
-    subtitle: 'Review Submissions',
-    icon: <FileText className="w-5 h-5" />,
-    path: '/portal/mentor/assignments',
-    badge: '12'
-  },
-  // {
-  //   id: 'projects',
-  //   label: 'Project Mentorship',
-  //   subtitle: 'Projects & Feedback',
-  //   icon: <Lightbulb className="w-5 h-5" />,
-  //   path: '/portal/mentor/projects'
-  // },
-  {
-    id: 'interviews',
-    label: 'Interview Evaluation',
-    subtitle: 'AI & Live Interviews',
-    icon: <ClipboardCheck className="w-5 h-5" />,
-    path: '/portal/mentor/interviews'
+    category: 'Analytics & Tools',
+    items: [
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        subtitle: 'Reports & Metrics',
+        icon: <BarChart3 className="w-5 h-5" />,
+        path: '/portal/mentor/analytics'
+      },
+      {
+        id: 'calendar',
+        label: 'Calendar',
+        subtitle: 'Schedule & Events',
+        icon: <Calendar className="w-5 h-5" />,
+        path: '/portal/mentor/calendar'
+      },
+    ]
   },
   {
-    id: 'analytics',
-    label: 'Analytics',
-    subtitle: 'Reports & Metrics',
-    icon: <BarChart3 className="w-5 h-5" />,
-    path: '/portal/mentor/analytics'
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    subtitle: 'Preferences',
-    icon: <Settings className="w-5 h-5" />,
-    path: '/portal/mentor/settings'
+    category: 'Settings',
+    items: [
+      {
+        id: 'settings',
+        label: 'Settings',
+        subtitle: 'Preferences',
+        icon: <Settings className="w-5 h-5" />,
+        path: '/portal/mentor/settings'
+      },
+    ]
   }
 ];
+
+// Flattened version for backward compatibility
+const mentorMenuItems: MenuItem[] = mentorMenuCategories.flatMap(category => category.items);
 
 const iconMap: Record<string, any> = {
   LayoutDashboard,
@@ -373,32 +460,20 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
 
   return (
     <div className={`flex flex-col h-screen bg-sidebar border-r border-border transition-all duration-300 shadow-2xl ${
-      isCollapsed ? 'w-16' : 'w-64'
+      isCollapsed ? 'w-0 overflow-hidden' : 'w-64'
     }`}>
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
-        {!isCollapsed && (
-          <div className="flex items-center space-x-3">
-            <div className={`w-10 h-10 ${headerIconBg} rounded-xl flex items-center justify-center shadow-lg ${headerIconShadow}`}>
-              {headerIcon}
-            </div>
-            <div>
-              <h1 className="text-lg font-bold text-foreground">Evolvix</h1>
-              <p className="text-xs text-muted-foreground font-medium">{portalTitle}</p>
-            </div>
+        <div className="flex items-center space-x-3">
+          {/* Evolvix Logo - Blue Diamond */}
+          <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
+            <span className="text-primary-foreground font-bold text-xs">EV</span>
           </div>
-        )}
-        <button
-          onClick={onToggle}
-          className="p-2 rounded-lg hover:bg-secondary transition-colors"
-        >
-          {isCollapsed ? (
-            <ChevronRightIcon className="w-5 h-5 text-foreground" />
-          ) : (
-            <ChevronLeft className="w-5 h-5 text-foreground" />
-          )}
-        </button>
+          <div>
+            <h1 className="text-sm font-bold text-foreground leading-tight">EVOLVIX</h1>
           </div>
+        </div>
+      </div>
 
       {/* Today's Tasks Card - Only for Student */}
       {role === 'student' && (
@@ -490,8 +565,74 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               </button>
             );
           })
+        ) : role === 'mentor' && !isCollapsed ? (
+          // Mentor menu with categories
+          mentorMenuCategories.map((category) => (
+            <div key={category.category} className="mb-4">
+              <div className="px-3 mb-2">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  {category.category}
+                </h3>
+              </div>
+              <div className="space-y-1">
+                {category.items.map((item) => {
+                  const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
+                  return (
+                    <button
+                      key={item.id}
+                      onClick={() => handleNavigation(item.path, item.id)}
+                      className={`group relative w-full flex items-start space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
+                        isActive
+                          ? 'bg-secondary'
+                          : 'hover:bg-secondary'
+                      }`}
+                      title={item.label}
+                    >
+                      {isActive && (
+                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
+                      )}
+                      
+                      <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
+                        isActive 
+                          ? 'bg-white' 
+                          : 'bg-transparent group-hover:bg-muted'
+                      }`}>
+                        <div className={isActive ? activeIconColor : 'text-foreground'}>
+                          {item.icon}
+                        </div>
+                      </div>
+                      
+                      <div className="flex-1 min-w-0 text-left">
+                        <div className="flex items-center justify-between">
+                          <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
+                            isActive ? 'text-foreground' : 'text-foreground'
+                          }`}>
+                            {item.label}
+                          </span>
+                          {item.badge && (
+                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
+                              isActive 
+                                ? `${activeBadgeBg} text-primary-foreground` 
+                                : 'bg-muted text-muted-foreground'
+                            }`}>
+                              {item.badge}
+                            </span>
+                          )}
+                        </div>
+                        {item.subtitle && (
+                          <p className="text-xs text-muted-foreground mt-0.5 truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                            {item.subtitle}
+                          </p>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))
         ) : (
-          // Regular menu items
+          // Regular menu items (for collapsed mentor sidebar or other roles)
           visibleMenuItems.map((item) => {
             // For admin, check view state; for others, check path
             let isActive = false;
