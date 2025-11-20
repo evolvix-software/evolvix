@@ -250,6 +250,31 @@
     display: none;
   }
   
+  /* Floating animation for particles */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px) translateX(0px);
+      opacity: 0.3;
+    }
+    50% {
+      transform: translateY(-20px) translateX(10px);
+      opacity: 0.6;
+    }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  /* Pulse animation delay utilities */
+  .delay-1000 {
+    animation-delay: 1s;
+  }
+  
+  .delay-2000 {
+    animation-delay: 2s;
+  }
+  
   /* Main content card scrollbar styling */
   .content-scroll::-webkit-scrollbar {
     width: 8px;
