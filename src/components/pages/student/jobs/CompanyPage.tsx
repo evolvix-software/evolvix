@@ -40,17 +40,6 @@ import { mockJobs } from '@/data/mock/jobsData';
 import { mockCompanyConnections, mockCompanyConnectionRequests } from '@/data/mock/connectionsData';
 import { CompanyConnection } from '@/interfaces/connections';
 import { cn } from '@/utils';
-import { 
-  getCompanyPosts, 
-  likeCompanyPost, 
-  addPostComment,
-  followCompany,
-  unfollowCompany,
-  isCompanyFollowed,
-  getFollowedCompanies,
-  fetchJobs
-} from '@/services/jobService';
-import { CompanyPost as ServiceCompanyPost } from '@/interfaces/jobs';
 
 interface CompanyPost {
   id: string;
@@ -218,66 +207,34 @@ export function CompanyPage() {
   const [likedPosts, setLikedPosts] = useState<Set<string>>(new Set());
   const [postLikes, setPostLikes] = useState<Record<string, number>>({});
   const [employeeConnections, setEmployeeConnections] = useState<Record<string, 'connected' | 'pending' | 'not-connected'>>({});
-  const [followersCount, setFollowersCount] = useState(0);
-  const [isFollowing, setIsFollowing] = useState(false);
 
   const job = mockJobs.find(j => j.company === companyName);
   const companyConnection = mockCompanyConnections.find(c => c.companyName === companyName);
 
   useEffect(() => {
-    const loadCompanyData = async () => {
-      // Load posts from service
-      const servicePosts = await getCompanyPosts(companyName);
-      const convertedPosts: CompanyPost[] = servicePosts.map(post => ({
-        id: post.id,
-        content: post.content,
-        postedAt: post.postedAt,
-        likes: post.likes.length,
-        comments: post.comments.length,
-        reposts: post.reposts.length,
-        image: post.image,
-      }));
-      
-      // Merge with mock posts if service has none
-      const allPosts = convertedPosts.length > 0 ? convertedPosts : (mockCompanyPosts[companyName] || []);
-      setPosts(allPosts);
-      
-      // Initialize post likes
-      const initialLikes: Record<string, number> = {};
-      allPosts.forEach(post => {
-        initialLikes[post.id] = post.likes;
-      });
-      setPostLikes(initialLikes);
-      
-      // Check if company is followed
-      const followed = await isCompanyFollowed(companyName);
-      setIsFollowing(followed);
-      
-      // Load connection status
-      if (companyConnection) {
-        setConnectionStatus(companyConnection.status === 'connected' ? 'connected' : companyConnection.status === 'pending' ? 'pending' : 'not-connected');
-        setConnected(companyConnection.status === 'connected');
-      }
-      
-      // Update followers count
-      if (job) {
-        const baseFollowers = job.companyInfo.followers;
-        // If this company is followed, increment count
-        const adjustedFollowers = followed ? baseFollowers + 1 : baseFollowers;
-        setFollowersCount(adjustedFollowers);
-      }
-      
-      // Initialize employee connections
-      const employees = mockEmployees[companyName] || [];
-      const initialConnections: Record<string, 'connected' | 'pending' | 'not-connected'> = {};
-      employees.forEach(emp => {
-        initialConnections[emp.id] = emp.connectionStatus;
-      });
-      setEmployeeConnections(initialConnections);
-    };
+    const companyPosts = mockCompanyPosts[companyName] || [];
+    setPosts(companyPosts);
     
-    loadCompanyData();
-  }, [companyName, companyConnection, job]);
+    if (companyConnection) {
+      setConnectionStatus(companyConnection.status === 'connected' ? 'connected' : companyConnection.status === 'pending' ? 'pending' : 'not-connected');
+      setConnected(companyConnection.status === 'connected');
+    }
+    
+    // Initialize post likes
+    const initialLikes: Record<string, number> = {};
+    companyPosts.forEach(post => {
+      initialLikes[post.id] = post.likes;
+    });
+    setPostLikes(initialLikes);
+    
+    // Initialize employee connections
+    const employees = mockEmployees[companyName] || [];
+    const initialConnections: Record<string, 'connected' | 'pending' | 'not-connected'> = {};
+    employees.forEach(emp => {
+      initialConnections[emp.id] = emp.connectionStatus;
+    });
+    setEmployeeConnections(initialConnections);
+  }, [companyName, companyConnection]);
 
   const formatTimeAgo = (dateString: string) => {
     const date = new Date(dateString);
@@ -385,10 +342,7 @@ export function CompanyPage() {
     }
   };
 
-  const handleLikePost = async (postId: string) => {
-    const userId = 'current-student'; // In real app, get from auth context
-    await likeCompanyPost(companyName, postId, userId);
-    
+  const handleLikePost = (postId: string) => {
     setLikedPosts(prev => {
       const newSet = new Set(prev);
       if (newSet.has(postId)) {
@@ -400,18 +354,6 @@ export function CompanyPage() {
       }
       return newSet;
     });
-  };
-
-  const handleFollowCompany = async () => {
-    if (isFollowing) {
-      await unfollowCompany(companyName);
-      setIsFollowing(false);
-      setFollowersCount(prev => Math.max(0, prev - 1));
-    } else {
-      await followCompany(companyName);
-      setIsFollowing(true);
-      setFollowersCount(prev => prev + 1);
-    }
   };
 
   if (!job) {
@@ -490,7 +432,7 @@ export function CompanyPage() {
               <span className="text-muted-foreground/60">•</span>
               <span className="flex items-center gap-1.5">
                 <Users className="w-4 h-4" />
-                {followersCount > 0 ? followersCount.toLocaleString() : companyJob.companyInfo.followers.toLocaleString()} followers
+                {companyJob.companyInfo.followers.toLocaleString()} followers
               </span>
               <span className="text-muted-foreground/60">•</span>
               <span>{companyJob.companyInfo.employees}</span>
@@ -516,7 +458,7 @@ export function CompanyPage() {
             {connectionStatus === 'connected' ? (
               <Button
                 variant="outline"
-                className="border-success text-success hover:bg-success/10"
+                className="border-green-500 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/20"
               >
                 <Check className="w-4 h-4 mr-2" />
                 Connected
@@ -524,7 +466,7 @@ export function CompanyPage() {
             ) : connectionStatus === 'pending' ? (
               <Button
                 variant="outline"
-                className="border-warning text-warning hover:bg-warning/10"
+                className="border-yellow-500 text-yellow-600 dark:text-yellow-400 hover:bg-yellow-50 dark:hover:bg-yellow-900/20"
                 onClick={handleConnect}
                 title="Click to withdraw connection request"
               >
@@ -566,13 +508,13 @@ export function CompanyPage() {
             className={cn(
               'px-4 py-3 text-sm font-medium transition-colors relative',
               activeTab === 'home'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'text-primary dark:text-primary font-semibold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             )}
           >
             Home
             {activeTab === 'home' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary dark:bg-primary"></div>
             )}
           </button>
           <button
@@ -580,13 +522,13 @@ export function CompanyPage() {
             className={cn(
               'px-4 py-3 text-sm font-medium transition-colors relative',
               activeTab === 'about'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'text-primary dark:text-primary font-semibold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             )}
           >
             About
             {activeTab === 'about' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary dark:bg-primary"></div>
             )}
           </button>
           <button
@@ -594,13 +536,13 @@ export function CompanyPage() {
             className={cn(
               'px-4 py-3 text-sm font-medium transition-colors relative',
               activeTab === 'posts'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'text-primary dark:text-primary font-semibold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             )}
           >
             Posts
             {activeTab === 'posts' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary dark:bg-primary"></div>
             )}
           </button>
           <button
@@ -611,13 +553,13 @@ export function CompanyPage() {
             className={cn(
               'px-4 py-3 text-sm font-medium transition-colors relative',
               activeTab === 'jobs'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'text-primary dark:text-primary font-semibold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             )}
           >
             Jobs
             {activeTab === 'jobs' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary dark:bg-primary"></div>
             )}
           </button>
           <button
@@ -625,13 +567,13 @@ export function CompanyPage() {
             className={cn(
               'px-4 py-3 text-sm font-medium transition-colors relative',
               activeTab === 'people'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+                ? 'text-primary dark:text-primary font-semibold'
+                : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
             )}
           >
             People
             {activeTab === 'people' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-primary dark:bg-primary"></div>
             )}
           </button>
         </div>
@@ -643,28 +585,28 @@ export function CompanyPage() {
         {activeTab === 'home' && (
           <>
             {/* Overview Section */}
-            <Card className="mb-6 border-border bg-card">
+            <Card className="mb-6 border-slate-200 dark:border-border bg-white dark:bg-card">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900 dark:text-foreground">
                   Overview
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-foreground leading-relaxed mb-4">
+                <p className="text-slate-700 dark:text-slate-300 leading-relaxed mb-4">
                   {companyJob.companyInfo.description || 'At ' + companyJob.company + ', we are transforming the future of enterprise AI by building responsible, sustainable, and cost-effective AI models tailored for industry-specific challenges—from healthcare to finance. We\'re not just another IT services company. We are an AI product company, creating advanced models and autonomous agents.'}
                 </p>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                  <div className="text-center p-4 bg-muted rounded-lg">
-                    <div className="text-2xl font-bold text-foreground">{followersCount > 0 ? followersCount.toLocaleString() : companyJob.companyInfo.followers.toLocaleString()}</div>
-                    <div className="text-sm text-muted-foreground">Followers</div>
+                  <div className="text-center p-4 bg-slate-50 dark:bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-foreground">{companyJob.companyInfo.followers.toLocaleString()}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Followers</div>
                   </div>
-                  <div className="text-center p-4 bg-muted rounded-lg">
-                    <div className="text-2xl font-bold text-foreground">{mockJobs.filter(j => j.company === companyName).length}</div>
-                    <div className="text-sm text-muted-foreground">Open Jobs</div>
+                  <div className="text-center p-4 bg-slate-50 dark:bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-foreground">{mockJobs.filter(j => j.company === companyName).length}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Open Jobs</div>
                   </div>
-                  <div className="text-center p-4 bg-muted rounded-lg">
-                    <div className="text-2xl font-bold text-foreground">{posts.length}</div>
-                    <div className="text-sm text-muted-foreground">Posts</div>
+                  <div className="text-center p-4 bg-slate-50 dark:bg-secondary rounded-lg">
+                    <div className="text-2xl font-bold text-slate-900 dark:text-foreground">{posts.length}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">Posts</div>
                   </div>
                   <div className="text-center p-4 bg-slate-50 dark:bg-secondary rounded-lg">
                     <div className="text-2xl font-bold text-slate-900 dark:text-foreground">{companyJob.companyInfo.industry}</div>
@@ -718,14 +660,14 @@ export function CompanyPage() {
 
               <div className="space-y-4">
                 {posts.length === 0 ? (
-                  <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+                  <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
                     <CardContent className="p-8 text-center">
                       <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
                       <p className="text-slate-600 dark:text-slate-400">No posts available</p>
                     </CardContent>
                   </Card>
                 ) : (
-                  <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+                  <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
                     <CardContent className="p-6">
                       <div className="flex items-start gap-4 mb-4">
                         <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-primary flex items-center justify-center text-white font-bold flex-shrink-0">
@@ -805,7 +747,7 @@ export function CompanyPage() {
         {/* About Tab Content */}
         {activeTab === 'about' && (
           <div className="space-y-6">
-            <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+            <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900 dark:text-foreground">
                   About {companyJob.company}
@@ -847,7 +789,7 @@ export function CompanyPage() {
               </CardContent>
             </Card>
 
-            <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+            <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900 dark:text-foreground">
                   Specialties
@@ -870,7 +812,7 @@ export function CompanyPage() {
         {activeTab === 'posts' && (
           <div className="space-y-4">
             {posts.length === 0 ? (
-              <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+              <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
                 <CardContent className="p-8 text-center">
                   <MessageSquare className="w-12 h-12 text-slate-400 mx-auto mb-4" />
                   <p className="text-slate-600 dark:text-slate-400">No posts available</p>
@@ -878,7 +820,7 @@ export function CompanyPage() {
               </Card>
             ) : (
               posts.map(post => (
-                <Card key={post.id} className="border-slate-200 dark:border-border bg-card dark:bg-card">
+                <Card key={post.id} className="border-slate-200 dark:border-border bg-white dark:bg-card">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4 mb-4">
                       <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-primary flex items-center justify-center text-white font-bold flex-shrink-0">
@@ -957,7 +899,7 @@ export function CompanyPage() {
         {/* Jobs Tab Content */}
         {activeTab === 'jobs' && (
           <div className="space-y-4">
-            <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+            <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
               <CardHeader>
                 <CardTitle className="text-xl font-semibold text-slate-900 dark:text-foreground flex items-center gap-2">
                   <Briefcase className="w-5 h-5" />
@@ -990,7 +932,7 @@ export function CompanyPage() {
         {/* People Tab Content */}
         {activeTab === 'people' && (
           <div className="space-y-4">
-          <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">
+          <Card className="border-slate-200 dark:border-border bg-white dark:bg-card">
             <CardHeader>
               <CardTitle className="text-xl font-semibold text-slate-900 dark:text-foreground flex items-center gap-2">
                 <Users className="w-5 h-5" />
@@ -1063,7 +1005,7 @@ export function CompanyPage() {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="border-warning text-warning"
+                              className="border-yellow-500 text-yellow-600 dark:text-yellow-400"
                               onClick={() => {
                                 setEmployeeConnections(prev => ({ ...prev, [employee.id]: 'not-connected' }));
                               }}
@@ -1169,7 +1111,7 @@ export function CompanyPage() {
               placeholder="Hi! I'm interested in learning more about your company and opportunities..."
               rows={4}
               className={cn(
-                "w-full px-3 py-2 border rounded-lg bg-card dark:bg-card text-slate-900 dark:text-foreground placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors",
+                "w-full px-3 py-2 border rounded-lg bg-white dark:bg-card text-slate-900 dark:text-foreground placeholder:text-slate-400 focus:outline-none focus:ring-2 transition-colors",
                 noteError
                   ? "border-red-500 focus:ring-red-500/20 focus:border-red-500"
                   : "border-slate-300 dark:border-border focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff]"
