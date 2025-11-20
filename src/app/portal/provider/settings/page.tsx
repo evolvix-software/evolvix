@@ -20,28 +20,33 @@ export default function SettingsPage() {
   });
 
   useEffect(() => {
-    // If no provider exists, create one from registration data
-    if (!provider) {
+    // Get or create provider
+    let currentProvider = provider;
+    
+    if (!currentProvider) {
       const registrationData = localStorage.getItem('evolvix_registration');
       if (registrationData) {
         const regData = JSON.parse(registrationData);
-        const newProvider = providerService.createProvider({
+        currentProvider = providerService.createProvider({
           organizationName: regData.fullName || 'My Organization',
           organizationSlug: (regData.fullName || 'my-organization').toLowerCase().replace(/\s+/g, '-'),
           contactEmail: regData.email || '',
           userId: regData.email || '',
         });
-        setProvider(newProvider);
+        setProvider(currentProvider);
       } else {
         router.push('/auth/signin');
         return;
       }
     }
+
+    if (!currentProvider) return;
+
     setFormData({
-      organizationName: provider.organizationName,
-      contactEmail: provider.contactEmail,
-      contactPhone: provider.contactPhone || '',
-      website: provider.website || '',
+      organizationName: currentProvider.organizationName,
+      contactEmail: currentProvider.contactEmail,
+      contactPhone: currentProvider.contactPhone || '',
+      website: currentProvider.website || '',
     });
   }, [provider, router]);
 

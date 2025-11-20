@@ -26,7 +26,6 @@ const statusColors: Record<string, { bg: string; text: string }> = {
   
   // Scholar statuses
   active: { bg: 'bg-success/20', text: 'text-success' },
-  completed: { bg: 'bg-primary/20', text: 'text-primary' },
   paused: { bg: 'bg-warning/20', text: 'text-warning' },
   revoked: { bg: 'bg-destructive/20', text: 'text-destructive' },
   
