@@ -260,26 +260,26 @@ export function MentorDashboardPage() {
         {/* Verification Status Cards - Same UI as Student Portal */}
         {/* TODO: Re-enable verification banner after UI is complete */}
         {/* {verificationStatus?.status === 'incomplete' && (
-          <Card className="border-0 shadow-sm bg-[#635bff]/10 dark:bg-[#635bff]/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
+          <Card className="border-0 shadow-sm bg-primary/10 dark:bg-primary/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
               <div className="flex items-center space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-12 h-12 bg-[#635bff]/10 dark:bg-[#635bff]/20 rounded-full flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-[#635bff] dark:text-[#735fff]" />
+                  <div className="w-12 h-12 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-primary dark:text-primary" />
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-[#635bff] dark:text-[#735fff]">
+                  <h3 className="text-lg font-semibold text-primary dark:text-primary">
                     Become a Verified Mentor
                   </h3>
-                  <p className="text-[#635bff] dark:text-[#735fff]">
+                  <p className="text-primary dark:text-primary">
                     Complete your verification to unlock all portal features, connect with students, and start earning.
                   </p>
                 </div>
                 <div className="flex-shrink-0">
                   <Button
                     onClick={() => router.push('/portal/verification')}
-                    className="bg-[#635bff] hover:bg-[#4f48cc] text-white"
+                    className="bg-primary hover:bg-[#4f48cc] text-white"
                   >
                     Verify Now
                   </Button>
@@ -431,7 +431,7 @@ export function MentorDashboardPage() {
                   <AlertCircle className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-foreground mb-2">
                     Complete Verification to Access All Features
                   </h3>
                   <p className="text-gray-600 dark:text-gray-400">

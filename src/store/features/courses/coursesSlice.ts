@@ -19,7 +19,13 @@ export interface CoursesState {
     level: string;
     skill: string;
     searchQuery: string;
+    price: string; // 'all' | 'free' | 'paid'
+    rating: string; // 'all' | '4+' | '4.5+'
+    duration: string; // 'all' | 'short' | 'medium' | 'long'
+    mentor: string; // mentor ID or 'all'
   };
+  sortBy: string; // 'popular' | 'rating' | 'newest' | 'price-low' | 'price-high' | 'duration-short' | 'duration-long'
+  viewMode: 'grid' | 'list';
   isLoading: boolean;
   error: string | null;
 }
@@ -635,8 +641,14 @@ const initialState: CoursesState = {
     category: 'all',
     level: 'all',
     skill: '',
-    searchQuery: ''
+    searchQuery: '',
+    price: 'all',
+    rating: 'all',
+    duration: 'all',
+    mentor: 'all'
   },
+  sortBy: 'popular',
+  viewMode: 'grid',
   isLoading: false,
   error: null
 };
@@ -678,6 +690,12 @@ const coursesSlice = createSlice({
     },
     setFilters(state, action: PayloadAction<Partial<CoursesState['filters']>>) {
       state.filters = { ...state.filters, ...action.payload };
+    },
+    setSortBy(state, action: PayloadAction<string>) {
+      state.sortBy = action.payload;
+    },
+    setViewMode(state, action: PayloadAction<'grid' | 'list'>) {
+      state.viewMode = action.payload;
     },
     enrollCourse(state, action: PayloadAction<string>) {
       const existingEnrollment = state.enrolledCourses.find(
@@ -752,6 +770,8 @@ export const {
   updateCourse,
   deleteCourse,
   setFilters,
+  setSortBy,
+  setViewMode,
   enrollCourse,
   unenrollCourse,
   updateProgress,

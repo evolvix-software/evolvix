@@ -21,10 +21,13 @@ interface HeaderProps {
 export function Header({ onMenuToggle, title }: HeaderProps) {
   const router = useRouter();
   const { theme, toggleTheme } = useTheme();
-  const [currentTime, setCurrentTime] = useState(new Date());
+  const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [studentInfo, setStudentInfo] = useState<{ id?: string; degree?: string }>({});
 
   useEffect(() => {
+    // Initialize time on client-side only to avoid hydration mismatch
+    setCurrentTime(new Date());
+    
     // Update time every second
     const timer = setInterval(() => {
       setCurrentTime(new Date());
@@ -116,8 +119,17 @@ export function Header({ onMenuToggle, title }: HeaderProps) {
             <div className="flex items-center space-x-2 px-3 py-2 bg-secondary rounded-lg">
               <Clock className="w-4 h-4 text-header-foreground" />
               <div className="flex flex-col">
-                <span className="text-header-foreground text-sm font-semibold">{formatTime(currentTime)}</span>
-                <span className="text-muted-foreground text-xs">{formatDate(currentTime)}</span>
+                {currentTime ? (
+                  <>
+                    <span className="text-header-foreground text-sm font-semibold">{formatTime(currentTime)}</span>
+                    <span className="text-muted-foreground text-xs">{formatDate(currentTime)}</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="text-header-foreground text-sm font-semibold">--:--:-- UTC</span>
+                    <span className="text-muted-foreground text-xs">Loading...</span>
+                  </>
+                )}
               </div>
             </div>
 

@@ -19,6 +19,7 @@ import {
   Bell,
   GraduationCap,
   Settings,
+  UserCheck,
   Clock,
   CheckCircle,
   Shield,
@@ -30,7 +31,8 @@ import {
   LogOut,
   ClipboardCheck,
   BarChart3,
-  Users
+  Users,
+  FileVideo
 } from 'lucide-react';
 
 import { settingsData, SettingsSection } from '@/data/mock/settingsData';
@@ -98,96 +100,145 @@ const adminMenuItems: MenuItem[] = [
   },
 ];
 
-const studentMenuItems: MenuItem[] = [
+// Student menu items organized by category
+interface StudentMenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+const studentMenuCategories: StudentMenuCategory[] = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    subtitle: 'Overview & Progress',
-    icon: <LayoutDashboard className="w-5 h-5" />,
-    path: '/portal/student',
-    badge: 'Live'
+    category: 'Overview',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        subtitle: 'Overview & Progress',
+        icon: <LayoutDashboard className="w-5 h-5" />,
+        path: '/portal/student',
+        badge: 'Live'
+      },
+    ]
   },
   {
-    id: 'courses',
-    label: 'Courses',
-    subtitle: 'Browse & Learn',
-    icon: <BookOpen className="w-5 h-5" />,
-    path: '/portal/student/courses'
+    category: 'Learning',
+    items: [
+      {
+        id: 'courses',
+        label: 'Browse Courses',
+        subtitle: 'Discover & Enroll',
+        icon: <BookOpen className="w-5 h-5" />,
+        path: '/portal/student/courses'
+      },
+      {
+        id: 'my-courses',
+        label: 'My Courses',
+        subtitle: 'Enrolled Courses',
+        icon: <BookOpen className="w-5 h-5" />,
+        path: '/portal/student/my-courses',
+        badge: undefined // Will be dynamically set based on enrolled courses count
+      },
+      {
+        id: 'assignments',
+        label: 'Assignments',
+        subtitle: 'Tasks & Projects',
+        icon: <FileText className="w-5 h-5" />,
+        path: '/portal/student/assignments',
+        badge: '12'
+      },
+      {
+        id: 'tests',
+        label: 'Tests',
+        subtitle: 'Module Assessments',
+        icon: <ClipboardCheck className="w-5 h-5" />,
+        path: '/portal/student/tests'
+      },
+      {
+        id: 'live-classes',
+        label: 'Live Classes',
+        subtitle: 'Join Sessions',
+        icon: <Video className="w-5 h-5" />,
+        path: '/portal/student/classes'
+      },
+      {
+        id: 'recordings',
+        label: 'Recordings',
+        subtitle: 'Watch Recorded Classes',
+        icon: <FileVideo className="w-5 h-5" />,
+        path: '/portal/student/recordings'
+      },
+    ]
   },
   {
-    id: 'assignments',
-    label: 'Assignments',
-    subtitle: 'Tasks & Projects',
-    icon: <FileText className="w-5 h-5" />,
-    path: '/portal/student/assignments',
-    badge: '12'
+    category: 'Opportunities',
+    items: [
+      {
+        id: 'scholarships',
+        label: 'Scholarships',
+        subtitle: 'Financial Aid',
+        icon: <Award className="w-5 h-5" />,
+        path: '/portal/student/scholarships'
+      },
+      {
+        id: 'jobs',
+        label: 'Jobs & Opportunities',
+        subtitle: 'Career Path',
+        icon: <Briefcase className="w-5 h-5" />,
+        path: '/portal/student/jobs'
+      },
+      {
+        id: 'hackathons',
+        label: 'Hackathons',
+        subtitle: 'Compete & Win',
+        icon: <Trophy className="w-5 h-5" />,
+        path: '/portal/student/hackathons'
+      },
+      {
+        id: 'interviews',
+        label: 'AI Mock Interview',
+        subtitle: 'Practice Interviews',
+        icon: <Bot className="w-5 h-5" />,
+        path: '/portal/student/interviews'
+      },
+      {
+        id: 'interview-prep',
+        label: 'Interview Preparation',
+        subtitle: 'Manual Training',
+        icon: <UserCheck className="w-5 h-5" />,
+        path: '/portal/student/interviews/preparation'
+      },
+    ]
   },
   {
-    id: 'tests',
-    label: 'Tests',
-    subtitle: 'Module Assessments',
-    icon: <ClipboardCheck className="w-5 h-5" />,
-    path: '/portal/student/tests'
+    category: 'Community',
+    items: [
+      {
+        id: 'mentors',
+        label: 'Mentors',
+        subtitle: 'Connect & Learn',
+        icon: <Lightbulb className="w-5 h-5" />,
+        path: '/portal/student/mentors',
+        badge: '5'
+      },
+    ]
   },
   {
-    id: 'live-classes',
-    label: 'Live Classes',
-    subtitle: 'Join Sessions',
-    icon: <Video className="w-5 h-5" />,
-    path: '/portal/student/live-classes'
-  },
-  {
-    id: 'profile',
-    label: 'My Profile',
-    subtitle: 'Personal Information',
-    icon: <User className="w-5 h-5" />,
-    path: '/portal/student/profile'
-  },
-  {
-    id: 'mentors',
-    label: 'Mentors',
-    subtitle: 'Connect & Learn',
-    icon: <Lightbulb className="w-5 h-5" />,
-    path: '/portal/student/mentors',
-    badge: '5'
-  },
-  {
-    id: 'scholarships',
-    label: 'Scholarships',
-    subtitle: 'Financial Aid',
-    icon: <Award className="w-5 h-5" />,
-    path: '/portal/student/scholarships'
-  },
-  {
-    id: 'jobs',
-    label: 'Jobs & Opportunities',
-    subtitle: 'Career Path',
-    icon: <Briefcase className="w-5 h-5" />,
-    path: '/portal/student/jobs'
-  },
-  {
-    id: 'hackathons',
-    label: 'Hackathons',
-    subtitle: 'Compete & Win',
-    icon: <Trophy className="w-5 h-5" />,
-    path: '/portal/student/hackathons'
-  },
-  {
-    id: 'settings',
-    label: 'Settings',
-    subtitle: 'Preferences',
-    icon: <Settings className="w-5 h-5" />,
-    path: '/portal/student/settings'
-  },
-  {
-    id: 'notifications',
-    label: 'Notifications',
-    subtitle: 'Alerts & Updates',
-    icon: <Bell className="w-5 h-5" />,
-    path: '/portal/student/notifications',
-    badge: '9'
+    category: 'Account',
+    items: [
+      {
+        id: 'settings',
+        label: 'Settings',
+        subtitle: 'Profile & Preferences',
+        icon: <Settings className="w-5 h-5" />,
+        path: '/portal/student/settings',
+        badge: '9'
+      },
+    ]
   }
 ];
+
+// Flattened version for backward compatibility
+const studentMenuItems: MenuItem[] = studentMenuCategories.flatMap(category => category.items);
 
 // Mentor menu items organized by category
 interface MentorMenuCategory {
@@ -303,6 +354,32 @@ const mentorMenuCategories: MentorMenuCategory[] = [
     ]
   },
   {
+    category: 'Premium Features',
+    items: [
+      {
+        id: 'hackathons',
+        label: 'Hackathons',
+        subtitle: 'Manage Links',
+        icon: <Trophy className="w-5 h-5" />,
+        path: '/portal/mentor/hackathons'
+      },
+      {
+        id: 'scholarships',
+        label: 'Scholarships',
+        subtitle: 'Review Applications',
+        icon: <Award className="w-5 h-5" />,
+        path: '/portal/mentor/scholarships'
+      },
+      {
+        id: 'interviews',
+        label: 'Interviews',
+        subtitle: 'Manage Interviews',
+        icon: <Bot className="w-5 h-5" />,
+        path: '/portal/mentor/interviews'
+      },
+    ]
+  },
+  {
     category: 'Settings',
     items: [
       {
@@ -354,6 +431,10 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const isVerified = verificationStatus?.status === 'approved';
   const verificationLevel = verificationStatus?.level || 0;
   
+  // Get enrolled courses count for student badge
+  const enrolledCourses = useAppSelector((state) => state.courses.enrolledCourses);
+  const enrolledCoursesCount = role === 'student' ? enrolledCourses.length : 0;
+  
   const [settingsMenuItems, setSettingsMenuItems] = useState<SettingsSection[]>([]);
   const [isSettingsPage, setIsSettingsPage] = useState(false);
   const [activeSection, setActiveSection] = useState(role === 'mentor' ? 'profile' : 'basic');
@@ -397,10 +478,10 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const activeBadgeBg = 'bg-primary';
   const portalTitle = role === 'student' ? 'Student Portal' : role === 'mentor' ? 'Mentor Portal' : 'Admin Portal';
   const headerIcon = role === 'student' 
-    ? <GraduationCap className="w-6 h-6 text-white" />
+    ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
     : role === 'mentor'
-    ? <User className="w-6 h-6 text-white" />
-    : <Shield className="w-6 h-6 text-white" />;
+    ? <User className="w-6 h-6 text-sidebar-primary-foreground" />
+    : <Shield className="w-6 h-6 text-sidebar-primary-foreground" />;
   
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -507,7 +588,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                 <Clock className="w-5 h-5 text-primary-foreground" />
               </div>
               <div className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full flex items-center justify-center border-2 border-secondary">
-                <span className="text-white text-xs font-bold">64</span>
+                <span className="text-sidebar-primary-foreground text-xs font-bold">64</span>
               </div>
             </div>
           </div>
@@ -545,7 +626,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                 
                 <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                   isActive 
-                    ? 'bg-white' 
+                    ? 'bg-sidebar-primary-foreground' 
                     : 'bg-transparent group-hover:bg-muted'
                 }`}>
                   <div className={isActive ? activeIconColor : 'text-foreground'}>
@@ -565,9 +646,9 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               </button>
             );
           })
-        ) : role === 'mentor' && !isCollapsed ? (
-          // Mentor menu with categories
-          mentorMenuCategories.map((category) => (
+        ) : (role === 'student' || role === 'mentor') && !isCollapsed ? (
+          // Student or Mentor menu with categories
+          (role === 'student' ? studentMenuCategories : mentorMenuCategories).map((category) => (
             <div key={category.category} className="mb-4">
               <div className="px-3 mb-2">
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -577,6 +658,10 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               <div className="space-y-1">
                 {category.items.map((item) => {
                   const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
+                  // Dynamic badge for My Courses
+                  const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0 
+                    ? enrolledCoursesCount.toString() 
+                    : item.badge;
                   return (
                     <button
                       key={item.id}
@@ -594,7 +679,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                       
                       <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                         isActive 
-                          ? 'bg-white' 
+                          ? 'bg-sidebar-primary-foreground' 
                           : 'bg-transparent group-hover:bg-muted'
                       }`}>
                         <div className={isActive ? activeIconColor : 'text-foreground'}>
@@ -609,13 +694,13 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                           }`}>
                             {item.label}
                           </span>
-                          {item.badge && (
+                          {badgeToShow && (
                             <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
                               isActive 
                                 ? `${activeBadgeBg} text-primary-foreground` 
                                 : 'bg-muted text-muted-foreground'
                             }`}>
-                              {item.badge}
+                              {badgeToShow}
                             </span>
                           )}
                         </div>
@@ -632,7 +717,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             </div>
           ))
         ) : (
-          // Regular menu items (for collapsed mentor sidebar or other roles)
+          // Regular menu items (for collapsed sidebar or admin role)
           visibleMenuItems.map((item) => {
             // For admin, check view state; for others, check path
             let isActive = false;
@@ -642,6 +727,11 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             } else {
               isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
             }
+            
+            // Dynamic badge for My Courses
+            const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0 
+              ? enrolledCoursesCount.toString() 
+              : item.badge;
             
             return (
             <button
@@ -662,7 +752,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                 
                 <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
                   isActive 
-                    ? 'bg-white' 
+                    ? 'bg-sidebar-primary-foreground' 
                     : 'bg-transparent group-hover:bg-muted'
                 }`}>
                   <div className={isActive ? activeIconColor : 'text-foreground'}>
@@ -678,13 +768,13 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                       }`}>
                         {item.label}
                       </span>
-                      {item.badge && (
+                      {badgeToShow && (
                         <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
                           isActive 
                             ? `${activeBadgeBg} text-primary-foreground` 
                             : 'bg-muted text-muted-foreground'
                         }`}>
-                          {item.badge}
+                          {badgeToShow}
                         </span>
                       )}
                     </div>

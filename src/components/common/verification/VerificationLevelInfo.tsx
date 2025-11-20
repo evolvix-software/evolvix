@@ -67,9 +67,9 @@ const levelDetails = {
 export function VerificationLevelInfo({ currentLevel, role }: VerificationLevelInfoProps) {
   return (
     <div className="space-y-4">
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Verification Levels</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Verification Levels</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Your current verification level determines what features you can access
           </CardDescription>
@@ -95,7 +95,7 @@ export function VerificationLevelInfo({ currentLevel, role }: VerificationLevelI
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div>
-                      <h3 className="font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+                      <h3 className="font-semibold text-gray-900 dark:text-foreground flex items-center gap-2">
                         {isUnlocked ? (
                           <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
                         ) : (

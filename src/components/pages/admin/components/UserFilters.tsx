@@ -24,7 +24,7 @@ export function UserFilters({
   onSearch,
 }: UserFiltersProps) {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+    <div className="bg-card dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Input
           placeholder="Search by email or name..."
@@ -36,7 +36,7 @@ export function UserFilters({
         <select
           value={statusFilter}
           onChange={(e) => onStatusFilterChange(e.target.value)}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">All Statuses</option>
           <option value="active">Active</option>
@@ -47,7 +47,7 @@ export function UserFilters({
         <select
           value={roleFilter}
           onChange={(e) => onRoleFilterChange(e.target.value)}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="">All Roles</option>
           <option value="student">Student</option>

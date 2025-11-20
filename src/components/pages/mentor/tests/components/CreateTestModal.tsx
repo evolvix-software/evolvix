@@ -282,7 +282,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
       <CardContent className="space-y-6">
         {/* Course Selection */}
         <div>
-          <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+          <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
             Select Course *
           </label>
           <select
@@ -291,7 +291,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
               setSelectedCourseId(e.target.value);
               setSelectedModuleId('');
             }}
-            className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+            className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
           >
             <option value="">Choose a course...</option>
             {courses.map(course => (
@@ -305,13 +305,13 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
         {/* Module Selection */}
         {selectedCourse && (
           <div>
-            <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+            <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
               Select Module *
             </label>
             <select
               value={selectedModuleId}
               onChange={(e) => setSelectedModuleId(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
             >
               <option value="">Choose a module...</option>
               {selectedCourse.modules.map(module => (
@@ -326,7 +326,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
         {/* Document Upload */}
         {selectedModule && (
           <div>
-            <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+            <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
               Upload Module Document (PDF) *
             </label>
             <div className="border-2 border-dashed border-slate-300 dark:border-slate-600 rounded-lg p-6 text-center">
@@ -384,14 +384,14 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
           <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 bg-slate-50 dark:bg-slate-900/50">
             <div className="flex items-center space-x-2 mb-3">
               <CheckCircle2 className="w-5 h-5 text-green-600 dark:text-green-400" />
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-semibold text-slate-900 dark:text-foreground">
                 {generatedQuestions.length} Questions Generated
               </span>
             </div>
             <div className="space-y-3 max-h-64 overflow-y-auto">
               {generatedQuestions.map((q, idx) => (
                 <div key={q.id} className="text-sm">
-                  <p className="font-medium text-slate-900 dark:text-white">
+                  <p className="font-medium text-slate-900 dark:text-foreground">
                     {idx + 1}. {q.question}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -407,7 +407,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
         {generatedQuestions.length > 0 && (
           <>
             <div>
-              <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+              <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                 Test Title *
               </label>
               <Input
@@ -419,7 +419,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                   Passing Score (%)
                 </label>
                 <Input
@@ -431,7 +431,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                   Time Limit (minutes)
                 </label>
                 <Input
@@ -445,7 +445,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                   Attempts Allowed
                 </label>
                 <Input
@@ -459,7 +459,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                   Opens At
                 </label>
                 <Input
@@ -469,7 +469,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+                <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                   Closes At
                 </label>
                 <Input
@@ -482,7 +482,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
 
             {/* Student Selection */}
             <div>
-              <label className="block text-sm font-semibold text-slate-900 dark:text-white mb-2">
+              <label className="block text-sm font-semibold text-slate-900 dark:text-foreground mb-2">
                 Assign to Students *
               </label>
               <div className="border border-slate-200 dark:border-slate-700 rounded-lg p-4 max-h-48 overflow-y-auto">
@@ -503,7 +503,7 @@ export function CreateTestModal({ courses, preSelectedCourseId, preSelectedModul
                           onChange={() => toggleStudent(student.id)}
                           className="w-4 h-4"
                         />
-                        <span className="text-sm text-slate-900 dark:text-white">
+                        <span className="text-sm text-slate-900 dark:text-foreground">
                           {student.name}
                         </span>
                       </label>

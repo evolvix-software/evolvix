@@ -76,17 +76,17 @@ export function StudentTestResults({
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
             <div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Student</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{studentName}</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{studentName}</p>
             </div>
             <div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Score</p>
-              <p className="font-semibold text-slate-900 dark:text-white">
+              <p className="font-semibold text-slate-900 dark:text-foreground">
                 {attempt.score} / {attempt.maxScore} ({attempt.percentage.toFixed(1)}%)
               </p>
             </div>
             <div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Time Taken</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{attempt.timeSpent} minutes</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{attempt.timeSpent} minutes</p>
             </div>
             <div>
               <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Status</p>
@@ -129,7 +129,7 @@ export function StudentTestResults({
               </div>
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Total</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {test.questions.length}
                 </p>
               </div>
@@ -141,28 +141,28 @@ export function StudentTestResults({
             <div className="flex items-center space-x-2">
               <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <span className="text-slate-600 dark:text-slate-400">Started:</span>
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-semibold text-slate-900 dark:text-foreground">
                 {new Date(attempt.startedAt).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <span className="text-slate-600 dark:text-slate-400">Submitted:</span>
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-semibold text-slate-900 dark:text-foreground">
                 {new Date(attempt.submittedAt).toLocaleString()}
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <Clock className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <span className="text-slate-600 dark:text-slate-400">Time Limit:</span>
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-semibold text-slate-900 dark:text-foreground">
                 {test.timeLimit} minutes
               </span>
             </div>
             <div className="flex items-center space-x-2">
               <Award className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <span className="text-slate-600 dark:text-slate-400">Passing Score:</span>
-              <span className="font-semibold text-slate-900 dark:text-white">
+              <span className="font-semibold text-slate-900 dark:text-foreground">
                 {test.passingScore}%
               </span>
             </div>
@@ -188,12 +188,12 @@ export function StudentTestResults({
                 return (
                   <div
                     key={question.id}
-                    className="border-2 border-red-300 dark:border-red-700 rounded-lg p-4 bg-white dark:bg-slate-800"
+                    className="border-2 border-red-300 dark:border-red-700 rounded-lg p-4 bg-card dark:bg-slate-800"
                   >
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex items-center space-x-2">
                         <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
-                        <p className="font-semibold text-slate-900 dark:text-white">
+                        <p className="font-semibold text-slate-900 dark:text-foreground">
                           Question {test.questions.findIndex(q => q.id === question.id) + 1}: {question.question}
                         </p>
                       </div>
@@ -216,7 +216,7 @@ export function StudentTestResults({
                                 : 'bg-slate-50 dark:bg-slate-900/50'
                             }`}
                           >
-                            <span className="text-sm text-slate-900 dark:text-white">
+                            <span className="text-sm text-slate-900 dark:text-foreground">
                               {String.fromCharCode(97 + optIdx)}. {option}
                               {isStudentAnswer && (
                                 <span className="ml-2 text-xs font-semibold text-red-600 dark:text-red-400">
@@ -271,7 +271,7 @@ export function StudentTestResults({
                       ) : (
                         <XCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0" />
                       )}
-                      <p className="font-semibold text-slate-900 dark:text-white">
+                      <p className="font-semibold text-slate-900 dark:text-foreground">
                         {idx + 1}. {question.question}
                       </p>
                     </div>
@@ -294,7 +294,7 @@ export function StudentTestResults({
                               : 'bg-slate-50 dark:bg-slate-900/50'
                           }`}
                         >
-                          <span className="text-sm text-slate-900 dark:text-white">
+                          <span className="text-sm text-slate-900 dark:text-foreground">
                             {String.fromCharCode(97 + optIdx)}. {option}
                             {isStudentAnswer && (
                               <span className="ml-2 text-xs font-semibold">

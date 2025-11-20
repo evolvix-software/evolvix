@@ -1,0 +1,3 @@
+export { MentorScholarshipsManagementPage } from './ScholarshipsManagementPage';
+
+

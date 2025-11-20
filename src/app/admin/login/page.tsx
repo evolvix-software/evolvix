@@ -45,12 +45,12 @@ export default function AdminLogin() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 px-4">
-      <div className="max-w-md w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+      <div className="max-w-md w-full bg-card dark:bg-gray-800 rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full mb-4">
             <Shield className="w-8 h-8 text-blue-600 dark:text-blue-400" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Admin Login</h1>
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground">Admin Login</h1>
           <p className="text-gray-600 dark:text-gray-400 mt-2">Enter your credentials to access the admin panel</p>
         </div>
 

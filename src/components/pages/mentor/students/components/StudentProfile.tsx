@@ -19,6 +19,10 @@ import {
   ClipboardCheck,
   Eye,
   XCircle,
+  Shield,
+  GraduationCap,
+  School,
+  AlertCircle,
 } from 'lucide-react';
 import { Student, StudentCourseProgress, StudentTestCompletion } from '@/interfaces/students';
 import { useAppSelector } from '@/hooks';
@@ -50,7 +54,7 @@ export function StudentProfile({
   } | null>(null);
 
   const getProgressColor = (progress: number) => {
-    return 'text-slate-900 dark:text-white';
+    return 'text-slate-900 dark:text-foreground';
   };
 
   const completionRate = student.assignmentsTotal > 0
@@ -147,7 +151,7 @@ export function StudentProfile({
               )}
               
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">
                   {student.name}
                 </h2>
                 <div className="space-y-2">
@@ -172,7 +176,7 @@ export function StudentProfile({
                 <Star className="w-5 h-5 text-slate-600 dark:text-slate-400 fill-slate-600 dark:fill-slate-400" />
                 <div>
                   <p className="text-xs text-slate-600 dark:text-slate-400">Overall Rating</p>
-                  <p className="text-xl font-bold text-slate-900 dark:text-white">
+                  <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                     {student.rating.toFixed(1)} / 5.0
                   </p>
                 </div>
@@ -208,7 +212,7 @@ export function StudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Assignments</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {student.assignmentsCompleted}/{student.assignmentsTotal}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{completionRate}% complete</p>
@@ -225,7 +229,7 @@ export function StudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Enrolled Courses</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {student.enrolledCourses.length}
                 </p>
               </div>
@@ -241,7 +245,7 @@ export function StudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Completion Rate</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {completionRate}%
                 </p>
               </div>
@@ -250,8 +254,192 @@ export function StudentProfile({
         </Card>
       </div>
 
+      {/* Skills & Profile Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Skills Section - Visible for project team formation */}
+        {student.skills && student.skills.length > 0 && (
+          <Card className="border border-slate-200 dark:border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="w-5 h-5" />
+                <span>Skills</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {student.skills.map((skill) => (
+                  <span
+                    key={skill.id}
+                    className={`px-3 py-1 rounded-full text-sm font-medium ${
+                      skill.level === 'advanced'
+                        ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                        : skill.level === 'intermediate'
+                        ? 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400'
+                        : 'bg-slate-100 dark:bg-card text-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    {skill.name} ({skill.level})
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3">
+                Skills visible for project team formation
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* KYC Status Section - Affects enrollment eligibility */}
+        {student.kycStatus && (
+          <Card className="border border-slate-200 dark:border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Shield className="w-5 h-5" />
+                <span>KYC & Verification Status</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex items-center space-x-3 mb-3">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                  student.kycStatus.status === 'verified' 
+                    ? 'bg-green-100 dark:bg-green-900/20' 
+                    : student.kycStatus.status === 'rejected'
+                    ? 'bg-red-100 dark:bg-red-900/20'
+                    : 'bg-yellow-100 dark:bg-yellow-900/20'
+                }`}>
+                  <Shield className={`w-6 h-6 ${
+                    student.kycStatus.status === 'verified'
+                      ? 'text-green-600 dark:text-green-400'
+                      : student.kycStatus.status === 'rejected'
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-yellow-600 dark:text-yellow-400'
+                  }`} />
+                </div>
+                <div>
+                  <h4 className="font-semibold text-slate-900 dark:text-foreground capitalize">
+                    {student.kycStatus.status} Verification
+                  </h4>
+                  <p className="text-sm text-slate-600 dark:text-slate-400">
+                    {student.kycStatus.idUploaded ? 'ID uploaded' : 'ID not uploaded'}
+                  </p>
+                  {student.kycStatus.verificationDate && (
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                      Verified: {new Date(student.kycStatus.verificationDate).toLocaleDateString()}
+                    </p>
+                  )}
+                </div>
+              </div>
+              {student.kycStatus.status !== 'verified' && (
+                <div className="flex items-start space-x-2 p-3 bg-yellow-50 dark:bg-yellow-900/10 rounded-lg border border-yellow-200 dark:border-yellow-800/50">
+                  <AlertCircle className="w-4 h-4 text-yellow-600 dark:text-yellow-400 mt-0.5 flex-shrink-0" />
+                  <p className="text-xs text-yellow-800 dark:text-yellow-300">
+                    {student.kycStatus.status === 'pending' 
+                      ? 'KYC verification pending. May affect enrollment eligibility for certain courses.'
+                      : 'KYC verification rejected. Student may not be eligible for certain courses.'}
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
+      {/* Education & School Information */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* School Information - Helps mentors understand student background */}
+        {student.schoolInfo && student.schoolInfo.isSchoolStudent && (
+          <Card className="border border-slate-200 dark:border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <School className="w-5 h-5" />
+                <span>School Information</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {student.schoolInfo.schoolName && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">School Name</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.schoolInfo.schoolName}
+                    </p>
+                  </div>
+                )}
+                {student.schoolInfo.gradeLevel && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Grade Level</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.schoolInfo.gradeLevel}
+                    </p>
+                  </div>
+                )}
+                {student.schoolInfo.schoolBoard && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">School Board</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.schoolInfo.schoolBoard}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-3">
+                School information helps mentors understand student background
+              </p>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* College/University Information */}
+        {student.educationInfo && (student.educationInfo.college || student.educationInfo.degree) && (
+          <Card className="border border-slate-200 dark:border-border">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <GraduationCap className="w-5 h-5" />
+                <span>Education Information</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {student.educationInfo.college && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">College/University</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.educationInfo.college}
+                    </p>
+                  </div>
+                )}
+                {student.educationInfo.degree && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Degree</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.educationInfo.degree}
+                    </p>
+                  </div>
+                )}
+                {student.educationInfo.specialization && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Specialization</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.educationInfo.specialization}
+                    </p>
+                  </div>
+                )}
+                {student.educationInfo.year && (
+                  <div>
+                    <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Year of Graduation</p>
+                    <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
+                      {student.educationInfo.year}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+
       {/* Course Progress */}
-      <Card className="border border-slate-200 dark:border-slate-700">
+      <Card className="border border-slate-200 dark:border-border">
         <CardHeader>
           <CardTitle className="flex items-center space-x-2">
             <BookOpen className="w-5 h-5" />
@@ -273,7 +461,7 @@ export function StudentProfile({
                 >
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-slate-900 dark:text-white mb-1">
+                      <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">
                         {progress.courseTitle}
                       </h4>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -299,13 +487,13 @@ export function StudentProfile({
                   <div className="grid grid-cols-2 gap-4 text-sm mb-3">
                     <div>
                       <span className="text-slate-600 dark:text-slate-400">Lessons: </span>
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-semibold text-slate-900 dark:text-foreground">
                         {progress.completedLessons}/{progress.totalLessons}
                       </span>
                     </div>
                     <div>
                       <span className="text-slate-600 dark:text-slate-400">Assignments: </span>
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-semibold text-slate-900 dark:text-foreground">
                         {progress.assignmentsCompleted}/{progress.assignmentsTotal}
                       </span>
                     </div>
@@ -326,7 +514,7 @@ export function StudentProfile({
                             <div className="flex-1">
                               <div className="flex items-center space-x-2 mb-1">
                                 <ClipboardCheck className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                                <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                                <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                                   {testCompletion.testTitle}
                                 </span>
                                 {testCompletion.passed ? (

@@ -53,7 +53,7 @@ export function ProjectEvaluation({ submission, project, onEvaluated }: ProjectE
   };
 
   return (
-    <Card className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+    <Card className="border border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>Evaluate: {submission.studentName}</span>
@@ -118,7 +118,7 @@ export function ProjectEvaluation({ submission, project, onEvaluated }: ProjectE
 
           {/* Project Requirements Checklist */}
           <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
-            <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Project Requirements:</h4>
+            <h4 className="font-semibold text-slate-900 dark:text-foreground mb-2">Project Requirements:</h4>
             <ul className="space-y-1">
               {project.requirements.map((req, idx) => (
                 <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start">
@@ -154,7 +154,7 @@ export function ProjectEvaluation({ submission, project, onEvaluated }: ProjectE
                 required
                 min={0}
                 max={project.maxScore}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
               />
               <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                 Weight: {project.weight}% of final grade
@@ -172,7 +172,7 @@ export function ProjectEvaluation({ submission, project, onEvaluated }: ProjectE
                 onChange={(e) => setEvaluation({ ...evaluation, feedback: e.target.value })}
                 required
                 rows={6}
-                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                 placeholder="Provide detailed feedback on code quality, functionality, design, best practices, areas for improvement..."
               />
             </div>

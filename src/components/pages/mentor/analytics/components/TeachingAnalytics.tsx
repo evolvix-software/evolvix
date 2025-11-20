@@ -43,7 +43,7 @@ export function TeachingAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Response Time</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageResponseTime}h
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -60,7 +60,7 @@ export function TeachingAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Grading Time</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageGradingTime}d
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -77,7 +77,7 @@ export function TeachingAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Test Review</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageTestReviewTime}d
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -107,7 +107,7 @@ export function TeachingAnalytics() {
                 <div key={idx} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-700 dark:text-slate-300">{item.range}</span>
-                    <span className="font-semibold text-slate-900 dark:text-white">
+                    <span className="font-semibold text-slate-900 dark:text-foreground">
                       {item.count} messages ({percentage.toFixed(0)}%)
                     </span>
                   </div>
@@ -136,7 +136,7 @@ export function TeachingAnalytics() {
           <CardContent>
             <div className="space-y-4">
               <div className="text-center py-4">
-                <p className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                <p className="text-4xl font-bold text-slate-900 dark:text-foreground mb-2">
                   {classAttendanceRate}%
                 </p>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -146,11 +146,11 @@ export function TeachingAnalytics() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">Total Classes</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">{totalClasses}</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{totalClasses}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">Avg Attendance</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">{averageAttendance} students</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{averageAttendance} students</span>
                 </div>
               </div>
             </div>
@@ -167,7 +167,7 @@ export function TeachingAnalytics() {
           <CardContent>
             <div className="space-y-4">
               <div className="text-center py-4">
-                <p className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+                <p className="text-4xl font-bold text-slate-900 dark:text-foreground mb-2">
                   {messageResponseRate}%
                 </p>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -177,11 +177,11 @@ export function TeachingAnalytics() {
               <div className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">Total Messages</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">{totalMessages}</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{totalMessages}</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-600 dark:text-slate-400">Responded</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">{respondedMessages}</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{respondedMessages}</span>
                 </div>
               </div>
             </div>
@@ -203,7 +203,7 @@ export function TeachingAnalytics() {
               <div key={idx} className="space-y-1">
                 <div className="flex items-center justify-between text-sm">
                   <span className="text-slate-700 dark:text-slate-300">{item.type}</span>
-                  <span className="font-semibold text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-foreground">
                     {item.count} students ({item.percentage}%)
                   </span>
                 </div>
@@ -230,7 +230,7 @@ export function TeachingAnalytics() {
         <CardContent>
           <div className="space-y-4">
             <div className="text-center py-4">
-              <p className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+              <p className="text-4xl font-bold text-slate-900 dark:text-foreground mb-2">
                 {officeHoursUtilization}%
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -240,11 +240,11 @@ export function TeachingAnalytics() {
             <div className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <span className="text-slate-600 dark:text-slate-400">Total Office Hours</span>
-                <span className="font-semibold text-slate-900 dark:text-white">{totalOfficeHours} hours</span>
+                <span className="font-semibold text-slate-900 dark:text-foreground">{totalOfficeHours} hours</span>
               </div>
               <div className="flex items-center justify-between text-sm">
                 <span className="text-slate-600 dark:text-slate-400">Utilized Hours</span>
-                <span className="font-semibold text-slate-900 dark:text-white">{utilizedHours} hours</span>
+                <span className="font-semibold text-slate-900 dark:text-foreground">{utilizedHours} hours</span>
               </div>
             </div>
             <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-3">

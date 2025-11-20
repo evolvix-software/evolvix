@@ -49,7 +49,7 @@ export default function MentorCourseDetailPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Loading course...</h2>
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-foreground">Loading course...</h2>
           </div>
         </div>
       </Layout>
@@ -77,7 +77,7 @@ export default function MentorCourseDetailPage() {
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-2">{course.title}</h1>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-foreground mb-2">{course.title}</h1>
                 <div className="flex items-center space-x-4 text-sm text-slate-600 dark:text-slate-400">
                   <span>{course.enrolledCount} enrolled</span>
                   <span>•</span>
@@ -216,7 +216,7 @@ export default function MentorCourseDetailPage() {
                                 <div className="flex-1 min-w-0">
                                   <div className="flex items-start justify-between">
                                     <div className="flex-1">
-                                      <h4 className="font-semibold text-slate-900 dark:text-white flex items-center space-x-2">
+                                      <h4 className="font-semibold text-slate-900 dark:text-foreground flex items-center space-x-2">
                                         {lesson.type === 'video' && <Video className="w-4 h-4 text-blue-600 dark:text-blue-400" />}
                                         {lesson.type === 'reading' && <BookOpen className="w-4 h-4 text-green-600 dark:text-green-400" />}
                                         {lesson.type === 'quiz' && <FileText className="w-4 h-4 text-orange-600 dark:text-orange-400" />}
@@ -308,7 +308,7 @@ export default function MentorCourseDetailPage() {
               <Card className="border border-slate-200 dark:border-slate-700">
                 <CardContent className="p-12 text-center">
                   <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Modules Yet</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">No Modules Yet</h3>
                   <p className="text-slate-600 dark:text-slate-400">
                     This course doesn't have any modules configured yet
                   </p>
@@ -358,15 +358,15 @@ export default function MentorCourseDetailPage() {
                               </div>
                               <div>
                                 <span className="text-slate-600 dark:text-slate-400">Max Score:</span>
-                                <p className="font-semibold text-slate-900 dark:text-white">{project.maxScore}</p>
+                                <p className="font-semibold text-slate-900 dark:text-foreground">{project.maxScore}</p>
                               </div>
                               <div>
                                 <span className="text-slate-600 dark:text-slate-400">Weight:</span>
-                                <p className="font-semibold text-slate-900 dark:text-white">{project.weight}%</p>
+                                <p className="font-semibold text-slate-900 dark:text-foreground">{project.weight}%</p>
                               </div>
                               <div>
                                 <span className="text-slate-600 dark:text-slate-400">Submissions:</span>
-                                <p className="font-semibold text-slate-900 dark:text-white">{projectSubmissions.length}</p>
+                                <p className="font-semibold text-slate-900 dark:text-foreground">{projectSubmissions.length}</p>
                               </div>
                             </div>
                           </div>
@@ -429,7 +429,7 @@ export default function MentorCourseDetailPage() {
               <Card className="border border-slate-200 dark:border-slate-700">
                 <CardContent className="p-12 text-center">
                   <Code className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Projects Configured</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">No Projects Configured</h3>
                   <p className="text-slate-600 dark:text-slate-400 mb-4">
                     Add projects to this course to enable student submissions
                   </p>
@@ -457,7 +457,7 @@ export default function MentorCourseDetailPage() {
               <Card className="border border-slate-200 dark:border-slate-700">
                 <CardContent className="p-12 text-center">
                   <Trophy className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">No Rankings Yet</h3>
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">No Rankings Yet</h3>
                   <p className="text-slate-600 dark:text-slate-400">
                     Leaderboard will appear after you evaluate at least one project submission
                   </p>
@@ -535,7 +535,7 @@ export default function MentorCourseDetailPage() {
                           >
                             <div className="flex items-center justify-between">
                               <div>
-                                <p className="font-semibold text-slate-900 dark:text-white">
+                                <p className="font-semibold text-slate-900 dark:text-foreground">
                                   {new Date(session.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                                 </p>
                                 <p className="text-sm text-slate-600 dark:text-slate-400">

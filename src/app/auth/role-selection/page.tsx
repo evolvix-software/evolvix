@@ -123,7 +123,7 @@ export default function RoleSelectionPage() {
         <div className="flex items-center justify-between p-6 md:p-8">
           <div className="flex items-center space-x-3">
             <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
-              <div className="w-6 h-6 bg-white rounded-lg" />
+              <div className="w-6 h-6 bg-card rounded-lg" />
             </div>
             <span className="text-2xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
               Evolvix
@@ -146,7 +146,7 @@ export default function RoleSelectionPage() {
               <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl mb-6 shadow-xl">
                 <Sparkles className="w-8 h-8 text-white" />
               </div>
-              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-foreground mb-4">
                 Choose Your Path
               </h1>
               <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
@@ -166,7 +166,7 @@ export default function RoleSelectionPage() {
                     onClick={() => handleRoleSelect(role.id)}
                     className={`
                       relative group cursor-pointer rounded-2xl p-6 transition-all duration-300
-                      border-2 bg-white dark:bg-gray-800
+                      border-2 bg-card dark:bg-gray-800
                       ${isSelected 
                         ? 'border-indigo-500 shadow-2xl scale-105' 
                         : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 hover:shadow-xl'
@@ -193,7 +193,7 @@ export default function RoleSelectionPage() {
 
                     {/* Content */}
                     <h3 className={`text-xl font-bold mb-2 transition-colors ${
-                      isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-900 dark:text-white'
+                      isSelected ? 'text-indigo-600 dark:text-indigo-400' : 'text-gray-900 dark:text-foreground'
                     }`}>
                       {role.title}
                     </h3>

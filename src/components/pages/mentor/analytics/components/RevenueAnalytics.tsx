@@ -31,7 +31,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Earnings</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(totalEarnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -48,7 +48,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">This Month</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(currentMonth.earnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -65,7 +65,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Monthly</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(averageMonthlyEarnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -82,7 +82,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Students</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {currentMonth.students}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -154,22 +154,22 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-700">
-                    <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Month
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Earnings
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Students
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Courses
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Transactions
                     </th>
-                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                    <th className="text-right py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                       Growth
                     </th>
                   </tr>
@@ -187,12 +187,12 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                         className="border-b border-slate-100 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors"
                       >
                         <td className="py-3 px-4">
-                          <span className="text-sm font-medium text-slate-900 dark:text-white">
+                          <span className="text-sm font-medium text-slate-900 dark:text-foreground">
                             {month.month} {month.year}
                           </span>
                         </td>
                         <td className="py-3 px-4 text-right">
-                          <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                          <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                             ${month.earnings.toLocaleString()}
                           </span>
                         </td>
@@ -213,7 +213,7 @@ export function RevenueAnalytics({ revenueData }: RevenueAnalyticsProps) {
                         </td>
                         <td className="py-3 px-4 text-right">
                           {previousMonthData && (
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                            <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                               {growth >= 0 ? '+' : ''}{growth.toFixed(1)}%
                             </span>
                           )}

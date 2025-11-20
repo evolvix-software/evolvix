@@ -43,9 +43,9 @@ export function NotificationsFeed({ notifications }: NotificationsFeedProps) {
   };
 
   return (
-    <Card className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+    <Card className="border border-slate-200 dark:border-slate-700/50 bg-card dark:bg-slate-800/50 shadow-sm">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold text-slate-900 dark:text-white">Notification Feed</CardTitle>
+        <CardTitle className="text-lg font-semibold text-slate-900 dark:text-foreground">Notification Feed</CardTitle>
         <CardDescription className="text-slate-600 dark:text-slate-400">Recent updates and alerts</CardDescription>
       </CardHeader>
       <CardContent className="space-y-3">
@@ -57,11 +57,11 @@ export function NotificationsFeed({ notifications }: NotificationsFeedProps) {
               key={notification.id}
               className={`flex items-start space-x-3 p-3 rounded-lg border ${getBgColor(notification.type)} transition-all hover:scale-[1.02]`}
             >
-              <div className="w-8 h-8 rounded-full bg-white dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-card dark:bg-slate-800 flex items-center justify-center flex-shrink-0">
                 {getIcon(notification.type)}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-slate-900 dark:text-white">{notification.title}</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-foreground">{notification.title}</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-0.5">{notification.description}</p>
                 <p className="text-xs text-slate-500 dark:text-slate-500 mt-1">{notification.time}</p>
               </div>

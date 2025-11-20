@@ -1,2 +1,1 @@
-export { MentorInterviewsPage } from './InterviewsPage';
-
+export { MentorInterviewManagementPage } from './InterviewManagementPage';

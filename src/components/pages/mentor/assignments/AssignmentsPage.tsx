@@ -138,7 +138,7 @@ export function MentorAssignmentsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">
             Assignments Management
           </h2>
           <p className="text-slate-600 dark:text-slate-400">
@@ -204,7 +204,7 @@ export function MentorAssignmentsPage() {
             <Card className="border border-slate-200 dark:border-slate-700">
               <CardContent className="p-12 text-center">
                 <Upload className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
                   Create New Assignment
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400 mb-6">
@@ -245,7 +245,7 @@ export function MentorAssignmentsPage() {
           <Card className="border border-slate-200 dark:border-slate-700">
             <CardContent className="p-12 text-center">
               <BarChart3 className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
                 Assignment Analytics
               </h3>
               <p className="text-slate-600 dark:text-slate-400">

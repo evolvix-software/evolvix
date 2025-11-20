@@ -13,7 +13,24 @@ export const mockStudents: Student[] = [
     assignmentsTotal: 15,
     lastActive: '2 hours ago',
     joinedAt: '2024-11-15',
-    rating: 4.8
+    rating: 4.8,
+    skills: [
+      { id: '1', name: 'React', level: 'advanced' },
+      { id: '2', name: 'Node.js', level: 'intermediate' },
+      { id: '3', name: 'Python', level: 'intermediate' },
+      { id: '4', name: 'JavaScript', level: 'advanced' }
+    ],
+    kycStatus: {
+      status: 'verified',
+      idUploaded: true,
+      verificationDate: '2024-11-20'
+    },
+    educationInfo: {
+      college: 'State University',
+      degree: 'Bachelor of Science',
+      year: '2025',
+      specialization: 'Computer Science'
+    }
   },
   {
     id: 'student_2',
@@ -25,7 +42,22 @@ export const mockStudents: Student[] = [
     assignmentsTotal: 12,
     lastActive: '1 day ago',
     joinedAt: '2024-11-20',
-    rating: 4.5
+    rating: 4.5,
+    skills: [
+      { id: '1', name: 'UI/UX Design', level: 'advanced' },
+      { id: '2', name: 'Figma', level: 'intermediate' },
+      { id: '3', name: 'HTML/CSS', level: 'intermediate' }
+    ],
+    kycStatus: {
+      status: 'pending',
+      idUploaded: true
+    },
+    schoolInfo: {
+      isSchoolStudent: true,
+      schoolName: 'Central High School',
+      gradeLevel: '12th',
+      schoolBoard: 'CBSE'
+    }
   },
   {
     id: 'student_3',
@@ -37,7 +69,24 @@ export const mockStudents: Student[] = [
     assignmentsTotal: 18,
     lastActive: '5 hours ago',
     joinedAt: '2024-11-10',
-    rating: 4.9
+    rating: 4.9,
+    skills: [
+      { id: '1', name: 'React Native', level: 'advanced' },
+      { id: '2', name: 'Python', level: 'advanced' },
+      { id: '3', name: 'Machine Learning', level: 'intermediate' },
+      { id: '4', name: 'JavaScript', level: 'advanced' }
+    ],
+    kycStatus: {
+      status: 'verified',
+      idUploaded: true,
+      verificationDate: '2024-11-12'
+    },
+    educationInfo: {
+      college: 'Tech Institute',
+      degree: 'Master of Science',
+      year: '2024',
+      specialization: 'Data Science'
+    }
   },
   {
     id: 'student_4',

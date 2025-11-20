@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { Menu, ArrowLeft } from 'lucide-react';
 import { Sidebar } from './Sidebar';
 import { Header } from './Header';
+import { FloatingMessaging } from '../messaging/FloatingMessaging';
+import { useMessaging } from '@/hooks/useMessaging';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -34,8 +36,34 @@ export function Layout({ children, title, role, onViewChange, currentView, admin
     router.back();
   };
 
+  // Get current user ID from localStorage
+  const getCurrentUserId = () => {
+    if (typeof window === 'undefined') return 'user-1';
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const data = JSON.parse(storedData);
+      return data.email || 'user-1';
+    }
+    return 'user-1';
+  };
+
+  // Use the messaging hook for full functionality
+  const currentUserId = getCurrentUserId();
+  const {
+    conversations,
+    handleSendMessage,
+    handleReactToMessage,
+    handleEditMessage,
+    handleDeleteMessage,
+    handlePinConversation,
+    handleArchiveConversation,
+    handleMuteConversation,
+    handleDeleteConversation,
+  } = useMessaging(currentUserId);
+
   return (
-    <div className="h-screen flex overflow-hidden bg-background">
+    <>
+    <div className="h-screen flex overflow-hidden bg-background relative">
       {/* Desktop Sidebar - Full Height */}
       {!sidebarCollapsed && (
         <div className="hidden lg:flex h-full">
@@ -111,7 +139,25 @@ export function Layout({ children, title, role, onViewChange, currentView, admin
           </main>
         </div>
       </div>
+
     </div>
+    {/* Floating Messaging Widget - Outside overflow container */}
+      <FloatingMessaging
+        conversations={conversations}
+        currentUserId={currentUserId}
+        onSendMessage={handleSendMessage}
+        onReactToMessage={handleReactToMessage}
+        onEditMessage={handleEditMessage}
+        onDeleteMessage={handleDeleteMessage}
+        onPinConversation={handlePinConversation}
+        onArchiveConversation={handleArchiveConversation}
+        onMuteConversation={handleMuteConversation}
+        onDeleteConversation={handleDeleteConversation}
+        position="bottom-right"
+        initialWidth={800}
+        initialHeight={600}
+    />
+    </>
   );
 }
 

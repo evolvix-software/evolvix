@@ -461,7 +461,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
         return (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Course Basic Information</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Course Basic Information</h3>
               <p className="text-slate-600 dark:text-slate-400">Let's start with the essential details about your course</p>
             </div>
 
@@ -482,7 +482,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         : 'border-slate-300 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-700'
                     }`}
                   >
-                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Crash Course</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">Crash Course</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Free or Paid • No vacancy needed</p>
                   </button>
                   <button
@@ -497,7 +497,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         : 'border-slate-300 dark:border-slate-700 hover:border-green-300 dark:hover:border-green-700'
                     }`}
                   >
-                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Skill-Focused</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">Skill-Focused</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Free or Paid • No vacancy needed</p>
                   </button>
                   <button
@@ -518,7 +518,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         : 'border-slate-300 dark:border-slate-700 hover:border-blue-300 dark:hover:border-blue-700'
                     }`}
                   >
-                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Full Career Bootcamp</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">Full Career Bootcamp</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Scholarship-based • Requires vacancy</p>
                   </button>
                   <button
@@ -539,7 +539,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         : 'border-slate-300 dark:border-slate-700 hover:border-purple-300 dark:hover:border-purple-700'
                     }`}
                   >
-                    <h4 className="font-semibold text-slate-900 dark:text-white mb-1">Masterclass/Bundle</h4>
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">Masterclass/Bundle</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Scholarship-based • Requires vacancy</p>
                   </button>
                 </div>
@@ -562,7 +562,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
               }`}>
                 <div className="flex items-center space-x-2">
                   <BookOpen className="w-5 h-5" />
-                  <span className="font-semibold text-slate-900 dark:text-white">
+                  <span className="font-semibold text-slate-900 dark:text-foreground">
                     Course Category: {courseCategory === 'crash' ? 'Crash Course' : 
                                      courseCategory === 'skill-focused' ? 'Skill-Focused' :
                                      courseCategory === 'bootcamp' ? 'Full Career Bootcamp' : 'Masterclass/Bundle'}
@@ -582,7 +582,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                 id="courseType"
                 value={courseType}
                 onChange={(e) => setCourseType(e.target.value as 'live' | 'recorded')}
-                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 required
               >
                 <option value="recorded">Recorded Course (Pre-built with videos, assignments, tests)</option>
@@ -602,7 +602,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 required
-                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 placeholder="e.g., Complete React Development Masterclass"
               />
             </div>
@@ -614,7 +614,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                 value={formData.shortDescription}
                 onChange={(e) => setFormData({ ...formData, shortDescription: e.target.value })}
                 required
-                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 placeholder="Brief description (for course cards)"
                 maxLength={150}
               />
@@ -629,7 +629,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                 required
                 rows={5}
-                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 placeholder="Detailed course description..."
               />
             </div>
@@ -641,7 +641,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   id="category"
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   required
                 >
                   <option value="development">Development</option>
@@ -658,7 +658,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   id="level"
                   value={formData.level}
                   onChange={(e) => setFormData({ ...formData, level: e.target.value as any })}
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   required
                 >
                   <option value="beginner">Beginner</option>
@@ -682,7 +682,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
                   required
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   min={0}
                   step={0.01}
                 />
@@ -701,7 +701,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   id="duration"
                   value={formData.duration}
                   onChange={(e) => handleDurationChange(e.target.value)}
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   placeholder="e.g., 10 hours, 4 weeks, 6 months (optional)"
                 />
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -723,7 +723,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   value={formData.language}
                   onChange={(e) => setFormData({ ...formData, language: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   placeholder="e.g., English"
                 />
               </div>
@@ -735,7 +735,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                   value={formData.skills}
                   onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
                   required
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   placeholder="e.g., React, JavaScript, Node.js"
                 />
               </div>
@@ -748,7 +748,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                 value={formData.requirements}
                 onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 placeholder="Basic knowledge of JavaScript&#10;Familiarity with HTML/CSS"
               />
             </div>
@@ -758,7 +758,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
               <Label className="mb-2 block text-base font-semibold">Course Image</Label>
               <div className="space-y-3">
                 <div className="flex items-center space-x-4">
-                  <label className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  <label className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                     <ImageIcon className="w-5 h-5" />
                     <span className="text-sm font-medium">Upload Image</span>
                     <input
@@ -776,7 +776,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       setImagePreview(e.target.value);
                     }}
                     placeholder="Or enter image URL"
-                    className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                    className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   />
                 </div>
                 {(imagePreview || formData.image) && (
@@ -812,7 +812,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
               <Label className="mb-2 block text-base font-semibold">Course Thumbnail</Label>
               <div className="space-y-3">
                 <div className="flex items-center space-x-4">
-                  <label className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                  <label className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                     <ImageIcon className="w-5 h-5" />
                     <span className="text-sm font-medium">Upload Thumbnail</span>
                     <input
@@ -830,7 +830,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       setThumbnailPreview(e.target.value);
                     }}
                     placeholder="Or enter thumbnail URL"
-                    className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                    className="flex-1 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                   />
                 </div>
                 {(thumbnailPreview || formData.thumbnail) && (
@@ -875,7 +875,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       e.target.value = '';
                     }
                   }}
-                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                  className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                 >
                   <option value="">Select a course to add as prerequisite...</option>
                   {allCourses
@@ -894,7 +894,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-800/50 rounded-lg border border-slate-200 dark:border-slate-700"
                       >
                         <div className="flex-1">
-                          <p className="font-medium text-slate-900 dark:text-white">{prereq.title}</p>
+                          <p className="font-medium text-slate-900 dark:text-foreground">{prereq.title}</p>
                           <p className="text-sm text-slate-600 dark:text-slate-400">{prereq.description}</p>
                         </div>
                         <button
@@ -938,7 +938,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
           return (
             <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2 flex items-center">
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2 flex items-center">
                   <Calendar className="w-6 h-6 mr-2" />
                   Schedule Configuration
                 </h3>
@@ -952,7 +952,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                     id="schedule-frequency"
                     value={schedule.frequency}
                     onChange={(e) => setSchedule({ ...schedule, frequency: e.target.value as any, days: e.target.value === 'daily' ? [] : schedule.days })}
-                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                     required
                   >
                     <option value="daily">Daily</option>
@@ -994,7 +994,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                     type="time"
                     value={schedule.time}
                     onChange={(e) => setSchedule({ ...schedule, time: e.target.value })}
-                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                     required
                   />
                 </div>
@@ -1006,7 +1006,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                     type="number"
                     value={schedule.duration}
                     onChange={(e) => setSchedule({ ...schedule, duration: parseInt(e.target.value) || 60 })}
-                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                    className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                     min={15}
                     step={15}
                     required
@@ -1016,7 +1016,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
 
               {/* Course Dates Section */}
               <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                <h4 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Course Dates & Enrollment</h4>
+                <h4 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Course Dates & Enrollment</h4>
                 <div className="grid md:grid-cols-3 gap-4">
                   <div>
                     <Label htmlFor="admission-deadline" className="mb-2 block text-base font-semibold">
@@ -1027,7 +1027,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       type="date"
                       value={schedule.admissionDeadline || ''}
                       onChange={(e) => setSchedule({ ...schedule, admissionDeadline: e.target.value })}
-                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                       required
                     />
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -1045,7 +1045,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       value={schedule.startDate || ''}
                       onChange={(e) => setSchedule({ ...schedule, startDate: e.target.value })}
                       min={schedule.admissionDeadline || undefined}
-                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                       required
                     />
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -1063,7 +1063,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                       value={schedule.endDate || ''}
                       onChange={(e) => setSchedule({ ...schedule, endDate: e.target.value })}
                       min={schedule.startDate || undefined}
-                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                      className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                       required
                     />
                     <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
@@ -1104,7 +1104,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
         return (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Schedule Configuration</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Schedule Configuration</h3>
               <p className="text-slate-600 dark:text-slate-400">This step is optional for recorded courses</p>
             </div>
             <div className="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-6 border border-slate-200 dark:border-slate-700 text-center">
@@ -1119,7 +1119,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Course Modules & Lessons</h3>
+                <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Course Modules & Lessons</h3>
                 <p className="text-slate-600 dark:text-slate-400">
                   {courseType === 'live' 
                     ? 'Structure your course content. Lessons can reference live sessions or include materials.'
@@ -1144,10 +1144,10 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
             ) : (
               <div className="space-y-6">
                 {modules.map((module, moduleIndex) => (
-                  <Card key={module.id} className="border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-lg">
+                  <Card key={module.id} className="border-2 border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800 shadow-lg">
                     <CardContent className="p-6">
                       <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-xl font-bold text-slate-900 dark:text-white">Module {moduleIndex + 1}</h4>
+                        <h4 className="text-xl font-bold text-slate-900 dark:text-foreground">Module {moduleIndex + 1}</h4>
                         <Button
                           type="button"
                           size="sm"
@@ -1166,7 +1166,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                             value={module.title}
                             onChange={(e) => updateModule(module.id, 'title', e.target.value)}
                             required
-                            className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                            className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                             placeholder="e.g., Introduction to React"
                           />
                         </div>
@@ -1178,7 +1178,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                             onChange={(e) => updateModule(module.id, 'description', e.target.value)}
                             required
                             rows={3}
-                            className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
+                            className="w-full px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none focus:border-green-500 focus:ring-2 focus:ring-green-500/20 transition-all"
                             placeholder="Describe what students will learn in this module..."
                           />
                         </div>
@@ -1186,7 +1186,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                           <Label htmlFor={`module-doc-${module.id}`} className="mb-2 block text-base font-semibold">Module Documentation</Label>
                           <label
                             htmlFor={`module-doc-${module.id}`}
-                            className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors inline-block"
+                            className="flex items-center space-x-3 px-4 py-3 border-2 border-slate-300 dark:border-slate-700 rounded-xl bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors inline-block"
                           >
                             <Upload className="w-5 h-5" />
                             <span className="text-sm font-medium">Upload PDF/DOC</span>
@@ -1269,7 +1269,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                               <Card key={lesson.id} className="border-2 border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900">
                                 <CardContent className="p-4">
                                   <div className="flex items-center justify-between mb-3">
-                                    <h5 className="font-semibold text-slate-900 dark:text-white">
+                                    <h5 className="font-semibold text-slate-900 dark:text-foreground">
                                       Lesson {lessonIndex + 1}: {lesson.title || 'Untitled Lesson'}
                                     </h5>
                                     <Button
@@ -1289,7 +1289,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                         value={lesson.title}
                                         onChange={(e) => updateLesson(module.id, lesson.id, 'title', e.target.value)}
                                         required
-                                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                                        className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                                         placeholder={courseType === 'live' ? "e.g., Introduction to React (Live Session)" : "e.g., Getting Started with React"}
                                       />
                                     </div>
@@ -1298,7 +1298,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                       <>
                                         <div>
                                           <Label className="mb-2 block text-sm font-semibold">Video Upload *</Label>
-                                          <label className="flex items-center space-x-2 px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors inline-block">
+                                          <label className="flex items-center space-x-2 px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors inline-block">
                                             <Video className="w-4 h-4" />
                                             <span className="text-sm">Upload Video</span>
                                             <input
@@ -1323,7 +1323,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                           <Input
                                             value={lesson.liveSessionLink || ''}
                                             onChange={(e) => updateLesson(module.id, lesson.id, 'liveSessionLink', e.target.value)}
-                                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                                             placeholder="Zoom/Jitsi link or reference to live session"
                                           />
                                         </div>
@@ -1333,7 +1333,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                             value={lesson.content || ''}
                                             onChange={(e) => updateLesson(module.id, lesson.id, 'content', e.target.value)}
                                             rows={4}
-                                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                                            className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                                             placeholder="Add lesson description, materials, or notes for students..."
                                           />
                                         </div>
@@ -1363,14 +1363,14 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                 value={ts.title}
                                                 onChange={(e) => updateTimestamp(module.id, lesson.id, ts.id, 'title', e.target.value)}
                                                 placeholder="Timestamp title"
-                                                className="flex-1 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                                className="flex-1 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                               />
                                               <Input
                                                 type="number"
                                                 value={ts.timestamp}
                                                 onChange={(e) => updateTimestamp(module.id, lesson.id, ts.id, 'timestamp', parseInt(e.target.value) || 0)}
                                                 placeholder="Seconds"
-                                                className="w-24 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                                className="w-24 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                               />
                                             </div>
                                           ))}
@@ -1434,7 +1434,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                     updateLesson(module.id, lesson.id, 'assignment', assignment);
                                                   }}
                                                   placeholder="e.g., Build a Todo App"
-                                                  className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                                  className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                                 />
                                               </div>
                                               
@@ -1450,7 +1450,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                   }}
                                                   rows={4}
                                                   placeholder="Describe what students need to do. Include step-by-step instructions, requirements, and expected deliverables..."
-                                                  className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white resize-none"
+                                                  className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground resize-none"
                                                 />
                                               </div>
 
@@ -1466,7 +1466,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                       const assignment = { ...lesson.assignment!, dueDate: e.target.value };
                                                       updateLesson(module.id, lesson.id, 'assignment', assignment);
                                                     }}
-                                                    className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                                    className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                                   />
                                                 </div>
                                                 
@@ -1483,7 +1483,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                     }}
                                                     placeholder="100"
                                                     min={1}
-                                                    className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                                    className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                                   />
                                                 </div>
                                               </div>
@@ -1492,7 +1492,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                 <Label className="text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1 block">
                                                   Reference Files / Resources (Optional)
                                                 </Label>
-                                                <label className="flex items-center space-x-2 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                                <label className="flex items-center space-x-2 px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                                                   <Upload className="w-4 h-4" />
                                                   <span className="text-xs font-medium">Upload Reference Files</span>
                                                   <input
@@ -1512,7 +1512,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                 {lesson.assignment.files && lesson.assignment.files.length > 0 && (
                                                   <div className="mt-2 space-y-1">
                                                     {lesson.assignment.files.map((file, idx) => (
-                                                      <div key={idx} className="flex items-center justify-between p-2 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+                                                      <div key={idx} className="flex items-center justify-between p-2 bg-card dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
                                                         <div className="flex items-center space-x-2">
                                                           <FileText className="w-3 h-3 text-slate-500" />
                                                           <span className="text-xs text-slate-700 dark:text-slate-300">{file.name}</span>
@@ -1570,7 +1570,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                 updateLesson(module.id, lesson.id, 'test', test);
                                               }}
                                               placeholder="Test title"
-                                              className="w-full px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                              className="w-full px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                             />
                                             <Input
                                               type="number"
@@ -1580,7 +1580,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                                                 updateLesson(module.id, lesson.id, 'test', test);
                                               }}
                                               placeholder="Passing score (%)"
-                                              className="w-32 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                                              className="w-32 px-2 py-1 text-xs border border-slate-300 dark:border-slate-700 rounded bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                                             />
                                           </div>
                                         )}
@@ -1605,7 +1605,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
         return (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Projects Configuration</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Projects Configuration</h3>
               <p className="text-slate-600 dark:text-slate-400">Define projects that students will complete during the course</p>
             </div>
             <ProjectsConfig
@@ -1620,7 +1620,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
         return (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Additional Settings</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Additional Settings</h3>
               <p className="text-slate-600 dark:text-slate-400">Configure additional course features</p>
             </div>
             
@@ -1628,7 +1628,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
               <div className="space-y-4">
                 <div className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-200 dark:border-slate-700">
                   <div>
-                    <h4 className="font-semibold text-slate-900 dark:text-white flex items-center mb-1">
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground flex items-center mb-1">
                       <Calendar className="w-5 h-5 mr-2" />
                       Sunday Doubt Clearing Sessions
                     </h4>
@@ -1670,7 +1670,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
         return (
           <div className="space-y-6 animate-in fade-in slide-in-from-right-4 duration-300">
             <div>
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Review & Submit</h3>
+              <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Review & Submit</h3>
               <p className="text-slate-600 dark:text-slate-400">Review your course details before submitting</p>
             </div>
 
@@ -1843,7 +1843,7 @@ export function CourseForm({ mentorInfo, editingCourse, onSave, onCancel, isBund
                         ? 'bg-green-600 border-green-600 text-white shadow-lg scale-110'
                         : isActive
                         ? 'bg-green-600 border-green-600 text-white shadow-lg scale-110'
-                        : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-400'
+                        : 'bg-card dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-400'
                     } ${isClickable ? 'cursor-pointer hover:scale-105' : 'cursor-not-allowed opacity-50'}`}
                   >
                     {isCompleted ? (

@@ -57,7 +57,7 @@ export function CourseAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Enrollments</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {totalEnrollments}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -74,7 +74,7 @@ export function CourseAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Views</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {totalViews.toLocaleString()}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -91,7 +91,7 @@ export function CourseAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Conversion Rate</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageConversionRate.toFixed(1)}%
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -108,7 +108,7 @@ export function CourseAnalytics() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Average Rating</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageRating.toFixed(1)}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -154,13 +154,13 @@ export function CourseAnalytics() {
                 className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg"
               >
                 <div className="flex-1">
-                  <p className="font-semibold text-slate-900 dark:text-white">{course.course}</p>
+                  <p className="font-semibold text-slate-900 dark:text-foreground">{course.course}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
                     {course.views.toLocaleString()} views • {course.enrollments} enrollments
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                  <p className="text-lg font-bold text-slate-900 dark:text-foreground">
                     {course.conversion}%
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">conversion</p>
@@ -187,7 +187,7 @@ export function CourseAnalytics() {
                   key={idx}
                   className="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg"
                 >
-                  <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                  <p className="font-semibold text-slate-900 dark:text-foreground text-sm">
                     {lesson.lesson}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -213,7 +213,7 @@ export function CourseAnalytics() {
                   key={idx}
                   className="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg"
                 >
-                  <p className="font-semibold text-slate-900 dark:text-white text-sm">
+                  <p className="font-semibold text-slate-900 dark:text-foreground text-sm">
                     {lesson.lesson}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
@@ -239,7 +239,7 @@ export function CourseAnalytics() {
             {moduleCompletionRates.map((module, idx) => (
               <div key={idx} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-900 dark:text-white">{module.module}</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{module.module}</span>
                   <span className="text-slate-600 dark:text-slate-400">
                     {module.completion}%
                   </span>

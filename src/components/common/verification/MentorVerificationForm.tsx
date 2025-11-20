@@ -111,9 +111,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* Personal Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Personal Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Personal Information</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your basic personal details
           </CardDescription>
@@ -144,9 +144,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
       </Card>
 
       {/* Professional Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Professional Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Professional Information</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Share your professional background and expertise
           </CardDescription>
@@ -179,7 +179,7 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 Specializations <span className="text-red-500">*</span>
               </label>
               <div className="flex space-x-2 mb-2">
@@ -188,7 +188,7 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
                   value={newSpecialization}
                   onChange={(e) => setNewSpecialization(e.target.value)}
                   placeholder="Add specialization"
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 />
                 <Button type="button" onClick={addSpecialization} variant="outline">
                   Add
@@ -230,9 +230,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
       </Card>
 
       {/* Education Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Education & Certifications</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Education & Certifications</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your educational background and certifications
           </CardDescription>
@@ -260,7 +260,7 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
               Professional Certifications
             </label>
             <div className="flex space-x-2 mb-2">
@@ -269,7 +269,7 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
                 value={newCertification}
                 onChange={(e) => setNewCertification(e.target.value)}
                 placeholder="Add certification"
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
               <Button type="button" onClick={addCertification} variant="outline">
                 Add
@@ -297,9 +297,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
       </Card>
 
       {/* ID Proof */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Identity Verification</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Identity Verification</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload a valid government-issued ID
           </CardDescription>
@@ -307,12 +307,12 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 ID Type <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('idProof.type', { required: 'ID type is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Select ID Type</option>
                 <option value="passport">Passport</option>
@@ -345,9 +345,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
       </Card>
 
       {/* Bank Details */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Bank Details</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Bank Details</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your bank account details for payments
           </CardDescription>
@@ -386,9 +386,9 @@ export function MentorVerificationForm({ onSubmit, isLoading }: MentorVerificati
       </Card>
 
       {/* Profile Picture */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Profile Picture</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Profile Picture</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload a professional profile picture
           </CardDescription>

@@ -112,9 +112,9 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* Personal Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Personal Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Personal Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
@@ -125,12 +125,12 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('country', { required: 'Country is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="IN">India</option>
                 <option value="US">United States</option>
@@ -154,12 +154,12 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 Gender <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('personalInfo.gender', { required: 'Gender is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -172,19 +172,19 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
       </Card>
 
       {/* ID Proof */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Identity Verification</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Identity Verification</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 ID Type <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('idProof.type', { required: 'ID type is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Select ID Type</option>
                 {selectedCountry === 'IN' && (
@@ -224,13 +224,13 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
       </Card>
 
       {/* Investment Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Investment Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Investment Information</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
               Investment Preferences <span className="text-red-500">*</span>
             </label>
             <div className="flex space-x-2 mb-2">
@@ -239,7 +239,7 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
                 value={newPreference}
                 onChange={(e) => setNewPreference(e.target.value)}
                 placeholder="e.g., SaaS, FinTech, Healthcare"
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
               <Button type="button" onClick={addPreference} variant="outline">
                 Add
@@ -281,7 +281,7 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
               Portfolio Companies
             </label>
             <div className="flex space-x-2 mb-2">
@@ -290,7 +290,7 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
                 value={newCompany}
                 onChange={(e) => setNewCompany(e.target.value)}
                 placeholder="Company name"
-                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               />
               <Button type="button" onClick={addCompany} variant="outline">
                 Add
@@ -340,9 +340,9 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
       </Card>
 
       {/* Tax Compliance */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Tax Compliance</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Tax Compliance</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           {selectedCountry === 'IN' && (
@@ -385,9 +385,9 @@ export function InvestorVerificationForm({ onSubmit, isLoading }: InvestorVerifi
       </Card>
 
       {/* Bank Details */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Investment Bank Details</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Investment Bank Details</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">

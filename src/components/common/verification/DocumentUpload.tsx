@@ -88,7 +88,7 @@ export function DocumentUpload({
   return (
     <div className="space-y-3">
       <div>
-        <label className="block text-sm font-medium text-gray-900 dark:text-white mb-1">
+        <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-1">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
@@ -128,7 +128,7 @@ export function DocumentUpload({
               <div className="flex items-center space-x-3">
                 <FileText className="w-8 h-8 text-orange-600" />
                 <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-white">
+                  <p className="text-sm font-medium text-gray-900 dark:text-foreground">
                     {uploadedFile.name}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">

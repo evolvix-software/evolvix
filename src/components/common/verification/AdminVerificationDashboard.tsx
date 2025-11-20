@@ -76,9 +76,9 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
 
   return (
     <div className="space-y-6">
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Verification Review Dashboard</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Verification Review Dashboard</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Review and approve/reject user verifications
           </CardDescription>
@@ -133,7 +133,7 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
-                          <h3 className="font-semibold text-gray-900 dark:text-white capitalize">
+                          <h3 className="font-semibold text-gray-900 dark:text-foreground capitalize">
                             {verification.role} Verification
                           </h3>
                           <VerificationBadge
@@ -171,11 +171,11 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
 
       {/* Verification Detail Modal */}
       {selectedVerification && (
-        <Card className="border-0 shadow-lg bg-white dark:bg-gray-800 fixed inset-4 z-50 overflow-y-auto">
+        <Card className="border-0 shadow-lg bg-card dark:bg-gray-800 fixed inset-4 z-50 overflow-y-auto">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle className="text-gray-900 dark:text-white capitalize">
+                <CardTitle className="text-gray-900 dark:text-foreground capitalize">
                   {selectedVerification.role} Verification Details
                 </CardTitle>
                 <CardDescription className="text-gray-600 dark:text-gray-400">
@@ -208,7 +208,7 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
             <div className="space-y-4">
               {selectedVerification.personalInfo && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Personal Information</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Personal Information</h4>
                   <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto">
                     {JSON.stringify(selectedVerification.personalInfo, null, 2)}
                   </pre>
@@ -217,7 +217,7 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
 
               {selectedVerification.companyInfo && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Company Information</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Company Information</h4>
                   <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto">
                     {JSON.stringify(selectedVerification.companyInfo, null, 2)}
                   </pre>
@@ -226,7 +226,7 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
 
               {selectedVerification.investorInfo && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Investor Information</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Investor Information</h4>
                   <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto">
                     {JSON.stringify(selectedVerification.investorInfo, null, 2)}
                   </pre>
@@ -235,7 +235,7 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
 
               {selectedVerification.sponsorInfo && (
                 <div>
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Sponsor Information</h4>
+                  <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Sponsor Information</h4>
                   <pre className="bg-gray-100 dark:bg-gray-900 p-4 rounded-lg text-sm overflow-x-auto">
                     {JSON.stringify(selectedVerification.sponsorInfo, null, 2)}
                   </pre>
@@ -247,26 +247,26 @@ export function AdminVerificationDashboard({ initialVerifications }: AdminVerifi
             {selectedVerification.status === 'pending' && (
               <div className="space-y-4 border-t pt-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                     Admin Notes (Optional)
                   </label>
                   <textarea
                     value={adminNotes}
                     onChange={(e) => setAdminNotes(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     rows={3}
                     placeholder="Add any notes about this verification..."
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                     Rejection Reason (Required for rejection)
                   </label>
                   <textarea
                     value={rejectionReason}
                     onChange={(e) => setRejectionReason(e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                     rows={3}
                     placeholder="Provide reason if rejecting..."
                   />

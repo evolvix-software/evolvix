@@ -80,7 +80,7 @@ export function StudentSubmissions({
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center space-x-2">
           <FileText className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground">
             Student Submissions ({filteredSubmissions.length})
           </h3>
         </div>
@@ -94,7 +94,7 @@ export function StudentSubmissions({
               placeholder="Search submissions..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+              className="pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
             />
           </div>
 
@@ -102,7 +102,7 @@ export function StudentSubmissions({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as SubmissionStatus | 'all')}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="all">All Status</option>
             <option value="submitted">Submitted</option>
@@ -119,7 +119,7 @@ export function StudentSubmissions({
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No submissions found
             </h3>
             <p className="text-slate-600 dark:text-slate-400">
@@ -151,7 +151,7 @@ export function StudentSubmissions({
                           </span>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-slate-900 dark:text-white">
+                          <h4 className="font-semibold text-slate-900 dark:text-foreground">
                             {submission.studentName}
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -207,7 +207,7 @@ export function StudentSubmissions({
                               >
                                 <div className="flex items-center space-x-2 flex-1 min-w-0">
                                   <FileText className="w-4 h-4 text-slate-400 flex-shrink-0" />
-                                  <span className="text-sm text-slate-900 dark:text-white truncate">
+                                  <span className="text-sm text-slate-900 dark:text-foreground truncate">
                                     {file.name}
                                   </span>
                                   <span className="text-xs text-slate-500 dark:text-slate-400">

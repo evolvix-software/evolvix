@@ -31,9 +31,9 @@ const colorMap = {
 
 export function RecentActivity({ activities }: RecentActivityProps) {
   return (
-    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+    <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="text-gray-900 dark:text-white">Recent Activity</CardTitle>
+        <CardTitle className="text-gray-900 dark:text-foreground">Recent Activity</CardTitle>
         <CardDescription className="text-gray-600 dark:text-gray-400">
           Your latest learning progress
         </CardDescription>
@@ -55,7 +55,7 @@ export function RecentActivity({ activities }: RecentActivityProps) {
                 <Icon className={`w-4 h-4 ${colors.text}`} />
               </div>
               <div className="flex-1">
-                <p className="text-sm font-medium text-gray-900 dark:text-white">
+                <p className="text-sm font-medium text-gray-900 dark:text-foreground">
                   {activity.title}
                 </p>
                 <p className="text-xs text-gray-500 dark:text-gray-400">

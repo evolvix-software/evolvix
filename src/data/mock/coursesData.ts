@@ -532,6 +532,7 @@ export const coursesData: Course[] = [
     projects: undefined,
     enableSundayDoubtClearing: false,
     doubtClearingSessions: undefined,
+    courseCategory: 'skill-focused' as const, // Skill Course - React Masterclass
   },
   {
     id: '3',
@@ -606,6 +607,7 @@ export const coursesData: Course[] = [
     projects: undefined,
     enableSundayDoubtClearing: false,
     doubtClearingSessions: undefined,
+    courseCategory: 'skill-focused' as const, // Skill Course - Python Data Science
   },
   {
     id: '4',
@@ -664,6 +666,7 @@ export const coursesData: Course[] = [
     projects: undefined,
     enableSundayDoubtClearing: false,
     doubtClearingSessions: undefined,
+    courseCategory: 'skill-focused' as const, // Skill Course
   },
   // NEW MOCK COURSE 1 - LIVE COURSE
   {
@@ -849,6 +852,9 @@ export const coursesData: Course[] = [
       admissionDeadline: '2024-12-15'
     },
     allowStudentPreferences: true,
+    courseCategory: 'bootcamp' as const, // Full Career Bootcamp - Full Stack
+    requiresVacancy: true,
+    allowsScholarship: true,
     projects: [
       {
         id: 'proj_live_3',
@@ -1073,6 +1079,9 @@ export const coursesData: Course[] = [
       admissionDeadline: '2025-01-01'
     },
     allowStudentPreferences: false,
+    courseCategory: 'bootcamp' as const, // Full Career Bootcamp - Mobile Development
+    requiresVacancy: true,
+    allowsScholarship: true,
     projects: [
       {
         id: 'proj_live_6',
@@ -1448,6 +1457,7 @@ export const coursesData: Course[] = [
     updatedAt: '2024-12-10',
     courseType: 'recorded' as const,
     enableSundayDoubtClearing: true,
+    courseCategory: 'skill-focused' as const, // Skill Course - Python Data Science
     projects: [
       {
         id: 'proj_rec_1',
@@ -1775,6 +1785,7 @@ export const coursesData: Course[] = [
     updatedAt: '2024-12-12',
     courseType: 'recorded' as const,
     enableSundayDoubtClearing: true,
+    courseCategory: 'skill-focused' as const, // Skill Course - UI/UX Design
     projects: [
       {
         id: 'proj_rec_4',
@@ -2098,6 +2109,7 @@ export const coursesData: Course[] = [
     updatedAt: '2024-12-14',
     courseType: 'recorded' as const,
     enableSundayDoubtClearing: true,
+    courseCategory: 'skill-focused' as const, // Skill Course - Advanced JavaScript
     projects: [
       {
         id: 'proj_rec_7',

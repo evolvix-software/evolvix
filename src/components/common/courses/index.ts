@@ -1,2 +1,5 @@
+export { CourseBannerCarousel } from './CourseBannerCarousel';
 export { CourseCard } from './CourseCard';
-export { CourseFilters } from './CourseFilters';
+export { FeaturedCourses } from './FeaturedCourses';
+export { CourseCategories } from './CourseCategories';
+export { DSACourseRecommendations, type DSACourseRecommendationsProps } from './DSACourseRecommendations';

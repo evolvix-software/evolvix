@@ -58,10 +58,10 @@ export function VerificationLevel({ currentLevel, status, role }: VerificationLe
   const statusColor = statusInfo[status].color;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+    <div className="bg-card dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-foreground">
             Verification Status
           </h2>
           <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -133,7 +133,7 @@ export function VerificationLevel({ currentLevel, status, role }: VerificationLe
             'text-orange-600 dark:text-orange-400'
           }`} />
           <div>
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
+            <p className="text-sm font-medium text-gray-900 dark:text-foreground">
               {statusInfo[status].text}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400">

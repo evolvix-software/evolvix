@@ -21,8 +21,8 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
     ? performance.reduce((sum, p) => sum + p.averageAssignmentScore, 0) / performance.length
     : 0;
 
-  const getImprovementColor = () => 'text-slate-900 dark:text-white';
-  const getScoreColor = () => 'text-slate-900 dark:text-white';
+  const getImprovementColor = () => 'text-slate-900 dark:text-foreground';
+  const getScoreColor = () => 'text-slate-900 dark:text-foreground';
 
   return (
     <div className="space-y-6">
@@ -75,7 +75,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Students</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {performance.length}
                 </p>
               </div>
@@ -98,28 +98,28 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
             <table className="w-full">
               <thead>
                 <tr className="border-b border-slate-200 dark:border-slate-700">
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Student
                   </th>
-                  <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-left py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Course
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Initial Score
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Current Score
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Improvement
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Assignments
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Avg Score
                   </th>
-                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-white">
+                  <th className="text-center py-3 px-4 text-sm font-semibold text-slate-900 dark:text-foreground">
                     Progress
                   </th>
                 </tr>
@@ -137,7 +137,7 @@ export function StudentPerformance({ performance }: StudentPerformanceProps) {
                             {student.studentName.charAt(0).toUpperCase()}
                           </span>
                         </div>
-                        <span className="text-sm font-medium text-slate-900 dark:text-white">
+                        <span className="text-sm font-medium text-slate-900 dark:text-foreground">
                           {student.studentName}
                         </span>
                       </div>

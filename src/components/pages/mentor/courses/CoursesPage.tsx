@@ -188,7 +188,7 @@ export function CoursesPage() {
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">My Courses</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">My Courses</h2>
           <p className="text-slate-600 dark:text-slate-400">Create and manage courses for students</p>
         </div>
         <div className="flex items-center space-x-2">
@@ -230,7 +230,7 @@ export function CoursesPage() {
             placeholder="Search courses by title or description..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
+            className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-green-500 focus:ring-2 focus:ring-green-500/20"
           />
         </div>
 
@@ -242,7 +242,7 @@ export function CoursesPage() {
             <select
               value={selectedCategory}
               onChange={(e) => setSelectedCategory(e.target.value)}
-              className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+              className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm"
             >
               <option value="all">All Categories</option>
               <option value="crash">Crash Course</option>
@@ -256,7 +256,7 @@ export function CoursesPage() {
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm"
           >
             <option value="all">All Status</option>
             <option value="published">Published</option>
@@ -270,7 +270,7 @@ export function CoursesPage() {
           <select
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm"
           >
             <option value="all">All Types</option>
             <option value="live">Live</option>
@@ -281,7 +281,7 @@ export function CoursesPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm"
           >
             <option value="date">Sort by Date</option>
             <option value="enrollment">Sort by Enrollment</option>
@@ -365,7 +365,7 @@ export function CoursesPage() {
             <Card className="border border-slate-200 dark:border-slate-700/50">
               <CardContent className="p-12 text-center">
                 <BookOpen className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
                   {myCourses.length === 0 ? 'No courses yet' : 'No courses match your filters'}
                 </h3>
                 <p className="text-slate-600 dark:text-slate-400 mb-4">
@@ -435,7 +435,7 @@ export function CoursesPage() {
                     setSelectedCourses(newSelected);
                   }}
                   onClick={(e) => e.stopPropagation()}
-                  className="absolute top-2 left-2 z-10 w-5 h-5 rounded border-slate-300 bg-white dark:bg-slate-800"
+                  className="absolute top-2 left-2 z-10 w-5 h-5 rounded border-slate-300 bg-card dark:bg-slate-800"
                 />
                 <CourseCard
                   course={course}

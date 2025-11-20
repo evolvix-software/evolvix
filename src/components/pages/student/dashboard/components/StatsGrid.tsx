@@ -1,7 +1,7 @@
 "use client";
 
 import { BookOpen, Users, Award, TrendingUp } from 'lucide-react';
-import { StatCard } from '@/components/common/dashboard/common/StatCard';
+import { StatsCard, STAT_CARD_COLORS } from '@/components/common/ui/StatsCard';
 import { StudentStats } from '@/store/features/student/studentSlice';
 
 interface StatsGridProps {
@@ -11,29 +11,33 @@ interface StatsGridProps {
 export function StatsGrid({ stats }: StatsGridProps) {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-      <StatCard
-        icon={<BookOpen className="w-5 h-5" />}
+      <StatsCard
+        icon={BookOpen}
         value={stats.coursesEnrolled}
         label="Courses Enrolled"
         trend={{ value: 5, isPositive: true }}
+        {...STAT_CARD_COLORS.blue}
       />
-      <StatCard
-        icon={<Users className="w-5 h-5" />}
+      <StatsCard
+        icon={Users}
         value={stats.mentorsConnected}
         label="Mentors Connected"
         trend={{ value: 3, isPositive: true }}
+        {...STAT_CARD_COLORS.purple}
       />
-      <StatCard
-        icon={<Award className="w-5 h-5" />}
+      <StatsCard
+        icon={Award}
         value={stats.certificatesEarned}
         label="Certificates Earned"
         trend={{ value: 2, isPositive: true }}
+        {...STAT_CARD_COLORS.yellow}
       />
-      <StatCard
-        icon={<TrendingUp className="w-5 h-5" />}
+      <StatsCard
+        icon={TrendingUp}
         value={`${stats.progressScore}%`}
         label="Progress Score"
         trend={{ value: 8, isPositive: true }}
+        {...STAT_CARD_COLORS.green}
       />
     </div>
   );

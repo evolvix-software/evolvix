@@ -154,7 +154,7 @@ export default function ProfilePage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
-          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Loading...</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-foreground">Loading...</h1>
         </div>
       </div>
     );
@@ -171,7 +171,7 @@ export default function ProfilePage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-2">
             Profile Settings
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
@@ -183,11 +183,11 @@ export default function ProfilePage() {
           {/* Left Column - Profile Information */}
           <div className="lg:col-span-2 space-y-6">
             {/* Basic Information */}
-            <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+            <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
-                    <CardTitle className="text-gray-900 dark:text-white">Basic Information</CardTitle>
+                    <CardTitle className="text-gray-900 dark:text-foreground">Basic Information</CardTitle>
                     <CardDescription className="text-gray-600 dark:text-gray-400">
                       Your personal account details
                     </CardDescription>
@@ -229,7 +229,7 @@ export default function ProfilePage() {
               <CardContent className="space-y-4">
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                       Full Name
                     </label>
                     {isEditing ? (
@@ -239,11 +239,11 @@ export default function ProfilePage() {
                         placeholder="Enter your full name"
                       />
                     ) : (
-                      <p className="text-gray-900 dark:text-white">{userData.fullName}</p>
+                      <p className="text-gray-900 dark:text-foreground">{userData.fullName}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                       Email
                     </label>
                     <p className="text-gray-600 dark:text-gray-400">{userData.email}</p>
@@ -252,7 +252,7 @@ export default function ProfilePage() {
                 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                       Phone Number
                     </label>
                     {isEditing ? (
@@ -262,11 +262,11 @@ export default function ProfilePage() {
                         placeholder="Enter your phone number"
                       />
                     ) : (
-                      <p className="text-gray-900 dark:text-white">{userData.phone || 'Not provided'}</p>
+                      <p className="text-gray-900 dark:text-foreground">{userData.phone || 'Not provided'}</p>
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                    <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                       Role
                     </label>
                     <p className="text-gray-600 dark:text-gray-400">{getRoleTitle(userData.role)}</p>
@@ -274,7 +274,7 @@ export default function ProfilePage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                  <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                     Registration Date
                   </label>
                   <p className="text-gray-600 dark:text-gray-400">
@@ -285,9 +285,9 @@ export default function ProfilePage() {
             </Card>
 
             {/* Verification Status */}
-            <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+            <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
               <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white">Verification Status</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-foreground">Verification Status</CardTitle>
                 <CardDescription className="text-gray-600 dark:text-gray-400">
                   Your account verification level and status
                 </CardDescription>
@@ -298,7 +298,7 @@ export default function ProfilePage() {
                     <div className="flex items-center space-x-3">
                       {getVerificationStatusIcon()}
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">
+                        <h4 className="font-semibold text-gray-900 dark:text-foreground">
                           Verification Status
                         </h4>
                         <p className={`text-sm ${getVerificationStatusColor()}`}>
@@ -410,9 +410,9 @@ export default function ProfilePage() {
             />
 
             {/* Quick Actions */}
-            <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+            <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
               <CardHeader>
-                <CardTitle className="text-gray-900 dark:text-white">Quick Actions</CardTitle>
+                <CardTitle className="text-gray-900 dark:text-foreground">Quick Actions</CardTitle>
                 <CardDescription className="text-gray-600 dark:text-gray-400">
                   Common profile tasks
                 </CardDescription>

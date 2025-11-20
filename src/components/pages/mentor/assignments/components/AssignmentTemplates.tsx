@@ -58,7 +58,7 @@ export function AssignmentTemplates({
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground">
             Assignment Templates
           </h3>
           <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -86,14 +86,14 @@ export function AssignmentTemplates({
             placeholder="Search templates..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           />
         </div>
 
         <select
           value={categoryFilter}
           onChange={(e) => setCategoryFilter(e.target.value)}
-          className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+          className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
         >
           <option value="all">All Categories</option>
           {categories.map(cat => (
@@ -104,7 +104,7 @@ export function AssignmentTemplates({
         <select
           value={courseFilter}
           onChange={(e) => setCourseFilter(e.target.value)}
-          className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+          className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
         >
           <option value="all">All Courses</option>
           {courses.map(course => (
@@ -118,7 +118,7 @@ export function AssignmentTemplates({
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <FileText className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No templates found
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-6">
@@ -148,7 +148,7 @@ export function AssignmentTemplates({
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="text-base font-semibold text-slate-900 dark:text-white mb-1">
+                      <CardTitle className="text-base font-semibold text-slate-900 dark:text-foreground mb-1">
                         {template.title}
                       </CardTitle>
                       {course && (

@@ -222,7 +222,7 @@ export function AdvancedStudentProfile({
               )}
               
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">
                   {student.name}
                 </h2>
                 <div className="space-y-2">
@@ -260,7 +260,7 @@ export function AdvancedStudentProfile({
                   <Star className="w-5 h-5 text-slate-600 dark:text-slate-400 fill-slate-600 dark:fill-slate-400" />
                   <div>
                     <p className="text-xs text-slate-600 dark:text-slate-400">Overall Rating</p>
-                    <p className="text-xl font-bold text-slate-900 dark:text-white">
+                    <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                       {student.rating.toFixed(1)} / 5.0
                     </p>
                   </div>
@@ -290,7 +290,7 @@ export function AdvancedStudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Overall Progress</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {student.overallProgress}%
                 </p>
               </div>
@@ -306,7 +306,7 @@ export function AdvancedStudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Assignments</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {student.assignmentsCompleted}/{student.assignmentsTotal}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{completionRate}% complete</p>
@@ -323,7 +323,7 @@ export function AdvancedStudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Enrolled Courses</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {student.enrolledCourses.length}
                 </p>
               </div>
@@ -339,7 +339,7 @@ export function AdvancedStudentProfile({
               </div>
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Engagement</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {engagementMetrics.loginFrequency}/week
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400">{engagementMetrics.timeSpentLearning}h learning</p>
@@ -382,7 +382,7 @@ export function AdvancedStudentProfile({
             <Card className="border border-slate-200 dark:border-slate-700">
               <CardContent className="p-4">
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">GPA</p>
-                <p className="text-xl font-bold text-slate-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                   {student.gpa?.toFixed(2) || 'N/A'}
                 </p>
               </CardContent>
@@ -390,7 +390,7 @@ export function AdvancedStudentProfile({
             <Card className="border border-slate-200 dark:border-slate-700">
               <CardContent className="p-4">
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Certificates</p>
-                <p className="text-xl font-bold text-slate-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                   {student.certificates?.length || 0}
                 </p>
               </CardContent>
@@ -398,7 +398,7 @@ export function AdvancedStudentProfile({
             <Card className="border border-slate-200 dark:border-slate-700">
               <CardContent className="p-4">
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Badges</p>
-                <p className="text-xl font-bold text-slate-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                   {student.badges?.length || 0}
                 </p>
               </CardContent>
@@ -406,7 +406,7 @@ export function AdvancedStudentProfile({
             <Card className="border border-slate-200 dark:border-slate-700">
               <CardContent className="p-4">
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Support Tickets</p>
-                <p className="text-xl font-bold text-slate-900 dark:text-white">
+                <p className="text-xl font-bold text-slate-900 dark:text-foreground">
                   {student.supportTickets || 0}
                 </p>
               </CardContent>
@@ -436,14 +436,14 @@ export function AdvancedStudentProfile({
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-slate-900 dark:text-white mb-1">
+                          <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">
                             {progress.courseTitle}
                           </h4>
                           <p className="text-xs text-slate-500 dark:text-slate-400">
                             Enrolled: {new Date(progress.enrolledAt).toLocaleDateString()}
                           </p>
                         </div>
-                        <span className="text-lg font-bold text-slate-900 dark:text-white">
+                        <span className="text-lg font-bold text-slate-900 dark:text-foreground">
                           {progress.progress}%
                         </span>
                       </div>
@@ -462,13 +462,13 @@ export function AdvancedStudentProfile({
                       <div className="grid grid-cols-2 gap-4 text-sm">
                         <div>
                           <span className="text-slate-600 dark:text-slate-400">Lessons: </span>
-                          <span className="font-semibold text-slate-900 dark:text-white">
+                          <span className="font-semibold text-slate-900 dark:text-foreground">
                             {progress.completedLessons}/{progress.totalLessons}
                           </span>
                         </div>
                         <div>
                           <span className="text-slate-600 dark:text-slate-400">Assignments: </span>
-                          <span className="font-semibold text-slate-900 dark:text-white">
+                          <span className="font-semibold text-slate-900 dark:text-foreground">
                             {progress.assignmentsCompleted}/{progress.assignmentsTotal}
                           </span>
                         </div>
@@ -498,7 +498,7 @@ export function AdvancedStudentProfile({
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
-                          <h4 className="font-semibold text-slate-900 dark:text-white mb-1">
+                          <h4 className="font-semibold text-slate-900 dark:text-foreground mb-1">
                             {progress.courseTitle}
                           </h4>
                           <div className="flex items-center space-x-4 text-xs text-slate-600 dark:text-slate-400 mt-2">
@@ -515,7 +515,7 @@ export function AdvancedStudentProfile({
                         {student.gpa && (
                           <div className="text-right">
                             <p className="text-xs text-slate-600 dark:text-slate-400">GPA</p>
-                            <p className="text-lg font-bold text-slate-900 dark:text-white">
+                            <p className="text-lg font-bold text-slate-900 dark:text-foreground">
                               {student.gpa.toFixed(2)}
                             </p>
                           </div>
@@ -537,7 +537,7 @@ export function AdvancedStudentProfile({
                                 <div className="flex-1">
                                   <div className="flex items-center space-x-2 mb-1">
                                     <ClipboardCheck className="w-4 h-4 text-slate-600 dark:text-slate-400" />
-                                    <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                                    <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                                       {testCompletion.testTitle}
                                     </span>
                                     {testCompletion.passed ? (
@@ -627,31 +627,31 @@ export function AdvancedStudentProfile({
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Login Frequency</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {engagementMetrics.loginFrequency} times/week
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Time Spent Learning</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {engagementMetrics.timeSpentLearning} hours
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Assignment Submission Rate</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {engagementMetrics.assignmentSubmissionRate}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Discussion Participation</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {engagementMetrics.discussionParticipation} posts
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Class Attendance Rate</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {engagementMetrics.classAttendanceRate}%
                   </span>
                 </div>
@@ -671,7 +671,7 @@ export function AdvancedStudentProfile({
                     <div className="flex items-center justify-between mb-2">
                       <span className="text-sm text-slate-600 dark:text-slate-400">Overall Engagement</span>
                       <span className={`text-sm font-semibold ${
-                        student.engagementLevel === 'high' ? 'text-slate-900 dark:text-white' :
+                        student.engagementLevel === 'high' ? 'text-slate-900 dark:text-foreground' :
                         student.engagementLevel === 'medium' ? 'text-slate-700 dark:text-slate-300' :
                         'text-slate-500 dark:text-slate-500'
                       }`}>
@@ -708,20 +708,20 @@ export function AdvancedStudentProfile({
               <CardContent className="space-y-4">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Average Score</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {performanceAnalytics.averageScore.toFixed(1)}%
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Learning Pace</span>
-                  <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                     {performanceAnalytics.learningPace.toUpperCase()}
                   </span>
                 </div>
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-slate-600 dark:text-slate-400">Performance Level</span>
                   <span className={`text-sm font-semibold ${
-                    student.performanceLevel === 'high' ? 'text-slate-900 dark:text-white' :
+                    student.performanceLevel === 'high' ? 'text-slate-900 dark:text-foreground' :
                     student.performanceLevel === 'medium' ? 'text-slate-700 dark:text-slate-300' :
                     'text-slate-500 dark:text-slate-500'
                   }`}>
@@ -790,7 +790,7 @@ export function AdvancedStudentProfile({
                         key={idx}
                         className="p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700"
                       >
-                        <h4 className="font-semibold text-slate-900 dark:text-white">{course.title}</h4>
+                        <h4 className="font-semibold text-slate-900 dark:text-foreground">{course.title}</h4>
                         <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">{course.shortDescription}</p>
                       </div>
                     ) : null;
@@ -862,7 +862,7 @@ export function AdvancedStudentProfile({
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-slate-600 dark:text-slate-400">
-                  Total support tickets: <span className="font-semibold text-slate-900 dark:text-white">{student.supportTickets}</span>
+                  Total support tickets: <span className="font-semibold text-slate-900 dark:text-foreground">{student.supportTickets}</span>
                 </p>
               </CardContent>
             </Card>

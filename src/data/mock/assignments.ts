@@ -5,13 +5,27 @@ export const mockAssignments: Assignment[] = [
   {
     id: 'assign_1',
     title: 'Daily Assignment: Personal Portfolio Page',
-    description: 'Create a responsive personal portfolio page using HTML5 semantic elements. Include sections for About, Skills, Projects, and Contact.',
+    description: 'Create a responsive personal portfolio page using HTML5 semantic elements. Include sections for About, Skills, Projects, and Contact. This assignment will help you practice fundamental web development skills including HTML structure, CSS styling, and responsive design principles.',
     type: 'class',
     courseId: '5',
     courseTitle: 'Live Full-Stack Web Development Bootcamp',
     dueDate: '2024-12-20',
     maxScore: 100,
-    instructions: '1. Use HTML5 semantic elements\n2. Include proper form validation\n3. Make it responsive\n4. Submit via GitHub link',
+    instructions: '1. Use HTML5 semantic elements (header, nav, main, section, article, footer)\n2. Include proper form validation\n3. Make it responsive using CSS Grid and Flexbox\n4. Submit via GitHub link\n5. Include at least 3 project showcases\n6. Add a contact form with validation',
+    attachments: [
+      {
+        id: 'attach_1',
+        name: 'Portfolio Design Guidelines.pdf',
+        url: 'https://example.com/files/portfolio-guidelines.pdf',
+        type: 'application/pdf'
+      },
+      {
+        id: 'attach_2',
+        name: 'Example Portfolio Template.zip',
+        url: 'https://example.com/files/portfolio-template.zip',
+        type: 'application/zip'
+      }
+    ],
     createdAt: '2024-12-15',
     createdBy: 'suhxil14@gmail.com'
   },
@@ -31,7 +45,7 @@ export const mockAssignments: Assignment[] = [
   {
     id: 'assign_3',
     title: 'E-Commerce Frontend Project',
-    description: 'Build a complete e-commerce frontend with product listing, search, filters, cart, and checkout.',
+    description: 'Build a complete e-commerce frontend with product listing, search, filters, cart, and checkout. This is a comprehensive project that will demonstrate your skills in React, state management, API integration, and user experience design. The project should be production-ready with proper error handling and loading states.',
     type: 'project',
     courseId: '5',
     courseTitle: 'Live Full-Stack Web Development Bootcamp',
@@ -39,7 +53,27 @@ export const mockAssignments: Assignment[] = [
     projectNumber: 1,
     dueDate: '2025-01-10',
     maxScore: 300,
-    instructions: 'This is Project 1 for the course. Build a complete e-commerce frontend with all required features.',
+    instructions: 'This is Project 1 for the course. Build a complete e-commerce frontend with all required features:\n\n1. Product listing page with pagination\n2. Product search and filtering functionality\n3. Shopping cart with add/remove/update quantities\n4. Checkout process with form validation\n5. User authentication (login/register)\n6. Product detail pages\n7. Responsive design for mobile and desktop\n8. Error handling and loading states\n9. API integration with backend\n10. Deploy to a hosting platform',
+    attachments: [
+      {
+        id: 'attach_3',
+        name: 'Project Requirements.pdf',
+        url: 'https://example.com/files/ecommerce-requirements.pdf',
+        type: 'application/pdf'
+      },
+      {
+        id: 'attach_4',
+        name: 'API Documentation.pdf',
+        url: 'https://example.com/files/api-docs.pdf',
+        type: 'application/pdf'
+      },
+      {
+        id: 'attach_5',
+        name: 'Design Mockups.zip',
+        url: 'https://example.com/files/design-mockups.zip',
+        type: 'application/zip'
+      }
+    ],
     createdAt: '2024-12-01',
     createdBy: 'suhxil14@gmail.com'
   },
@@ -59,7 +93,7 @@ export const mockAssignments: Assignment[] = [
   {
     id: 'assign_5',
     title: 'Exploratory Data Analysis Project',
-    description: 'Perform comprehensive EDA on a real-world dataset. Analyze patterns, create visualizations, and provide insights.',
+    description: 'Perform comprehensive EDA on a real-world dataset. Analyze patterns, create visualizations, and provide insights. This project will help you master data analysis techniques using Python libraries like Pandas, NumPy, Matplotlib, and Seaborn.',
     type: 'project',
     courseId: '7',
     courseTitle: 'Complete Python Data Science & Machine Learning',
@@ -67,8 +101,70 @@ export const mockAssignments: Assignment[] = [
     projectNumber: 1,
     dueDate: '2025-02-01',
     maxScore: 300,
-    instructions: 'Choose a dataset, perform EDA, create at least 10 visualizations, and write comprehensive insights report.',
+    instructions: 'Choose a dataset, perform EDA, create at least 10 visualizations, and write comprehensive insights report:\n\n1. Data cleaning and preprocessing\n2. Descriptive statistics\n3. Univariate analysis\n4. Bivariate analysis\n5. Multivariate analysis\n6. At least 10 different visualizations\n7. Statistical tests where appropriate\n8. Comprehensive insights and conclusions\n9. Recommendations based on findings\n10. Well-documented Jupyter notebook',
+    attachments: [
+      {
+        id: 'attach_6',
+        name: 'Dataset Options.xlsx',
+        url: 'https://example.com/files/dataset-options.xlsx',
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      },
+      {
+        id: 'attach_7',
+        name: 'EDA Template.ipynb',
+        url: 'https://example.com/files/eda-template.ipynb',
+        type: 'application/json'
+      },
+      {
+        id: 'attach_8',
+        name: 'Visualization Guidelines.pdf',
+        url: 'https://example.com/files/viz-guidelines.pdf',
+        type: 'application/pdf'
+      }
+    ],
     createdAt: '2024-12-05',
+    createdBy: 'suhxil14@gmail.com'
+  },
+  {
+    id: 'assign_6',
+    title: 'React Component Library',
+    description: 'Build a reusable React component library with Storybook documentation. Create at least 10 commonly used components like Button, Input, Modal, Dropdown, etc.',
+    type: 'class',
+    courseId: '1',
+    courseTitle: 'Complete React Development Masterclass',
+    dueDate: '2025-01-25',
+    maxScore: 150,
+    instructions: '1. Create at least 10 reusable components\n2. Use TypeScript for type safety\n3. Implement Storybook for documentation\n4. Add proper PropTypes/TypeScript interfaces\n5. Include unit tests\n6. Publish to npm (optional)',
+    attachments: [
+      {
+        id: 'attach_9',
+        name: 'Component Requirements.pdf',
+        url: 'https://example.com/files/component-requirements.pdf',
+        type: 'application/pdf'
+      }
+    ],
+    createdAt: '2025-01-10',
+    createdBy: 'suhxil14@gmail.com'
+  },
+  {
+    id: 'assign_7',
+    title: 'RESTful API Development',
+    description: 'Design and implement a RESTful API using Node.js and Express. Include authentication, CRUD operations, error handling, and API documentation.',
+    type: 'class',
+    courseId: '2',
+    courseTitle: 'Full-Stack Web Development Bootcamp',
+    dueDate: '2025-02-15',
+    maxScore: 200,
+    instructions: 'Build a RESTful API with the following features:\n\n1. User authentication (JWT)\n2. CRUD operations for at least 2 resources\n3. Input validation\n4. Error handling middleware\n5. API documentation (Swagger/OpenAPI)\n6. Database integration (MongoDB or PostgreSQL)\n7. Environment configuration\n8. Unit and integration tests',
+    attachments: [
+      {
+        id: 'attach_10',
+        name: 'API Design Guidelines.pdf',
+        url: 'https://example.com/files/api-design.pdf',
+        type: 'application/pdf'
+      }
+    ],
+    createdAt: '2025-01-20',
     createdBy: 'suhxil14@gmail.com'
   }
 ];

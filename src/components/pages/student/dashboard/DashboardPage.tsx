@@ -15,10 +15,12 @@ import {
   StatsGrid,
   ChartsSection,
   QuickActions,
-  NotificationsFeed,
   UpcomingCourses,
+  RecentActivity,
+  LearningStreak,
+  MentorConnections,
 } from './components';
-import { CalendarWidget } from '@/components/common/calendar';
+import { Calendar } from '@/components/common/calendar';
 import { generateMockEventsForMonth } from '@/data/mock/calendarEvents';
 
 const defaultNotifications: Array<{
@@ -68,6 +70,8 @@ const verifiedCourses = [
     instructor: 'John Doe',
     date: 'Today',
     time: '3:00 PM',
+    progress: 75,
+    nextLesson: 'React Hooks Advanced',
   },
   {
     id: '2',
@@ -75,6 +79,17 @@ const verifiedCourses = [
     instructor: 'Jane Smith',
     date: 'Tomorrow',
     time: '2:00 PM',
+    progress: 45,
+    nextLesson: 'Express.js Fundamentals',
+  },
+  {
+    id: '3',
+    title: 'Full Stack Web Development',
+    instructor: 'Sarah Johnson',
+    date: 'This Week',
+    time: '10:00 AM',
+    progress: 60,
+    nextLesson: 'Database Integration',
   },
 ];
 
@@ -157,7 +172,7 @@ export function StudentDashboardPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
-          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Loading...</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-foreground">Loading...</h1>
         </div>
       </div>
     );
@@ -169,7 +184,7 @@ export function StudentDashboardPage() {
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Loading dashboard...</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-foreground">Loading dashboard...</h2>
           </div>
         </div>
       </Layout>
@@ -184,7 +199,7 @@ export function StudentDashboardPage() {
             <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-red-600 dark:text-red-400 text-xl">!</span>
             </div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">Error Loading Dashboard</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-foreground mb-2">Error Loading Dashboard</h2>
             <p className="text-gray-600 dark:text-gray-400">{error}</p>
           </div>
         </div>
@@ -197,16 +212,16 @@ export function StudentDashboardPage() {
       <div className="space-y-6">
         {/* New User Welcome Banner */}
         {isNewUser && (
-          <Card className="border-0 shadow-lg bg-gradient-to-r from-[#635bff]/10 to-blue-50 dark:from-[#635bff]/20 dark:to-blue-900/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
+          <Card className="border-0 shadow-lg bg-gradient-to-r from-primary/10 to-blue-50 dark:from-primary/20 dark:to-blue-900/20 border-[#635bff]/20 dark:border-[#635bff]/40 mb-6">
             <CardContent className="p-6">
               <div className="flex items-start space-x-4">
                 <div className="flex-shrink-0">
-                  <div className="w-16 h-16 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-full flex items-center justify-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center">
                     <span className="text-white text-2xl">🎉</span>
                   </div>
                 </div>
                 <div className="flex-1">
-                  <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-2">
                     Welcome to Evolvix!
                   </h2>
                   <p className="text-gray-700 dark:text-gray-300 mb-4">
@@ -216,7 +231,7 @@ export function StudentDashboardPage() {
                   <div className="flex flex-wrap gap-3">
                     <Button
                       onClick={() => router.push('/portal/verification')}
-                      className="bg-gradient-to-r from-[#635bff] to-blue-600 hover:from-[#4f48cc] hover:to-blue-700 text-white"
+                      className="bg-gradient-to-r from-primary to-blue-600 hover:from-[#4f48cc] hover:to-blue-700 text-white"
                     >
                       <Shield className="w-4 h-4 mr-2" />
                       Get Verified
@@ -321,18 +336,22 @@ export function StudentDashboardPage() {
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 <ChartsSection />
-                <NotificationsFeed notifications={verifiedNotifications} />
+                <MentorConnections />
+                <RecentActivity />
               </div>
               <div className="space-y-6">
                 <QuickActions />
-                <CalendarWidget 
-                  events={calendarEvents}
-                  role="student"
-                  courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
-                  compact={true}
-                />
                 <UpcomingCourses courses={verifiedCourses} />
+                <LearningStreak />
               </div>
+            </div>
+            {/* Calendar - Full Width */}
+            <div className="w-full">
+              <Calendar 
+                events={calendarEvents}
+                role="student"
+                courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
+              />
             </div>
           </>
         ) : (
@@ -341,18 +360,22 @@ export function StudentDashboardPage() {
             <div className="grid lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2 space-y-6">
                 <ChartsSection />
-                <NotificationsFeed notifications={verifiedNotifications} />
+                <MentorConnections />
+                <RecentActivity />
               </div>
               <div className="space-y-6">
                 <QuickActions />
-                <CalendarWidget 
-                  events={calendarEvents}
-                  role="student"
-                  courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
-                  compact={true}
-                />
                 <UpcomingCourses courses={verifiedCourses} />
+                <LearningStreak />
               </div>
+            </div>
+            {/* Calendar - Full Width */}
+            <div className="w-full">
+              <Calendar 
+                events={calendarEvents}
+                role="student"
+                courses={enrolledCourses.map(c => ({ id: c.id, title: c.title }))}
+              />
             </div>
           </>
         )}

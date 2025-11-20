@@ -49,7 +49,7 @@ export function TestAnalyticsPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-foreground mb-4">
             Test not found
           </h2>
           <Button onClick={() => router.push('/portal/mentor/tests')}>
@@ -66,7 +66,7 @@ export function TestAnalyticsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">
             Test Analytics
           </h2>
           <p className="text-slate-600 dark:text-slate-400">

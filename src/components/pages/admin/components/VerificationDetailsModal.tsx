@@ -48,7 +48,7 @@ export function VerificationDetailsModal({
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-gray-900 dark:bg-opacity-70 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl p-6 max-h-[90vh] overflow-y-auto">
+      <div className="bg-card dark:bg-gray-800 rounded-lg shadow-xl w-full max-w-4xl p-6 max-h-[90vh] overflow-y-auto">
         <h3 className="text-xl font-semibold mb-4">Verification Details</h3>
         {error && (
           <div className="mb-4 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg dark:bg-red-900/20 dark:border-red-800 dark:text-red-400">
@@ -58,7 +58,7 @@ export function VerificationDetailsModal({
         
         <div className="space-y-6 mb-6">
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">User Information</h4>
+            <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">User Information</h4>
             {typeof verification.userId === 'object' && verification.userId ? (
               <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                 <p><strong>Name:</strong> {verification.userId.fullName}</p>
@@ -71,7 +71,7 @@ export function VerificationDetailsModal({
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Verification Information</h4>
+            <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Verification Information</h4>
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg space-y-2">
               <p><strong>Role:</strong> {verification.role}</p>
               <p><strong>Level:</strong> {verification.verificationLevel}</p>
@@ -95,12 +95,12 @@ export function VerificationDetailsModal({
           </div>
 
           <div>
-            <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Verification Documents</h4>
+            <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Verification Documents</h4>
             <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg space-y-4">
               {verification.personalInfo && (
                 <div>
                   <h5 className="font-medium mb-2">Personal Information</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.personalInfo, null, 2)}
                   </pre>
                 </div>
@@ -108,7 +108,7 @@ export function VerificationDetailsModal({
               {verification.idProof && (
                 <div>
                   <h5 className="font-medium mb-2">ID Proof</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.idProof, null, 2)}
                   </pre>
                   {verification.idProof.documentUrl && (
@@ -121,7 +121,7 @@ export function VerificationDetailsModal({
               {verification.educationInfo && (
                 <div>
                   <h5 className="font-medium mb-2">Education Information</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.educationInfo, null, 2)}
                   </pre>
                 </div>
@@ -129,7 +129,7 @@ export function VerificationDetailsModal({
               {verification.professionalCredentials && (
                 <div>
                   <h5 className="font-medium mb-2">Professional Credentials</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.professionalCredentials, null, 2)}
                   </pre>
                 </div>
@@ -137,7 +137,7 @@ export function VerificationDetailsModal({
               {verification.experienceProof && (
                 <div>
                   <h5 className="font-medium mb-2">Experience Proof</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.experienceProof, null, 2)}
                   </pre>
                 </div>
@@ -145,7 +145,7 @@ export function VerificationDetailsModal({
               {verification.bankDetails && (
                 <div>
                   <h5 className="font-medium mb-2">Bank Details</h5>
-                  <pre className="text-xs bg-white dark:bg-gray-800 p-3 rounded overflow-auto">
+                  <pre className="text-xs bg-card dark:bg-gray-800 p-3 rounded overflow-auto">
                     {JSON.stringify(verification.bankDetails, null, 2)}
                   </pre>
                 </div>
@@ -161,7 +161,7 @@ export function VerificationDetailsModal({
               <textarea
                 value={adminNotes}
                 onChange={(e) => setAdminNotes(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground"
                 rows={3}
                 placeholder="Add notes about this verification..."
               />
@@ -178,7 +178,7 @@ export function VerificationDetailsModal({
                 <textarea
                   value={rejectionReason}
                   onChange={(e) => setRejectionReason(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground text-sm"
                   rows={2}
                   placeholder="Rejection reason (required)"
                 />

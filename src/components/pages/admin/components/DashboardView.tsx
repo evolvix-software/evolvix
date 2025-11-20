@@ -10,19 +10,19 @@ interface DashboardViewProps {
 export function DashboardView({ stats }: DashboardViewProps) {
   return (
     <div>
-      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Dashboard</h1>
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground mb-8">Dashboard</h1>
       {stats && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="bg-card dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
-                <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{stats.totalUsers}</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-foreground mt-1">{stats.totalUsers}</p>
               </div>
               <Users className="w-8 h-8 text-blue-600" />
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="bg-card dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Active Users</p>
@@ -31,7 +31,7 @@ export function DashboardView({ stats }: DashboardViewProps) {
               <UserCheck className="w-8 h-8 text-green-600" />
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="bg-card dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Banned Users</p>
@@ -40,7 +40,7 @@ export function DashboardView({ stats }: DashboardViewProps) {
               <Ban className="w-8 h-8 text-red-600" />
             </div>
           </div>
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+          <div className="bg-card dark:bg-gray-800 rounded-lg shadow p-6">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Verified Users</p>

@@ -11,7 +11,7 @@ import {
   addSkill, 
   removeSkill, 
   addInterest, 
-  removeInterest, 
+  removeInterest,
   updateKYCStatus,
   updateNotifications,
   addPaymentMethod,
@@ -19,7 +19,8 @@ import {
   setDefaultPaymentMethod,
   updatePreferences,
   updatePrivacySettings,
-  setTwoFactorAuth
+  setTwoFactorAuth,
+  setProfilePicture
 } from '@/store/features/profile/profileSlice';
 import { MentorVerificationForm } from '@/components/common/verification';
 import {
@@ -29,6 +30,7 @@ import {
   Calendar,
   Clock,
   Shield,
+  MapPin,
   Lock,
   CreditCard,
   Bell,
@@ -38,7 +40,7 @@ import {
   Smartphone,
   Link as LinkIcon,
   Trash2,
-  Download,
+
   LogOut,
   Globe,
   Sun,
@@ -78,6 +80,8 @@ import {
   XCircle,
   Github,
   Linkedin,
+  Trophy,
+  Download,
 } from 'lucide-react';
 
 interface SettingsContentProps {
@@ -137,6 +141,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
     degree: '',
     year: '',
     specialization: '',
+    gpa: '',
+    // School student fields (optional)
+    isSchoolStudent: false,
+    schoolName: '',
+    gradeLevel: '', // 10th, 11th, 12th
+    schoolBoard: '', // CBSE, ICSE, State Board, etc.
   });
 
   // Load data from localStorage on mount
@@ -185,6 +195,11 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
       degree: profile.educationInfo.degree,
       year: profile.educationInfo.year,
       specialization: profile.educationInfo.specialization,
+      gpa: '',
+      isSchoolStudent: false,
+      schoolName: '',
+      gradeLevel: '',
+      schoolBoard: '',
     });
   }, [profile]);
 
@@ -264,109 +279,139 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
   // STUDENT SECTIONS
   if (role === 'student') {
     return (
-      <div className="space-y-6">
+      <div className="space-y-8">
         {section === 'basic' && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <User className="w-5 h-5 text-[#635bff]" />
-                <span>Personal Information</span>
+          <Card className="border-slate-200 dark:border-border bg-card dark:bg-card shadow-sm">
+            <CardHeader className="pb-6">
+              <CardTitle className="flex items-center space-x-3 text-xl">
+                <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
+                  <User className="w-6 h-6 text-primary dark:text-primary" />
+                </div>
+                <span className="text-slate-900 dark:text-foreground">Personal Information</span>
               </CardTitle>
-              <CardDescription>Manage your personal details and identity</CardDescription>
+              <CardDescription className="text-slate-600 dark:text-slate-400 mt-2">
+                Manage your personal details and identity
+              </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent className="space-y-8">
               {/* Basic Info Section */}
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Basic Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">First Name</label>
+              <div className="space-y-6">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide px-3">Basic Information</h3>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                      <span>First Name</span>
+                    </label>
                     <input
                       type="text"
                       value={personalInfo.firstName}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, firstName: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                      placeholder="Enter first name"
                     />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Last Name</label>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                      <span>Last Name</span>
+                    </label>
                     <input
                       type="text"
                       value={personalInfo.lastName}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, lastName: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                      placeholder="Enter last name"
                     />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Date of Birth</label>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                      <Calendar className="w-4 h-4" />
+                      <span>Date of Birth</span>
+                    </label>
                     <input
                       type="date"
                       value={personalInfo.dateOfBirth}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, dateOfBirth: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-60 dark:[&::-webkit-calendar-picker-indicator]:invert"
                     />
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Gender</label>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                      <span>Gender</span>
+                    </label>
                     <select 
                       value={personalInfo.gender}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, gender: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3E%3Cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3E%3C/svg%3E')] bg-[length:1.5em_1.5em] bg-[right_0.75rem_center] bg-no-repeat dark:[filter:invert(1)]"
                     >
-                      <option>Male</option>
-                      <option>Female</option>
-                      <option>Other</option>
+                      <option value="" className="bg-card dark:bg-card">Select Gender</option>
+                      <option value="Male" className="bg-card dark:bg-card">Male</option>
+                      <option value="Female" className="bg-card dark:bg-card">Female</option>
+                      <option value="Other" className="bg-card dark:bg-card">Other</option>
                     </select>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Country</label>
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
+                      <MapPin className="w-4 h-4" />
+                      <span>Country</span>
+                    </label>
                     <input
                       type="text"
                       value={personalInfo.country}
                       onChange={(e) => setPersonalInfo({ ...personalInfo, country: e.target.value })}
-                      className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                      placeholder="Enter country"
                     />
                   </div>
                 </div>
               </div>
 
               {/* Contact Info Section */}
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Contact Information</h3>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block flex items-center space-x-2">
+              <div className="space-y-6">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide px-3">Contact Information</h3>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
                       <Mail className="w-4 h-4" />
                       <span>Email Address</span>
                     </label>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3">
                       <input
                         type="email"
                         value={personalInfo.email}
                         onChange={(e) => setPersonalInfo({ ...personalInfo, email: e.target.value })}
-                        className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                        className="flex-1 px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                        placeholder="your.email@example.com"
                       />
-                      <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
-                        <CheckCircle2 className="w-3 h-3" />
+                      <span className="px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-lg font-medium flex items-center space-x-1.5 border border-green-200 dark:border-green-800 whitespace-nowrap">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Verified</span>
                       </span>
                     </div>
                   </div>
-                  <div>
-                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block flex items-center space-x-2">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 flex items-center space-x-2">
                       <Phone className="w-4 h-4" />
                       <span>Phone Number</span>
                     </label>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-3">
                       <input
                         type="tel"
                         value={personalInfo.phone}
                         readOnly
                         onChange={(e) => setPersonalInfo({ ...personalInfo, phone: e.target.value })}
-                        className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                        className="flex-1 px-4 py-2.5 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground cursor-not-allowed opacity-75"
+                        placeholder="+1 (555) 000-0000"
                       />
-                      <span className="px-3 py-1 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full font-medium flex items-center space-x-1">
-                        <CheckCircle2 className="w-3 h-3" />
+                      <span className="px-3 py-1.5 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-lg font-medium flex items-center space-x-1.5 border border-green-200 dark:border-green-800 whitespace-nowrap">
+                        <CheckCircle2 className="w-3.5 h-3.5" />
                         <span>Verified</span>
                       </span>
                     </div>
@@ -375,20 +420,36 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Bio Section */}
-              <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Bio / About Me</h3>
+              <div className="space-y-6">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide px-3">About Me</h3>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                </div>
                 <textarea
                   value={personalInfo.bio}
                   onChange={(e) => setPersonalInfo({ ...personalInfo, bio: e.target.value })}
-                  rows={4}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
-                  placeholder="Tell us about yourself..."
+                  rows={5}
+                  className="w-full px-4 py-3 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all resize-none"
+                  placeholder="Tell us about yourself, your interests, and what you're passionate about..."
                 />
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  {personalInfo.bio.length} characters
+                </p>
               </div>
 
-              <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
-                <Button variant="outline" onClick={() => setIsEditing(false)}>Cancel</Button>
-                <Button onClick={handleSavePersonalInfo} className="bg-[#635bff] hover:bg-[#4f48cc]">
+              <div className="flex justify-end space-x-3 pt-6 border-t border-slate-200 dark:border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsEditing(false)}
+                  className="border-slate-300 dark:border-border hover:bg-slate-50 dark:hover:bg-secondary"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSavePersonalInfo} 
+                  className="bg-primary hover:bg-[#4f48cc] dark:bg-primary dark:hover:bg-primary text-white shadow-sm hover:shadow-md transition-all"
+                >
                   <Save className="w-4 h-4 mr-2" />
                   Save Changes
                 </Button>
@@ -397,85 +458,160 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           </Card>
         )}
 
-        {section === 'picture' && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <Camera className="w-5 h-5 text-[#635bff]" />
-                <span>Profile Picture</span>
-              </CardTitle>
-              <CardDescription>Upload or update your profile picture</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-6">
-                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-[#635bff]">
-                  <User className="w-16 h-16 text-slate-400" />
+        {section === 'education' && (
+          <Card className="border-slate-200 dark:border-border bg-card dark:bg-card shadow-sm">
+            <CardHeader className="pb-6">
+              <CardTitle className="flex items-center space-x-3 text-xl">
+                <div className="p-2 rounded-lg bg-primary/10 dark:bg-primary/20">
+                  <GraduationCap className="w-6 h-6 text-primary dark:text-primary" />
                 </div>
-                <div className="flex-1 space-y-3">
-                  <Button className="bg-[#635bff] hover:bg-[#4f48cc]">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload New Photo
-                  </Button>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">JPG, PNG or GIF. Max size 2MB</p>
-                  <Button variant="outline">
-                    <Trash className="w-4 h-4 mr-2" />
-                    Remove Photo
-                  </Button>
+                <span className="text-slate-900 dark:text-foreground">Education & School Details</span>
+              </CardTitle>
+              <CardDescription className="text-slate-600 dark:text-slate-400 mt-2">
+                Manage your educational qualifications and school information
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-8">
+              {/* School Student Section (Optional) */}
+              <div className="p-6 border border-slate-200 dark:border-border rounded-xl bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-[#2B2B32] dark:to-[#2B2B32]">
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground">School Student Information</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Optional: For students from 10th grade onwards</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={educationInfo.isSchoolStudent}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, isSchoolStudent: e.target.checked })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/20 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-border peer-checked:bg-primary"></div>
+                  </label>
+                </div>
+                
+                {educationInfo.isSchoolStudent && (
+                  <div className="grid md:grid-cols-2 gap-6 mt-6">
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">School Name</label>
+                      <input
+                        type="text"
+                        value={educationInfo.schoolName}
+                        onChange={(e) => setEducationInfo({ ...educationInfo, schoolName: e.target.value })}
+                        placeholder="Enter school name"
+                        className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Grade Level</label>
+                      <select
+                        value={educationInfo.gradeLevel}
+                        onChange={(e) => setEducationInfo({ ...educationInfo, gradeLevel: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3E%3Cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3E%3C/svg%3E')] bg-[length:1.5em_1.5em] bg-[right_0.75rem_center] bg-no-repeat dark:[filter:invert(1)]"
+                      >
+                        <option value="" className="bg-card dark:bg-card py-2">Select Grade</option>
+                        <option value="10th" className="bg-card dark:bg-card py-2">10th Grade</option>
+                        <option value="11th" className="bg-card dark:bg-card py-2">11th Grade</option>
+                        <option value="12th" className="bg-card dark:bg-card py-2">12th Grade</option>
+                      </select>
+                    </div>
+                    <div className="md:col-span-2 space-y-2">
+                      <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">School Board</label>
+                      <select
+                        value={educationInfo.schoolBoard}
+                        onChange={(e) => setEducationInfo({ ...educationInfo, schoolBoard: e.target.value })}
+                        className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all appearance-none cursor-pointer bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 fill=%27none%27 viewBox=%270 0 20 20%27%3E%3Cpath stroke=%27%236b7280%27 stroke-linecap=%27round%27 stroke-linejoin=%27round%27 stroke-width=%271.5%27 d=%27M6 8l4 4 4-4%27/%3E%3C/svg%3E')] bg-[length:1.5em_1.5em] bg-[right_0.75rem_center] bg-no-repeat dark:[filter:invert(1)]"
+                      >
+                        <option value="" className="bg-card dark:bg-card py-2">Select Board</option>
+                        <option value="CBSE" className="bg-card dark:bg-card py-2">CBSE</option>
+                        <option value="ICSE" className="bg-card dark:bg-card py-2">ICSE</option>
+                        <option value="State Board" className="bg-card dark:bg-card py-2">State Board</option>
+                        <option value="IB" className="bg-card dark:bg-card py-2">International Baccalaureate (IB)</option>
+                        <option value="IGCSE" className="bg-card dark:bg-card py-2">IGCSE</option>
+                        <option value="Other" className="bg-card dark:bg-card py-2">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* College/University Section */}
+              <div className="space-y-6">
+                <div className="flex items-center space-x-2 mb-6">
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                  <h3 className="text-base font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide px-3">College / University Information</h3>
+                  <div className="h-px flex-1 bg-slate-200 dark:bg-card"></div>
+                </div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">College/University</label>
+                    <input
+                      type="text"
+                      value={educationInfo.college}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, college: e.target.value })}
+                      placeholder="Enter college or university name"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Degree / Qualification</label>
+                    <input
+                      type="text"
+                      value={educationInfo.degree}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, degree: e.target.value })}
+                      placeholder="e.g., B.Tech, B.Sc, B.A."
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Year of Graduation</label>
+                    <input
+                      type="text"
+                      value={educationInfo.year}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, year: e.target.value })}
+                      placeholder="e.g., 2024"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Specialization / Major</label>
+                    <input
+                      type="text"
+                      value={educationInfo.specialization}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, specialization: e.target.value })}
+                      placeholder="e.g., Computer Science"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">GPA / Grades (Optional)</label>
+                    <input
+                      type="text"
+                      value={educationInfo.gpa}
+                      onChange={(e) => setEducationInfo({ ...educationInfo, gpa: e.target.value })}
+                      placeholder="e.g., 8.5/10 or 3.8/4.0"
+                      className="w-full px-4 py-2.5 bg-card dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-[#635bff]/20 dark:focus:ring-[#735fff]/30 focus:border-[#635bff] dark:focus:border-[#735fff] transition-all"
+                    />
+                  </div>
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        )}
 
-        {section === 'education' && (
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
-                <GraduationCap className="w-5 h-5 text-[#635bff]" />
-                <span>Education Details</span>
-              </CardTitle>
-              <CardDescription>Manage your educational qualifications</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {[
-                {
-                  id: '1',
-                  institution: profile.educationInfo.college || 'University of Technology',
-                  degree: profile.educationInfo.degree || 'B.Tech',
-                  year: profile.educationInfo.year || '2022',
-                  major: profile.educationInfo.specialization || 'Computer Science',
-                }
-              ].map((edu: any, index: number) => (
-                <div key={edu.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                  <div className="flex justify-between items-start mb-3">
-                    <div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{edu.institution}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-400">{edu.degree} - {edu.major}</p>
-                    </div>
-                    <Button variant="outline" size="sm">
-                      <Edit2 className="w-4 h-4 mr-2" />
-                      Edit
-                    </Button>
-                  </div>
-                  <div className="grid md:grid-cols-2 gap-3 text-sm">
-                    <div>
-                      <span className="text-slate-600 dark:text-slate-400">Year:</span>
-                      <span className="ml-2 font-medium text-slate-900 dark:text-white">{edu.year}</span>
-                    </div>
-                    <div>
-                      <Button variant="outline" size="sm">
-                        <Trash className="w-4 h-4 mr-2" />
-                        Remove
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              
-              <Button variant="outline" className="w-full">
-                <Plus className="w-4 h-4 mr-2" />
-                Add Education Details
-              </Button>
+              <div className="flex justify-end space-x-3 pt-6 border-t border-slate-200 dark:border-border">
+                <Button 
+                  variant="outline" 
+                  onClick={() => setIsEditing(false)}
+                  className="border-slate-300 dark:border-border hover:bg-slate-50 dark:hover:bg-secondary"
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  onClick={handleSaveEducation} 
+                  className="bg-primary hover:bg-[#4f48cc] dark:bg-primary dark:hover:bg-primary text-white shadow-sm hover:shadow-md transition-all"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </Button>
+              </div>
             </CardContent>
           </Card>
         )}
@@ -484,7 +620,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Award className="w-5 h-5 text-[#635bff]" />
+                <Award className="w-5 h-5 text-primary" />
                 <span>Skills & Interests</span>
               </CardTitle>
               <CardDescription>Add or remove your skills and interests</CardDescription>
@@ -492,10 +628,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             <CardContent className="space-y-4">
               {/* Skills Section */}
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">Skills</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-3">Skills</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {profile.skills.map((skill) => (
-                    <span key={skill.id} className="px-3 py-1 bg-[#635bff]/10 dark:bg-[#635bff]/20 text-[#635bff] dark:text-[#735fff] rounded-full text-sm flex items-center space-x-2">
+                    <span key={skill.id} className="px-3 py-1 bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary rounded-full text-sm flex items-center space-x-2">
                       <span>{skill.name}</span>
                       <XCircle 
                         className="w-3 h-3 cursor-pointer hover:text-red-600" 
@@ -511,7 +647,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     value={newSkill}
                     onChange={(e) => setNewSkill(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAddSkill()}
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                   <Button onClick={handleAddSkill}>
                     <Plus className="w-4 h-4" />
@@ -521,7 +657,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
               {/* Interests Section */}
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">Interests</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-3">Interests</h3>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {profile.interests.map((interest) => (
                     <span key={interest.id} className="px-3 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 rounded-full text-sm flex items-center space-x-2">
@@ -540,7 +676,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     value={newInterest}
                     onChange={(e) => setNewInterest(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && handleAddInterest()}
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                   <Button onClick={handleAddInterest}>
                     <Plus className="w-4 h-4" />
@@ -551,11 +687,210 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           </Card>
         )}
 
+        {section === 'kyc' && role === 'student' && (
+          <Card className="border-slate-200 dark:border-border bg-card dark:bg-card shadow-sm">
+            <CardHeader className="pb-6">
+              <CardTitle className="flex items-center space-x-3 text-xl">
+                <div className={`p-2 rounded-lg ${
+                  profile.kycStatus.status === 'verified' 
+                    ? 'bg-green-100 dark:bg-green-900/20' 
+                    : profile.kycStatus.status === 'rejected'
+                    ? 'bg-red-100 dark:bg-red-900/20'
+                    : 'bg-primary/10 dark:bg-primary/20'
+                }`}>
+                  <Shield className={`w-6 h-6 ${
+                    profile.kycStatus.status === 'verified'
+                      ? 'text-green-600 dark:text-green-400'
+                      : profile.kycStatus.status === 'rejected'
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-primary dark:text-primary'
+                  }`} />
+                </div>
+                <span className="text-slate-900 dark:text-foreground">KYC & ID Verification</span>
+              </CardTitle>
+              <CardDescription className="text-slate-600 dark:text-slate-400 mt-2">
+                Complete your identity verification to access all features
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Status Card */}
+              <div className="p-6 bg-gradient-to-br from-slate-50 to-slate-100/50 dark:from-[#2B2B32] dark:to-[#2B2B32] rounded-xl border border-slate-200 dark:border-border">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6">
+                  {/* Status Info */}
+                  <div className="flex-1 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <h4 className={`text-lg font-semibold capitalize ${
+                        profile.kycStatus.status === 'verified'
+                          ? 'text-green-700 dark:text-green-400'
+                          : profile.kycStatus.status === 'rejected'
+                          ? 'text-red-700 dark:text-red-400'
+                          : 'text-slate-900 dark:text-foreground'
+                      }`}>
+                        {profile.kycStatus.status === 'verified' ? 'Verified' : profile.kycStatus.status === 'rejected' ? 'Rejected' : 'Pending'} Verification
+                      </h4>
+                      <span className={`px-3 py-1 rounded-lg text-xs font-medium ${
+                        profile.kycStatus.status === 'verified'
+                          ? 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800'
+                          : profile.kycStatus.status === 'rejected'
+                          ? 'bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800'
+                          : 'bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary border border-[#635bff]/20 dark:border-[#735fff]/30'
+                      }`}>
+                        {profile.kycStatus.status === 'verified' ? 'Active' : profile.kycStatus.status === 'rejected' ? 'Action Required' : 'In Progress'}
+                      </span>
+                    </div>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">
+                      {profile.kycStatus.status === 'verified' 
+                        ? 'Your identity has been verified and you have full access to all features.'
+                        : profile.kycStatus.status === 'rejected'
+                        ? 'Please review the requirements and resubmit your documents for verification.'
+                        : profile.kycStatus.idUploaded 
+                        ? 'Your ID documents have been uploaded and are currently under review.'
+                        : 'Upload your ID documents to start the verification process.'}
+                    </p>
+                    {profile.kycStatus.verificationDate && (
+                      <p className="text-xs text-slate-500 dark:text-slate-500">
+                        Verified on {new Date(profile.kycStatus.verificationDate).toLocaleDateString()}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="flex justify-end">
+                <Button 
+                  onClick={() => router.push('/portal/verification')}
+                  className={`${
+                    profile.kycStatus.status === 'verified' 
+                      ? 'bg-green-600 hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600' 
+                      : 'bg-primary hover:bg-[#4f48cc] dark:bg-primary dark:hover:bg-primary'
+                  } text-white shadow-sm hover:shadow-md transition-all`}
+                >
+                  <Shield className="w-4 h-4 mr-2" />
+                  {profile.kycStatus.status === 'verified' ? 'View Status' : profile.kycStatus.status === 'rejected' ? 'Resubmit Documents' : 'Start Verification'}
+                </Button>
+              </div>
+
+              {/* Benefits Section */}
+              {profile.kycStatus.status !== 'verified' && (
+                <div className="p-5 border border-yellow-200 dark:border-yellow-800/50 bg-gradient-to-br from-yellow-50 to-yellow-100/50 dark:from-yellow-900/20 dark:to-yellow-900/10 rounded-xl">
+                  <div className="flex items-start space-x-3">
+                    <div className="p-2 bg-yellow-100 dark:bg-yellow-900/30 rounded-lg">
+                      <AlertCircle className="w-5 h-5 text-yellow-700 dark:text-yellow-400" />
+                    </div>
+                    <div className="flex-1">
+                      <h5 className="font-semibold text-yellow-900 dark:text-yellow-400 mb-3">Verification Benefits</h5>
+                      <ul className="text-sm text-yellow-800 dark:text-yellow-300 space-y-2">
+                        <li className="flex items-start space-x-2">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Access to all courses and premium features</span>
+                        </li>
+                        <li className="flex items-start space-x-2">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Apply for scholarships and financial aid</span>
+                        </li>
+                        <li className="flex items-start space-x-2">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Participate in hackathons and competitions</span>
+                        </li>
+                        <li className="flex items-start space-x-2">
+                          <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
+                          <span>Get verified badge on your profile</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'achievements' && role === 'student' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Award className="w-5 h-5 text-primary" />
+                <span>Achievements & Certificates</span>
+              </CardTitle>
+              <CardDescription>View your earned certificates, badges, and achievements</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Certificates Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Certificates</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {[
+                    { id: '1', title: 'React Development Course', date: '2024-01-15', course: 'React Development' },
+                    { id: '2', title: 'JavaScript Fundamentals', date: '2023-12-20', course: 'JavaScript Basics' },
+                  ].map((cert) => (
+                    <div key={cert.id} className="p-4 border border-slate-200 dark:border-border rounded-lg hover:bg-slate-50 dark:hover:bg-secondary/50 transition-colors">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h4 className="font-semibold text-slate-900 dark:text-foreground">{cert.title}</h4>
+                          <p className="text-sm text-slate-600 dark:text-slate-400">{cert.course}</p>
+                        </div>
+                        <Award className="w-6 h-6 text-yellow-500 dark:text-yellow-400" />
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500">Earned on {new Date(cert.date).toLocaleDateString()}</p>
+                      <Button variant="outline" size="sm" className="mt-3 w-full">
+                        <Download className="w-4 h-4 mr-2" />
+                        Download Certificate
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+                {[].length === 0 && (
+                  <p className="text-center text-slate-500 dark:text-slate-400 py-8">No certificates earned yet. Complete courses to earn certificates!</p>
+                )}
+              </div>
+
+              {/* Badges Section */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Badges</h3>
+                <div className="flex flex-wrap gap-3">
+                  {[
+                    { id: '1', name: 'First Code Commit', icon: '💻', color: 'bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300' },
+                    { id: '2', name: 'Course Completer', icon: '🎓', color: 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-300' },
+                    { id: '3', name: 'Perfect Score', icon: '⭐', color: 'bg-yellow-100 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300' },
+                  ].map((badge) => (
+                    <div key={badge.id} className={`p-4 border border-slate-200 dark:border-border rounded-lg ${badge.color} flex flex-col items-center justify-center min-w-[120px]`}>
+                      <div className="text-3xl mb-2">{badge.icon}</div>
+                      <p className="text-sm font-medium text-center">{badge.name}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Hackathon Wins */}
+              <div>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Hackathon Achievements</h3>
+                <div className="space-y-3">
+                  {[
+                    { id: '1', name: 'Tech Innovation Hackathon 2024', position: '1st Place', date: '2024-02-10' },
+                  ].map((hackathon) => (
+                    <div key={hackathon.id} className="p-4 border border-purple-200 dark:border-purple-800 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="font-semibold text-slate-900 dark:text-foreground">{hackathon.name}</h4>
+                          <p className="text-sm text-purple-700 dark:text-purple-300 font-medium">{hackathon.position}</p>
+                        </div>
+                        <Trophy className="w-8 h-8 text-purple-600 dark:text-purple-400" />
+                      </div>
+                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">Won on {new Date(hackathon.date).toLocaleDateString()}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {section === 'password' && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Key className="w-5 h-5 text-[#635bff]" />
+                <Key className="w-5 h-5 text-primary" />
                 <span>Change Password</span>
               </CardTitle>
               <CardDescription>Update your password to keep your account secure</CardDescription>
@@ -566,7 +901,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 <div className="relative">
                   <input
                     type={showPassword ? "text" : "password"}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                   <button
                     onClick={() => setShowPassword(!showPassword)}
@@ -580,17 +915,17 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">New Password</label>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 />
               </div>
               <div>
                 <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Confirm New Password</label>
                 <input
                   type={showPassword ? "text" : "password"}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 />
               </div>
-              <Button className="bg-[#635bff] hover:bg-[#4f48cc]">
+              <Button className="bg-primary hover:bg-[#4f48cc]">
                 <Save className="w-4 h-4 mr-2" />
                 Update Password
               </Button>
@@ -602,7 +937,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <CreditCard className="w-5 h-5 text-[#635bff]" />
+                <CreditCard className="w-5 h-5 text-primary" />
                 <span>Payment Methods</span>
               </CardTitle>
               <CardDescription>Manage your saved payment methods</CardDescription>
@@ -610,10 +945,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             <CardContent className="space-y-6">
               {/* Saved Payment Methods */}
               <div>
-                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Saved Payment Methods</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Saved Payment Methods</h3>
                 
                 {profile.paymentMethods.map((method) => (
-                  <div key={method.id} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg mb-3">
+                  <div key={method.id} className="p-4 border border-slate-200 dark:border-border rounded-lg mb-3">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
                         <div className={`w-14 h-10 rounded-lg flex items-center justify-center shadow-lg ${
@@ -624,7 +959,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           <span className="text-white font-bold text-xs">{method.type === 'visa' ? 'VISA' : method.type === 'mastercard' ? 'MC' : 'CARD'}</span>
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 dark:text-white flex items-center">
+                          <p className="font-medium text-slate-900 dark:text-foreground flex items-center">
                             •••• •••• •••• {method.last4}
                             {method.isDefault && (
                               <span className="ml-2 px-2 py-0.5 bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400 text-xs rounded-full">Default</span>
@@ -651,8 +986,8 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
               {/* Payment Method Form */}
               {showPaymentForm && (
-                <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
-                  <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add New Payment Method</h3>
+                <div className="border-t border-slate-200 dark:border-border pt-6">
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Add New Payment Method</h3>
                 
                   <div className="space-y-4">
                     {/* Card Number */}
@@ -663,7 +998,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                         <input
                           type="text"
                           placeholder="1234 5678 9012 3456"
-                          className="w-full pl-12 pr-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                          className="w-full pl-12 pr-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                         />
                       </div>
                     </div>
@@ -675,7 +1010,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                         <input
                           type="text"
                           placeholder="MM/YY"
-                          className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                          className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                         />
                       </div>
                       <div>
@@ -683,7 +1018,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                         <input
                           type="text"
                           placeholder="123"
-                          className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                          className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                         />
                       </div>
                     </div>
@@ -694,7 +1029,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <input
                         type="text"
                         placeholder="John Doe"
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                       />
                     </div>
 
@@ -704,18 +1039,18 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <input
                         type="text"
                         placeholder="Street address"
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white mb-2"
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground mb-2"
                       />
                       <div className="grid md:grid-cols-2 gap-2">
                         <input
                           type="text"
                           placeholder="City"
-                          className="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                          className="px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                         />
                         <input
                           type="text"
                           placeholder="ZIP Code"
-                          className="px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                          className="px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                         />
                       </div>
                     </div>
@@ -733,7 +1068,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       <Button variant="outline" onClick={() => setShowPaymentForm(false)}>
                         Cancel
                       </Button>
-                      <Button onClick={handleAddPaymentMethod} className="bg-[#635bff] hover:bg-[#4f48cc]">
+                      <Button onClick={handleAddPaymentMethod} className="bg-primary hover:bg-[#4f48cc]">
                         <Save className="w-4 h-4 mr-2" />
                         Save Payment Method
                       </Button>
@@ -749,7 +1084,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Bell className="w-5 h-5 text-[#635bff]" />
+                <Bell className="w-5 h-5 text-primary" />
                 <span>App Notifications</span>
               </CardTitle>
               <CardDescription>Control what notifications you receive</CardDescription>
@@ -762,9 +1097,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 { name: 'Job Alerts', desc: 'New job opportunities matching your profile', key: 'jobAlerts' as const },
                 { name: 'Achievements', desc: 'When you earn badges or complete milestones', key: 'achievements' as const },
               ].map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <div key={index} className="flex items-center justify-between p-3 border border-slate-200 dark:border-border rounded-lg">
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-white">{item.name}</p>
+                    <p className="font-medium text-slate-900 dark:text-foreground">{item.name}</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -774,7 +1109,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.notifications[item.key]}
                       onChange={(e) => handleNotificationToggle(item.key, e.target.checked)}
                     />
-                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
                   </label>
                 </div>
               ))}
@@ -786,19 +1121,19 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Palette className="w-5 h-5 text-[#635bff]" />
+                <Palette className="w-5 h-5 text-primary" />
                 <span>Preferences</span>
               </CardTitle>
               <CardDescription>Customize your app appearance and settings</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Theme Selection */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition p-2 rounded">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+                <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-secondary transition p-2 rounded">
                   <div className="flex items-center space-x-3">
-                    {theme === 'dark' ? <Moon className="w-5 h-5 text-[#635bff]" /> : <Sun className="w-5 h-5 text-[#635bff]" />}
+                    {theme === 'dark' ? <Moon className="w-5 h-5 text-primary" /> : <Sun className="w-5 h-5 text-primary" />}
                     <div>
-                      <p className="font-medium text-slate-900 dark:text-white">Theme</p>
+                      <p className="font-medium text-slate-900 dark:text-foreground">Theme</p>
                       <p className="text-sm text-slate-600 dark:text-slate-400">Currently using {theme} mode</p>
                     </div>
                   </div>
@@ -809,12 +1144,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Dashboard Layout */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <label className="font-medium text-slate-900 dark:text-white mb-2 block">Dashboard Layout</label>
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+                <label className="font-medium text-slate-900 dark:text-foreground mb-2 block">Dashboard Layout</label>
                 <select 
                   value={profile.preferences.dashboardLayout}
                   onChange={(e) => handlePreferenceChange('dashboardLayout', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 >
                   <option value="minimal">Minimal</option>
                   <option value="detailed">Detailed</option>
@@ -824,15 +1159,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Language Selection */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+                <label className="font-medium text-slate-900 dark:text-foreground mb-2 block flex items-center space-x-2">
                   <Languages className="w-4 h-4" />
                   <span>Language</span>
                 </label>
                 <select 
                   value={profile.preferences.language}
                   onChange={(e) => handlePreferenceChange('language', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 >
                   <option value="English">English</option>
                   <option value="Hindi">Hindi</option>
@@ -843,15 +1178,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Default Home Page */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-                <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+                <label className="font-medium text-slate-900 dark:text-foreground mb-2 block flex items-center space-x-2">
                   <Home className="w-4 h-4" />
                   <span>Default Home Page</span>
                 </label>
                 <select 
                   value={profile.preferences.defaultHomePage}
                   onChange={(e) => handlePreferenceChange('defaultHomePage', e.target.value)}
-                  className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 >
                   <option value="dashboard">Dashboard</option>
                   <option value="courses">My Courses</option>
@@ -868,23 +1203,23 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Shield className="w-5 h-5 text-[#635bff]" />
+                <Shield className="w-5 h-5 text-primary" />
                 <span>Privacy & Security</span>
               </CardTitle>
               <CardDescription>Manage your privacy settings and data control</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Profile Visibility */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <span className="font-medium text-slate-900 dark:text-white">Profile Visibility</span>
+                    <span className="font-medium text-slate-900 dark:text-foreground">Profile Visibility</span>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Control who can see your profile</p>
                   </div>
                   <select 
                     value={profile.privacySettings.profileVisibility}
                     onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value)}
-                    className="px-3 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white text-sm"
+                    className="px-3 py-1 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground text-sm"
                   >
                     <option value="public">Public</option>
                     <option value="private">Private</option>
@@ -894,10 +1229,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Data Sharing */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between mb-2">
                   <div>
-                    <span className="font-medium text-slate-900 dark:text-white">Data Sharing</span>
+                    <span className="font-medium text-slate-900 dark:text-foreground">Data Sharing</span>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Allow analytics and data sharing</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -907,16 +1242,16 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.privacySettings.dataSharing}
                       onChange={(e) => handlePrivacyChange('dataSharing', e.target.checked)}
                     />
-                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
                   </label>
                 </div>
               </div>
 
               {/* Session History */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <span className="font-medium text-slate-900 dark:text-white">Active Sessions</span>
+                    <span className="font-medium text-slate-900 dark:text-foreground">Active Sessions</span>
                     <p className="text-sm text-slate-600 dark:text-slate-400">View and manage your active logins</p>
                   </div>
                   <Button variant="outline" size="sm">
@@ -927,10 +1262,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </div>
 
               {/* Download Data */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between mb-3">
                   <div>
-                    <span className="font-medium text-slate-900 dark:text-white">Download My Data</span>
+                    <span className="font-medium text-slate-900 dark:text-foreground">Download My Data</span>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Download all your data (GDPR compliant)</p>
                   </div>
                   <Button variant="outline" size="sm">
@@ -961,17 +1296,17 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Lock className="w-5 h-5 text-[#635bff]" />
+                <Lock className="w-5 h-5 text-primary" />
                 <span>Account & Security</span>
               </CardTitle>
               <CardDescription>Manage your login and security credentials</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Two-Factor Authentication */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between">
                   <div>
-                    <span className="font-medium text-slate-900 dark:text-white">Two-Factor Authentication</span>
+                    <span className="font-medium text-slate-900 dark:text-foreground">Two-Factor Authentication</span>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Add an extra layer of security to your account</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
@@ -981,15 +1316,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       checked={profile.twoFactorAuth}
                       onChange={handleToggleTwoFactor}
                     />
-                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-[#635bff]"></div>
+                      <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#635bff]/30 dark:peer-focus:ring-[#635bff]/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-primary"></div>
                   </label>
                 </div>
               </div>
 
               {/* Linked Accounts */}
-              <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-medium text-slate-900 dark:text-white">Linked Accounts</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Linked Accounts</span>
                   <Button variant="outline" size="sm">
                     <LinkIcon className="w-4 h-4 mr-2" />
                     Connect Account
@@ -1080,12 +1415,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               return (
                 <Card className={`border-2 ${
                   verificationStatus === 'approved' 
-                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
+                    ? 'bg-slate-50 dark:bg-card/20 border-slate-200 dark:border-border'
                     : verificationStatus === 'pending'
-                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
+                    ? 'bg-slate-50 dark:bg-card/20 border-slate-200 dark:border-border'
                     : verificationStatus === 'rejected'
-                    ? 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
-                    : 'bg-slate-50 dark:bg-slate-900/20 border-slate-200 dark:border-slate-700'
+                    ? 'bg-slate-50 dark:bg-card/20 border-slate-200 dark:border-border'
+                    : 'bg-slate-50 dark:bg-card/20 border-slate-200 dark:border-border'
                 }`}>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
@@ -1104,12 +1439,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                         <div className="flex-1">
                           <h3 className={`text-lg font-semibold ${
                             verificationStatus === 'approved'
-                              ? 'text-slate-900 dark:text-white'
+                              ? 'text-slate-900 dark:text-foreground'
                               : verificationStatus === 'pending'
-                              ? 'text-slate-900 dark:text-white'
+                              ? 'text-slate-900 dark:text-foreground'
                               : verificationStatus === 'rejected'
-                              ? 'text-slate-900 dark:text-white'
-                              : 'text-slate-900 dark:text-white'
+                              ? 'text-slate-900 dark:text-foreground'
+                              : 'text-slate-900 dark:text-foreground'
                           }`}>
                             {verificationStatus === 'approved' 
                               ? 'Verification Complete!' 
@@ -1143,7 +1478,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           router.push('/portal/mentor/settings?section=kyc');
                         }}
                         variant={verificationStatus !== 'approved' ? 'default' : 'outline'}
-                        className={verificationStatus !== 'approved' ? 'bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0' : ''}
+                        className={verificationStatus !== 'approved' ? 'bg-slate-700 dark:bg-secondary hover:bg-slate-800 dark:hover:bg-secondary text-white border-0' : ''}
                       >
                         {verificationStatus === 'incomplete' || verificationStatus === 'rejected' 
                           ? 'Complete Verification' 
@@ -1157,7 +1492,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Basic Info */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Basic Information</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Basic Information</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Full Name</label>
@@ -1165,7 +1500,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={personalInfo.firstName}
                     onChange={(e) => setPersonalInfo({ ...personalInfo, firstName: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1173,7 +1508,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                   <select 
                     value={personalInfo.gender}
                     onChange={(e) => setPersonalInfo({ ...personalInfo, gender: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   >
                     <option>Male</option>
                     <option>Female</option>
@@ -1186,7 +1521,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="date"
                     value={personalInfo.dateOfBirth}
                     onChange={(e) => setPersonalInfo({ ...personalInfo, dateOfBirth: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1195,7 +1530,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={personalInfo.country}
                     onChange={(e) => setPersonalInfo({ ...personalInfo, country: e.target.value })}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
               </div>
@@ -1203,22 +1538,22 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Professional Summary */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Professional Summary</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Professional Summary</h3>
               <textarea
                 value={professionalInfo.bio}
                 onChange={(e) => setProfessionalInfo({ ...professionalInfo, bio: e.target.value })}
                 rows={4}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 placeholder="Write a short bio about your expertise and experience..."
               />
             </div>
 
             {/* Expertise/Skills */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Expertise / Skills</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Expertise / Skills</h3>
               <div className="flex flex-wrap gap-2 mb-4">
                 {professionalInfo.expertise.map((skill, idx) => (
-                  <span key={idx} className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded-full text-sm flex items-center space-x-2">
+                  <span key={idx} className="px-3 py-1 bg-slate-100 dark:bg-card text-slate-700 dark:text-slate-300 rounded-full text-sm flex items-center space-x-2">
                     <span>{skill}</span>
                     <XCircle 
                       className="w-3 h-3 cursor-pointer hover:text-red-600" 
@@ -1231,7 +1566,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                 <input
                   type="text"
                   placeholder="Add expertise/skill..."
-                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   onKeyPress={(e) => {
                     if (e.key === 'Enter') {
                       const target = e.target as HTMLInputElement;
@@ -1256,9 +1591,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Experience */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Experience</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Experience</h3>
               {professionalInfo.experience.map((exp, idx) => (
-                <div key={idx} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg mb-3">
+                <div key={idx} className="p-4 border border-slate-200 dark:border-border rounded-lg mb-3">
                   <div className="grid md:grid-cols-3 gap-4">
                     <div>
                       <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Company</label>
@@ -1270,7 +1605,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           updated[idx] = { ...updated[idx], company: e.target.value };
                           setProfessionalInfo({...professionalInfo, experience: updated});
                         }}
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground" 
                       />
                     </div>
                     <div>
@@ -1283,7 +1618,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           updated[idx] = { ...updated[idx], designation: e.target.value };
                           setProfessionalInfo({...professionalInfo, experience: updated});
                         }}
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground" 
                       />
                     </div>
                     <div>
@@ -1296,7 +1631,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                           updated[idx] = { ...updated[idx], years: e.target.value };
                           setProfessionalInfo({...professionalInfo, experience: updated});
                         }}
-                        className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white" 
+                        className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground" 
                       />
                     </div>
                   </div>
@@ -1316,30 +1651,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               </Button>
             </div>
 
-            {/* Profile Picture */}
-            <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Profile Picture</h3>
-              <div className="flex items-center space-x-6">
-                <div className="w-32 h-32 rounded-full bg-slate-200 dark:bg-slate-700 flex items-center justify-center overflow-hidden border-4 border-slate-300 dark:border-slate-600">
-                  <User className="w-16 h-16 text-slate-400" />
-                </div>
-                <div className="flex-1 space-y-3">
-                  <Button className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
-                    <Upload className="w-4 h-4 mr-2" />
-                    Upload Photo
-                  </Button>
-                  <p className="text-sm text-slate-600 dark:text-slate-400">JPG, PNG or GIF. Max size 2MB</p>
-                  <Button variant="outline">
-                    <Trash className="w-4 h-4 mr-2" />
-                    Remove Photo
-                  </Button>
-                </div>
-              </div>
-            </div>
-
             {/* Social Links */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Social Links</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Social Links</h3>
               <div className="space-y-3">
                 <div className="flex items-center space-x-3">
                   <Linkedin className="w-5 h-5 text-slate-600 dark:text-slate-400" />
@@ -1348,17 +1662,17 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     placeholder="LinkedIn URL"
                     value={socialLinks.linkedin}
                     onChange={(e) => setSocialLinks({...socialLinks, linkedin: e.target.value})}
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Github className="w-5 h-5 text-gray-900 dark:text-white" />
+                  <Github className="w-5 h-5 text-gray-900 dark:text-foreground" />
                   <input
                     type="text"
                     placeholder="GitHub URL"
                     value={socialLinks.github}
                     onChange={(e) => setSocialLinks({...socialLinks, github: e.target.value})}
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div className="flex items-center space-x-3">
@@ -1368,15 +1682,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     placeholder="Portfolio URL"
                     value={socialLinks.portfolio}
                     onChange={(e) => setSocialLinks({...socialLinks, portfolio: e.target.value})}
-                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-border">
               <Button variant="outline">Cancel</Button>
-              <Button onClick={() => alert('Profile settings saved!')} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
+              <Button onClick={() => alert('Profile settings saved!')} className="bg-slate-700 dark:bg-secondary hover:bg-slate-800 dark:hover:bg-secondary text-white border-0">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>
@@ -1426,7 +1740,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Email/Phone */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block flex items-center space-x-2">
@@ -1438,9 +1752,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       type="email"
                       value={personalInfo.email}
                       readOnly
-                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white cursor-not-allowed opacity-75"
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground cursor-not-allowed opacity-75"
                     />
-                    <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
+                    <span className="px-3 py-1 bg-slate-100 dark:bg-card text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
@@ -1459,9 +1773,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                       type="tel"
                       value={personalInfo.phone}
                       readOnly
-                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white cursor-not-allowed opacity-75"
+                      className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground cursor-not-allowed opacity-75"
                     />
-                    <span className="px-3 py-1 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
+                    <span className="px-3 py-1 bg-slate-100 dark:bg-card text-slate-700 dark:text-slate-300 text-xs rounded-full font-medium flex items-center space-x-1">
                       <CheckCircle2 className="w-3 h-3" />
                       <span>Verified</span>
                     </span>
@@ -1474,22 +1788,22 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* Password */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <h3 className="font-medium text-slate-900 dark:text-white mb-4">Change Password</h3>
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+              <h3 className="font-medium text-slate-900 dark:text-foreground mb-4">Change Password</h3>
               <div className="space-y-3">
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Current Password</label>
-                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">New Password</label>
-                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg" />
                 </div>
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Confirm New Password</label>
-                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg" />
+                  <input type={showPassword ? "text" : "password"} className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg" />
                 </div>
-                <Button className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
+                <Button className="bg-slate-700 dark:bg-secondary hover:bg-slate-800 dark:hover:bg-secondary text-white border-0">
                   <Save className="w-4 h-4 mr-2" />
                   Update Password
                 </Button>
@@ -1497,23 +1811,23 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* 2FA */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between">
                 <div>
-                  <span className="font-medium text-slate-900 dark:text-white">Two-Factor Authentication</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Two-Factor Authentication</span>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Enable via OTP / Auth App</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
                   <input type="checkbox" className="sr-only peer" checked={profile.twoFactorAuth} onChange={handleToggleTwoFactor} />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             </div>
 
             {/* Linked Accounts */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between mb-3">
-                <span className="font-medium text-slate-900 dark:text-white">Linked Accounts</span>
+                <span className="font-medium text-slate-900 dark:text-foreground">Linked Accounts</span>
                 <Button variant="outline" size="sm">
                   <LinkIcon className="w-4 h-4 mr-2" />
                   Connect Account
@@ -1560,7 +1874,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           <CardContent className="space-y-6">
             {/* Bank Account */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Bank Account</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Bank Account</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">Account Holder Name</label>
@@ -1568,7 +1882,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.accountHolderName}
                     onChange={(e) => setPayoutInfo({...payoutInfo, accountHolderName: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1577,7 +1891,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.accountNumber}
                     onChange={(e) => setPayoutInfo({...payoutInfo, accountNumber: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1586,7 +1900,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.ifscCode}
                     onChange={(e) => setPayoutInfo({...payoutInfo, ifscCode: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1595,7 +1909,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.bankName}
                     onChange={(e) => setPayoutInfo({...payoutInfo, bankName: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
               </div>
@@ -1603,14 +1917,14 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* UPI ID */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">UPI ID</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">UPI ID</h3>
               <div className="flex items-center space-x-3">
                 <input
                   type="text"
                   placeholder="yourname@upi"
                   value={payoutInfo.upiId}
                   onChange={(e) => setPayoutInfo({...payoutInfo, upiId: e.target.value})}
-                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                  className="flex-1 px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                 />
                 <Button variant="outline">Add</Button>
                 {payoutInfo.upiId && <Button variant="outline" onClick={() => setPayoutInfo({...payoutInfo, upiId: ''})}>Remove</Button>}
@@ -1619,21 +1933,21 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Payment Gateway */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Payment Gateway</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Payment Gateway</h3>
               <div className="space-y-3">
-                <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-medium text-slate-900 dark:text-white">Stripe</span>
+                      <span className="font-medium text-slate-900 dark:text-foreground">Stripe</span>
                       <p className="text-sm text-slate-600 dark:text-slate-400">Connect for payouts</p>
                     </div>
                     <Button variant="outline" size="sm">Connect</Button>
                   </div>
                 </div>
-                <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
                   <div className="flex items-center justify-between">
                     <div>
-                      <span className="font-medium text-slate-900 dark:text-white">Razorpay</span>
+                      <span className="font-medium text-slate-900 dark:text-foreground">Razorpay</span>
                       <p className="text-sm text-slate-600 dark:text-slate-400">Connect for payouts</p>
                     </div>
                     <Button variant="outline" size="sm">Connect</Button>
@@ -1644,7 +1958,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Payout History */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Payout History</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Payout History</h3>
               <Button variant="outline">
                 <Receipt className="w-4 h-4 mr-2" />
                 View Payout History
@@ -1653,7 +1967,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
 
             {/* Tax Info */}
             <div>
-              <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Tax Information</h3>
+              <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-4">Tax Information</h3>
               <div className="grid md:grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2 block">PAN</label>
@@ -1661,7 +1975,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.pan}
                     onChange={(e) => setPayoutInfo({...payoutInfo, pan: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
                 <div>
@@ -1670,15 +1984,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     type="text"
                     value={payoutInfo.gst}
                     onChange={(e) => setPayoutInfo({...payoutInfo, gst: e.target.value})}
-                    className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                    className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
                   />
                 </div>
               </div>
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+            <div className="flex justify-end space-x-3 pt-4 border-t border-slate-200 dark:border-border">
               <Button variant="outline">Cancel</Button>
-              <Button onClick={() => alert('Payout settings saved!')} className="bg-slate-700 dark:bg-slate-600 hover:bg-slate-800 dark:hover:bg-slate-700 text-white border-0">
+              <Button onClick={() => alert('Payout settings saved!')} className="bg-slate-700 dark:bg-secondary hover:bg-slate-800 dark:hover:bg-secondary text-white border-0">
                 <Save className="w-4 h-4 mr-2" />
                 Save Changes
               </Button>
@@ -1703,9 +2017,9 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
               { name: 'Payment Updates', desc: 'Payout confirmation', key: 'paymentUpdates' as const },
               { name: 'System Alerts', desc: 'Platform changes', key: 'systemAlerts' as const },
             ].map((item) => (
-              <div key={item.key} className="flex items-center justify-between p-3 border border-slate-200 dark:border-slate-700 rounded-lg">
+              <div key={item.key} className="flex items-center justify-between p-3 border border-slate-200 dark:border-border rounded-lg">
                 <div>
-                  <p className="font-medium text-slate-900 dark:text-white">{item.name}</p>
+                  <p className="font-medium text-slate-900 dark:text-foreground">{item.name}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">{item.desc}</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -1715,7 +2029,7 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     checked={(profile.notifications as any)[item.key] || false}
                     onChange={(e) => handleNotificationToggle(item.key as any, e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             ))}
@@ -1734,16 +2048,16 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Profile Visibility */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <span className="font-medium text-slate-900 dark:text-white">Profile Visibility</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Profile Visibility</span>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Control who can see your profile</p>
                 </div>
                 <select 
                   value={profile.privacySettings.profileVisibility}
                   onChange={(e) => handlePrivacyChange('profileVisibility', e.target.value)}
-                  className="px-3 py-1 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white text-sm"
+                  className="px-3 py-1 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground text-sm"
                 >
                   <option value="public">Public</option>
                   <option value="private">Private</option>
@@ -1752,10 +2066,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* Reviews Visibility */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <span className="font-medium text-slate-900 dark:text-white">Reviews Visibility</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Reviews Visibility</span>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Show or hide reviews</p>
                 </div>
                 <label className="relative inline-flex items-center cursor-pointer">
@@ -1765,16 +2079,16 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
                     checked={(profile.privacySettings as any).reviewsVisibility !== false}
                     onChange={(e) => handlePrivacyChange('reviewsVisibility' as any, e.target.checked)}
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-slate-500/30 dark:peer-focus:ring-slate-400/40 rounded-full peer dark:bg-card peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-slate-600 dark:peer-checked:bg-slate-500"></div>
                 </label>
               </div>
             </div>
 
             {/* Data Download */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <span className="font-medium text-slate-900 dark:text-white">Data Download</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Data Download</span>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Export your data</p>
                 </div>
                 <Button variant="outline" size="sm">
@@ -1785,10 +2099,10 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* Session History */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
               <div className="flex items-center justify-between mb-3">
                 <div>
-                  <span className="font-medium text-slate-900 dark:text-white">Session History</span>
+                  <span className="font-medium text-slate-900 dark:text-foreground">Session History</span>
                   <p className="text-sm text-slate-600 dark:text-slate-400">Active logins</p>
                 </div>
                 <Button variant="outline" size="sm">
@@ -1812,12 +2126,12 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Theme */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition p-2 rounded">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+              <div onClick={toggleTheme} className="flex items-center justify-between cursor-pointer hover:bg-slate-50 dark:hover:bg-secondary transition p-2 rounded">
                 <div className="flex items-center space-x-3">
                   {theme === 'dark' ? <Moon className="w-5 h-5 text-slate-600 dark:text-slate-400" /> : <Sun className="w-5 h-5 text-slate-600 dark:text-slate-400" />}
                   <div>
-                    <p className="font-medium text-slate-900 dark:text-white">Theme</p>
+                    <p className="font-medium text-slate-900 dark:text-foreground">Theme</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">Currently using {theme} mode</p>
                   </div>
                 </div>
@@ -1828,15 +2142,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* Default Dashboard Tab */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+              <label className="font-medium text-slate-900 dark:text-foreground mb-2 block flex items-center space-x-2">
                 <Layout className="w-4 h-4" />
                 <span>Default Dashboard Tab</span>
               </label>
               <select 
                 value={(profile.preferences as any).defaultDashboardTab || 'classes'}
                 onChange={(e) => handlePreferenceChange('defaultDashboardTab' as any, e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
               >
                 <option value="classes">Classes</option>
                 <option value="messages">Messages</option>
@@ -1846,15 +2160,15 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
             </div>
 
             {/* Language */}
-            <div className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
-              <label className="font-medium text-slate-900 dark:text-white mb-2 block flex items-center space-x-2">
+            <div className="p-4 border border-slate-200 dark:border-border rounded-lg">
+              <label className="font-medium text-slate-900 dark:text-foreground mb-2 block flex items-center space-x-2">
                 <Languages className="w-4 h-4" />
                 <span>Language</span>
               </label>
               <select 
                 value={profile.preferences.language}
                 onChange={(e) => handlePreferenceChange('language', e.target.value)}
-                className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg text-slate-900 dark:text-white"
+                className="w-full px-3 py-2 bg-slate-50 dark:bg-card border border-slate-300 dark:border-border rounded-lg text-slate-900 dark:text-foreground"
               >
                 <option value="English">English</option>
                 <option value="Hindi">Hindi</option>

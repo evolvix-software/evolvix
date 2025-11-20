@@ -70,13 +70,13 @@ export function DirectMessages({
   };
 
   return (
-    <div className="flex h-[calc(100vh-200px)] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-white dark:bg-slate-800">
+    <div className="flex h-[calc(100vh-200px)] border border-slate-200 dark:border-slate-700 rounded-lg overflow-hidden bg-card dark:bg-slate-800">
       {/* Conversations List */}
       <div className="w-80 border-r border-slate-200 dark:border-slate-700 flex flex-col bg-slate-50 dark:bg-slate-900/50">
         {/* Header */}
         <div className="p-4 border-b border-slate-200 dark:border-slate-700">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white flex items-center space-x-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground flex items-center space-x-2">
               <MessageSquare className="w-5 h-5" />
               <span>Messages</span>
             </h3>
@@ -98,7 +98,7 @@ export function DirectMessages({
               placeholder="Search conversations..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full pl-10 pr-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
@@ -140,7 +140,7 @@ export function DirectMessages({
                     )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-slate-900 dark:text-white truncate">
+                        <h4 className="font-semibold text-slate-900 dark:text-foreground truncate">
                           {conversation.studentName}
                         </h4>
                         {conversation.unreadCount > 0 && (
@@ -169,7 +169,7 @@ export function DirectMessages({
         {currentConversation ? (
           <>
             {/* Chat Header */}
-            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+            <div className="p-4 border-b border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-3">
                   {currentConversation.studentAvatar ? (
@@ -186,7 +186,7 @@ export function DirectMessages({
                     </div>
                   )}
                   <div>
-                    <h4 className="font-semibold text-slate-900 dark:text-white">
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground">
                       {currentConversation.studentName}
                     </h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400">Online</p>
@@ -222,7 +222,7 @@ export function DirectMessages({
                           className={`max-w-[70%] rounded-lg px-4 py-2 ${
                             isMentor
                               ? 'bg-slate-700 dark:bg-slate-600 text-white'
-                              : 'bg-white dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700'
+                              : 'bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground border border-slate-200 dark:border-slate-700'
                           }`}
                         >
                           <p className="text-sm">{message.message}</p>
@@ -250,7 +250,7 @@ export function DirectMessages({
             </div>
 
             {/* Message Input */}
-            <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+            <div className="p-4 border-t border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
               <div className="flex items-end space-x-2">
                 <div className="flex-1">
                   <textarea
@@ -264,7 +264,7 @@ export function DirectMessages({
                     }}
                     placeholder="Type your message..."
                     rows={1}
-                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                    className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                   />
                 </div>
                 <Button

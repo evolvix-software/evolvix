@@ -1,0 +1,2 @@
+export { StudentHackathonsPage } from './HackathonsPage';
+

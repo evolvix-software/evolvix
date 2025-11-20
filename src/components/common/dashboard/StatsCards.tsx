@@ -14,8 +14,8 @@ const statItems = [
     label: 'Courses Enrolled',
     icon: BookOpen,
     color: 'orange',
-    bgColor: 'bg-[#635bff]/10 dark:bg-[#635bff]/20',
-    textColor: 'text-[#635bff] dark:text-[#735fff]'
+    bgColor: 'bg-primary/10 dark:bg-primary/20',
+    textColor: 'text-primary dark:text-primary'
   },
   {
     key: 'mentorsConnected' as keyof StudentStats,
@@ -52,14 +52,14 @@ export function StatsCards({ stats }: StatsCardsProps) {
         const displayValue = item.key === 'progressScore' ? `${value}%` : value.toString();
         
         return (
-          <Card key={item.key} className="border-0 shadow-sm bg-white dark:bg-gray-800">
+          <Card key={item.key} className="border-0 shadow-sm bg-card dark:bg-gray-800">
             <CardContent className="p-6">
               <div className="flex items-center space-x-3">
                 <div className={`p-2 ${item.bgColor} rounded-lg`}>
                   <Icon className={`w-6 h-6 ${item.textColor}`} />
                 </div>
                 <div>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                  <p className="text-2xl font-bold text-gray-900 dark:text-foreground">
                     {displayValue}
                   </p>
                   <p className="text-sm text-gray-600 dark:text-gray-400">

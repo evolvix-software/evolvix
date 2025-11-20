@@ -1,7 +1,7 @@
 "use client";
 
 import { Calendar, Users, Star, FileText, DollarSign, Clock, CheckCircle2, MessageSquare, TrendingUp, BookOpen } from 'lucide-react';
-import { StatCard } from '@/components/common/dashboard/common/StatCard';
+import { StatsCard, STAT_CARD_COLORS } from '@/components/common/ui/StatsCard';
 import { Card, CardContent } from '@/components/common/forms/Card';
 import { useState, useMemo } from 'react';
 import { useAppSelector } from '@/hooks';
@@ -131,76 +131,85 @@ export function StatsGrid({ stats }: StatsGridProps) {
         </Card>
 
         {/* Active Students */}
-        <StatCard
-          icon={<Users className="w-5 h-5" />}
+        <StatsCard
+          icon={Users}
           value={stats.activeStudents}
           label="Active Students"
           trend={{ value: 8, isPositive: true }}
+          {...STAT_CARD_COLORS.blue}
         />
 
         {/* Upcoming Classes */}
-        <StatCard
-          icon={<Clock className="w-5 h-5" />}
+        <StatsCard
+          icon={Clock}
           value={stats.upcomingClasses}
           label="Upcoming Classes"
           trend={{ value: 2, isPositive: true }}
+          {...STAT_CARD_COLORS.indigo}
         />
 
         {/* Pending Grading */}
-        <StatCard
-          icon={<FileText className="w-5 h-5" />}
+        <StatsCard
+          icon={FileText}
           value={stats.pendingGrading}
           label="Pending Grading"
+          {...STAT_CARD_COLORS.pink}
         />
 
         {/* Average Rating */}
-        <StatCard
-          icon={<Star className="w-5 h-5" />}
+        <StatsCard
+          icon={Star}
           value={stats.averageRating.toFixed(1)}
           label="Avg Rating"
           trend={{ value: 5, isPositive: true }}
+          {...STAT_CARD_COLORS.yellow}
         />
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-4">
         {/* Completion Rate */}
-        <StatCard
-          icon={<CheckCircle2 className="w-5 h-5" />}
+        <StatsCard
+          icon={CheckCircle2}
           value={`${stats.completionRate}%`}
           label="Completion Rate"
           trend={{ value: 3, isPositive: true }}
+          {...STAT_CARD_COLORS.green}
         />
 
         {/* Response Time */}
-        <StatCard
-          icon={<MessageSquare className="w-5 h-5" />}
+        <StatsCard
+          icon={MessageSquare}
           value={`${stats.responseTime}h`}
           label="Avg Response Time"
           trend={{ value: -15, isPositive: true }}
+          {...STAT_CARD_COLORS.indigo}
         />
 
         {/* Student Retention Rate */}
-        <StatCard
-          icon={<TrendingUp className="w-5 h-5" />}
+        <StatsCard
+          icon={TrendingUp}
           value={`${stats.retentionRate}%`}
           label="Retention Rate"
           trend={{ value: 5, isPositive: true }}
+          {...STAT_CARD_COLORS.emerald}
         />
 
         {/* Total Classes */}
-        <StatCard
-          icon={<Calendar className="w-5 h-5" />}
+        <StatsCard
+          icon={Calendar}
           value={stats.totalClasses}
           label="Total Classes"
           trend={{ value: 12, isPositive: true }}
+          {...STAT_CARD_COLORS.purple}
         />
 
         {/* Total Students */}
-        <StatCard
-          icon={<Users className="w-5 h-5" />}
+        <StatsCard
+          icon={Users}
           value={stats.totalStudents}
           label="Total Students"
           trend={{ value: 8, isPositive: true }}
+          {...STAT_CARD_COLORS.blue}
         />
       </div>
 
@@ -209,49 +218,51 @@ export function StatsGrid({ stats }: StatsGridProps) {
         <h3 className="text-lg font-semibold text-foreground mb-4">Course Statistics</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
           {/* Total Courses */}
-          <StatCard
-            icon={<BookOpen className="w-5 h-5" />}
+          <StatsCard
+            icon={BookOpen}
             value={courseStats.total}
             label="Total Courses"
+            {...STAT_CARD_COLORS.blue}
           />
 
           {/* Published Courses */}
-          <StatCard
-            icon={<CheckCircle2 className="w-5 h-5 text-green-600" />}
+          <StatsCard
+            icon={CheckCircle2}
             value={courseStats.published}
             label="Published"
-            className="border-green-200 dark:border-green-800"
+            {...STAT_CARD_COLORS.green}
           />
 
           {/* Draft Courses */}
-          <StatCard
-            icon={<FileText className="w-5 h-5 text-gray-600" />}
+          <StatsCard
+            icon={FileText}
             value={courseStats.draft}
             label="Draft"
-            className="border-gray-200 dark:border-gray-800"
+            {...STAT_CARD_COLORS.gray}
           />
 
           {/* Pending Verification */}
-          <StatCard
-            icon={<Clock className="w-5 h-5 text-yellow-600" />}
+          <StatsCard
+            icon={Clock}
             value={courseStats.pending}
             label="Pending"
-            className="border-yellow-200 dark:border-yellow-800"
+            {...STAT_CARD_COLORS.yellow}
           />
 
           {/* Verified Courses */}
-          <StatCard
-            icon={<CheckCircle2 className="w-5 h-5 text-blue-600" />}
+          <StatsCard
+            icon={CheckCircle2}
             value={courseStats.verified}
             label="Verified"
-            className="border-blue-200 dark:border-blue-800"
+            {...STAT_CARD_COLORS.blue}
           />
 
           {/* Average Completion Rate */}
-          <StatCard
-            icon={<TrendingUp className="w-5 h-5" />}
+          <StatsCard
+            icon={TrendingUp}
             value={`${Math.round(courseStats.averageCompletionRate)}%`}
             label="Avg Completion"
+            {...STAT_CARD_COLORS.purple}
           />
         </div>
       </div>

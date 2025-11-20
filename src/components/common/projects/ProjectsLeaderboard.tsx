@@ -222,11 +222,11 @@ export function ProjectsLeaderboard({ courseId, submissions, courseTitle }: Proj
                         <PositionIcon className={`w-8 h-8 ${position.color}`} />
                       </div>
                       <div>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white">
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-foreground">
                           {index + 1}. {student.studentName}
                         </h3>
                         <p className="text-sm text-slate-600 dark:text-slate-400">
-                          Average Score: <strong className="text-slate-900 dark:text-white">{student.averageScore.toFixed(1)}%</strong>
+                          Average Score: <strong className="text-slate-900 dark:text-foreground">{student.averageScore.toFixed(1)}%</strong>
                         </p>
                         <p className="text-sm text-slate-600 dark:text-slate-400">
                           Total: {student.totalScore}/{student.totalMaxScore} points • {student.submissions.length} project{student.submissions.length > 1 ? 's' : ''}

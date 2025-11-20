@@ -228,7 +228,7 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
             <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
               Question {currentQuestionIndex + 1} of {questions.length}
             </span>
-            <span className="text-sm font-medium text-gray-900 dark:text-white">
+            <span className="text-sm font-medium text-gray-900 dark:text-foreground">
               {Math.round(progress)}%
             </span>
           </div>
@@ -251,7 +251,7 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
             </div>
 
             {/* Question */}
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground text-center mb-8">
               {currentQuestion?.question}
             </h2>
 
@@ -295,7 +295,7 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
                   value={textAnswer}
                   onChange={(e) => handleTextChange(e.target.value)}
                   placeholder="Type your answer here..."
-                  className="w-full min-h-[150px] p-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full min-h-[150px] p-4 rounded-lg border border-gray-300 dark:border-gray-700 bg-card dark:bg-gray-900 text-gray-900 dark:text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
                 <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
                   {currentQuestion.required ? 'Required' : 'Optional'}
@@ -323,7 +323,7 @@ const SurveyForm = ({ role }: SurveyFormProps) => {
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    <div className="w-4 h-4 border-2 border-card border-t-transparent rounded-full animate-spin mr-2" />
                     Submitting...
                   </>
                 ) : isLastQuestion ? (

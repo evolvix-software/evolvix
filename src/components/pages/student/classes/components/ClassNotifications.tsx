@@ -95,7 +95,7 @@ export function ClassNotifications() {
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <Bell className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-            <CardTitle className="text-lg font-bold text-slate-900 dark:text-white">
+            <CardTitle className="text-lg font-bold text-slate-900 dark:text-foreground">
               Class Notifications
             </CardTitle>
             {unreadCount > 0 && (
@@ -153,7 +153,7 @@ export function ClassNotifications() {
                     </div>
                   </div>
                   {notification.meetingLink && (
-                    <div className="mt-3 p-2 bg-white dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
+                    <div className="mt-3 p-2 bg-card dark:bg-slate-800 rounded border border-slate-200 dark:border-slate-700">
                       <p className="text-xs text-slate-500 dark:text-slate-400 mb-1">Meeting Link:</p>
                       <p className="text-xs font-mono text-slate-700 dark:text-slate-300 break-all">
                         {notification.meetingLink}

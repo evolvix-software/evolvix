@@ -56,7 +56,7 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Ratings</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {analytics.totalRatings}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -75,7 +75,7 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Reviews</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {analytics.totalReviews}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -157,7 +157,7 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white w-16 text-right">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-foreground w-16 text-right">
                         {count} ({percentage.toFixed(0)}%)
                       </span>
                     </div>
@@ -192,7 +192,7 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
                       </span>
                     </div>
                     <div>
-                      <p className="font-semibold text-slate-900 dark:text-white">
+                      <p className="font-semibold text-slate-900 dark:text-foreground">
                         {review.studentName}
                       </p>
                       <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -213,7 +213,7 @@ export function RatingsReviews({ analytics }: RatingsReviewsProps) {
                         />
                       ))}
                     </div>
-                    <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                       {review.rating}.0
                     </span>
                   </div>

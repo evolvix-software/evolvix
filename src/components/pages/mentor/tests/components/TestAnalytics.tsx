@@ -185,7 +185,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Average Score</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {overallMetrics.averageScore}%
                 </p>
               </div>
@@ -199,7 +199,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Pass Rate</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {overallMetrics.passRate}%
                 </p>
               </div>
@@ -213,7 +213,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Avg Time</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {overallMetrics.averageTime}m
                 </p>
               </div>
@@ -227,7 +227,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Total Attempts</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {overallMetrics.totalAttempts}
                 </p>
               </div>
@@ -241,7 +241,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-slate-600 dark:text-slate-400">Completion Rate</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {overallMetrics.completionRate}%
                 </p>
               </div>
@@ -289,7 +289,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1">
-                    <p className="font-semibold text-slate-900 dark:text-white">
+                    <p className="font-semibold text-slate-900 dark:text-foreground">
                       Q{idx + 1}. {qa.question}
                     </p>
                   </div>
@@ -331,7 +331,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <CardTitle className="text-sm">Average Completion Time</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">
+            <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
               {timeAnalysis.average} minutes
             </p>
             <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
@@ -345,7 +345,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <CardTitle className="text-sm">Fastest Completion</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">
+            <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
               {timeAnalysis.min} minutes
             </p>
           </CardContent>
@@ -356,7 +356,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
             <CardTitle className="text-sm">Slowest Completion</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold text-slate-900 dark:text-white">
+            <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
               {timeAnalysis.max} minutes
             </p>
           </CardContent>
@@ -375,7 +375,7 @@ export function TestAnalytics({ test, mockResults = [] }: TestAnalyticsProps) {
                 <span className="text-slate-700 dark:text-slate-300">
                   {attempts} {attempts === '1' ? 'attempt' : 'attempts'}
                 </span>
-                <span className="font-semibold text-slate-900 dark:text-white">{count} students</span>
+                <span className="font-semibold text-slate-900 dark:text-foreground">{count} students</span>
               </div>
             ))}
           </div>

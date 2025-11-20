@@ -35,6 +35,29 @@ export interface Student {
   recommendedCourses?: string[];
   careerGoals?: string[];
   supportTickets?: number;
+  // Profile information visible to mentors
+  skills?: Array<{
+    id: string;
+    name: string;
+    level: 'beginner' | 'intermediate' | 'advanced';
+  }>;
+  kycStatus?: {
+    status: 'pending' | 'verified' | 'rejected';
+    idUploaded: boolean;
+    verificationDate?: string;
+  };
+  schoolInfo?: {
+    isSchoolStudent: boolean;
+    schoolName?: string;
+    gradeLevel?: string; // 10th, 11th, 12th
+    schoolBoard?: string; // CBSE, ICSE, State Board, IB, IGCSE, Other
+  };
+  educationInfo?: {
+    college?: string;
+    degree?: string;
+    year?: string;
+    specialization?: string;
+  };
 }
 
 export interface StudentTestCompletion {

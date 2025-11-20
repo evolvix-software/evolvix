@@ -33,11 +33,11 @@ export function LiveClassModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col">
+      <div className="bg-card dark:bg-gray-800 rounded-lg shadow-2xl w-full max-w-6xl h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
           <div>
-            <h3 className="text-xl font-bold text-slate-900 dark:text-white">{classItem.topic}</h3>
+            <h3 className="text-xl font-bold text-slate-900 dark:text-foreground">{classItem.topic}</h3>
             <p className="text-sm text-slate-600 dark:text-slate-400">
               {classItem.date} at {classItem.time} • {classItem.duration} min
             </p>
@@ -53,7 +53,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('video')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'video'
-                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-foreground'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -64,7 +64,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('chat')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'chat'
-                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-foreground'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -75,7 +75,7 @@ export function LiveClassModal({
             onClick={() => setActiveTab('attendance')}
             className={`px-4 py-2 text-sm font-medium ${
               activeTab === 'attendance'
-                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white'
+                ? 'border-b-2 border-slate-600 text-slate-900 dark:text-foreground'
                 : 'text-slate-600 dark:text-slate-400'
             }`}
           >
@@ -127,7 +127,7 @@ export function LiveClassModal({
                         {new Date(message.timestamp).toLocaleTimeString()}
                       </span>
                     </div>
-                    <p className="text-sm text-slate-900 dark:text-white">{message.message}</p>
+                    <p className="text-sm text-slate-900 dark:text-foreground">{message.message}</p>
                   </div>
                 ))}
               </div>
@@ -168,7 +168,7 @@ export function LiveClassModal({
                           </span>
                         </div>
                         <div>
-                          <p className="font-medium text-slate-900 dark:text-white">{student.name}</p>
+                          <p className="font-medium text-slate-900 dark:text-foreground">{student.name}</p>
                           <p className="text-xs text-slate-500 dark:text-slate-400">{student.email}</p>
                         </div>
                       </div>

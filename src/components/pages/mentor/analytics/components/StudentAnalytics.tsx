@@ -70,7 +70,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Active Students</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {activeStudents}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -87,7 +87,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Avg Time Spent</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageTimeSpent}h
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -104,7 +104,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Completion Rate</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {averageCompletionRate.toFixed(0)}%
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -121,7 +121,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Inactive Students</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {inactiveStudents}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -167,7 +167,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
                 <div key={idx} className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-slate-700 dark:text-slate-300">{item.range}</span>
-                    <span className="font-semibold text-slate-900 dark:text-white">
+                    <span className="font-semibold text-slate-900 dark:text-foreground">
                       {item.count} students ({percentage.toFixed(0)}%)
                     </span>
                   </div>
@@ -195,7 +195,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
-              <p className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+              <p className="text-4xl font-bold text-slate-900 dark:text-foreground mb-2">
                 {averageGrade.toFixed(1)}%
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -214,7 +214,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
           </CardHeader>
           <CardContent>
             <div className="text-center py-8">
-              <p className="text-4xl font-bold text-slate-900 dark:text-white mb-2">
+              <p className="text-4xl font-bold text-slate-900 dark:text-foreground mb-2">
                 {assignmentCompletionRate.toFixed(0)}%
               </p>
               <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -259,7 +259,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
             {dropOffPoints.map((point, idx) => (
               <div key={idx} className="space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="font-semibold text-slate-900 dark:text-white">{point.module}</span>
+                  <span className="font-semibold text-slate-900 dark:text-foreground">{point.module}</span>
                   <span className="text-slate-600 dark:text-slate-400">
                     {point.dropOff.toFixed(1)}% drop-off
                   </span>
@@ -296,7 +296,7 @@ export function StudentAnalytics({ performance }: StudentAnalyticsProps) {
                 key={idx}
                 className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg text-center"
               >
-                <p className="text-2xl font-bold text-slate-900 dark:text-white mb-1">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground mb-1">
                   {pace.count}
                 </p>
                 <p className="text-sm text-slate-600 dark:text-slate-400">{pace.pace}</p>

@@ -94,7 +94,7 @@ export function TestPledgePage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-4">
+          <h2 className="text-xl font-semibold text-slate-900 dark:text-foreground mb-4">
             Test not found
           </h2>
           <Button onClick={() => router.push('/portal/student/tests')}>

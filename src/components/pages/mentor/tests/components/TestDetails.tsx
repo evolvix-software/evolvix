@@ -55,27 +55,27 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Course</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.courseTitle}</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.courseTitle}</p>
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Module</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.moduleTitle}</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.moduleTitle}</p>
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Questions</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.questions.length}</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.questions.length}</p>
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Time Limit</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.timeLimit} minutes</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.timeLimit} minutes</p>
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Passing Score</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.passingScore}%</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.passingScore}%</p>
             </div>
             <div>
               <p className="text-sm text-slate-600 dark:text-slate-400">Attempts Allowed</p>
-              <p className="font-semibold text-slate-900 dark:text-white">{test.attemptsAllowed}</p>
+              <p className="font-semibold text-slate-900 dark:text-foreground">{test.attemptsAllowed}</p>
             </div>
           </div>
 
@@ -83,14 +83,14 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
             <div className="flex items-center space-x-2 mb-2">
               <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <p className="text-sm text-slate-600 dark:text-slate-400">Opens:</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+              <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
                 {new Date(test.openedAt).toLocaleString()}
               </p>
             </div>
             <div className="flex items-center space-x-2">
               <Calendar className="w-4 h-4 text-slate-600 dark:text-slate-400" />
               <p className="text-sm text-slate-600 dark:text-slate-400">Closes:</p>
-              <p className="text-sm font-semibold text-slate-900 dark:text-white">
+              <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
                 {new Date(test.closesAt).toLocaleString()}
               </p>
             </div>
@@ -101,7 +101,7 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
               <div className="flex items-center space-x-2">
                 <FileText className="w-4 h-4 text-slate-600 dark:text-slate-400" />
                 <p className="text-sm text-slate-600 dark:text-slate-400">Document:</p>
-                <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
                   {test.documentName}
                 </p>
               </div>
@@ -123,7 +123,7 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
                 className="border border-slate-200 dark:border-slate-700 rounded-lg p-4"
               >
                 <div className="flex items-start justify-between mb-2">
-                  <p className="font-semibold text-slate-900 dark:text-white">
+                  <p className="font-semibold text-slate-900 dark:text-foreground">
                     {idx + 1}. {q.question}
                   </p>
                   <span className="text-sm text-slate-600 dark:text-slate-400">
@@ -140,7 +140,7 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
                           : 'bg-slate-50 dark:bg-slate-900/50'
                       }`}
                     >
-                      <span className="text-sm text-slate-900 dark:text-white">
+                      <span className="text-sm text-slate-900 dark:text-foreground">
                         {String.fromCharCode(97 + optIdx)}. {option}
                         {option === q.correctAnswer && (
                           <CheckCircle2 className="w-4 h-4 inline ml-2 text-green-600 dark:text-green-400" />
@@ -179,7 +179,7 @@ export function TestDetails({ test, courses, onBack, onUpdate, onDelete }: TestD
                     </span>
                   </div>
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-white">{student.name}</p>
+                    <p className="font-semibold text-slate-900 dark:text-foreground">{student.name}</p>
                     <p className="text-xs text-slate-600 dark:text-slate-400">{student.email}</p>
                   </div>
                 </div>

@@ -334,7 +334,7 @@ export function JitsiMeetComponent({
 
   return (
     <div className="fixed inset-0 z-50 bg-black flex flex-col overflow-hidden" style={{ height: '100vh', width: '100vw', margin: 0, padding: 0 }}>
-      <div className="bg-white dark:bg-slate-800 w-full h-full flex flex-col overflow-hidden" style={{ borderRadius: 0 }}>
+      <div className="bg-card dark:bg-slate-800 w-full h-full flex flex-col overflow-hidden" style={{ borderRadius: 0 }}>
         {/* Header */}
         <div className="bg-slate-700 dark:bg-slate-800 text-white p-4">
           <div className="flex items-center justify-between">
@@ -362,7 +362,7 @@ export function JitsiMeetComponent({
                     onClick={() => {
                       window.open(classItem.meetingLink, '_blank', 'width=1920,height=1080');
                     }}
-                    className="bg-white/20 hover:bg-white/30 text-white border-0"
+                    className="bg-card/20 hover:bg-card/30 text-white border-0"
                     size="sm"
                     title="Open in new tab for unlimited participants"
                   >
@@ -374,7 +374,7 @@ export function JitsiMeetComponent({
                       navigator.clipboard.writeText(classItem.meetingLink || '');
                       alert('Meeting link copied to clipboard!');
                     }}
-                    className="bg-white/20 hover:bg-white/30 text-white border-0"
+                    className="bg-card/20 hover:bg-card/30 text-white border-0"
                     size="sm"
                   >
                     <Share2 className="w-4 h-4 mr-1" />
@@ -384,7 +384,7 @@ export function JitsiMeetComponent({
               )}
               <Button 
                 onClick={isJoined ? handleLeave : onClose} 
-                className="bg-white/20 hover:bg-white/30 text-white border-0"
+                className="bg-card/20 hover:bg-card/30 text-white border-0"
               >
                 {isJoined ? 'Leave Class' : 'Close'}
               </Button>
@@ -402,7 +402,7 @@ export function JitsiMeetComponent({
                     <Clock className="w-5 h-5 text-slate-200" />
                     <div>
                       <p className="text-sm text-slate-600 dark:text-slate-400">Class starts in:</p>
-                      <p className="text-lg font-bold text-slate-900 dark:text-white">
+                      <p className="text-lg font-bold text-slate-900 dark:text-foreground">
                         {timeUntil.hours > 0 && `${timeUntil.hours}h `}{timeUntil.minutes}m
                       </p>
                     </div>
@@ -410,7 +410,7 @@ export function JitsiMeetComponent({
                 ) : (
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-slate-400 rounded-full animate-pulse" />
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">
+                    <p className="text-sm font-medium text-slate-900 dark:text-foreground">
                       Ready to join
                     </p>
                   </div>
@@ -437,7 +437,7 @@ export function JitsiMeetComponent({
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
                 <UserPlus className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-                <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                   {waitingParticipants.length} {waitingParticipants.length === 1 ? 'participant' : 'participants'} waiting to join
                 </span>
               </div>
@@ -457,7 +457,7 @@ export function JitsiMeetComponent({
 
         {/* Tabs */}
         {isJoined && (
-          <div className="flex border-b border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+          <div className="flex border-b border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
             {[
               { id: 'video', label: 'Live Video', icon: VideoIcon, count: null },
               { id: 'chat', label: 'Chat', icon: MessageSquare, count: chatMessages.length },
@@ -471,7 +471,7 @@ export function JitsiMeetComponent({
                   onClick={() => setActiveTab(tab.id as any)}
                   className={`px-6 py-3 text-sm font-semibold flex items-center space-x-2 transition-colors ${
                     activeTab === tab.id
-                      ? 'border-b-2 border-slate-600 text-slate-900 dark:text-white bg-slate-50 dark:bg-slate-800'
+                      ? 'border-b-2 border-slate-600 text-slate-900 dark:text-foreground bg-slate-50 dark:bg-slate-800'
                       : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50'
                   }`}
                 >
@@ -527,7 +527,7 @@ export function JitsiMeetComponent({
                     style={{ height: '100%', width: '100%', minHeight: 0, position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
                   />
                   <div className="absolute top-4 left-4 bg-slate-700 dark:bg-slate-600 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center z-10">
-                    <div className="w-2 h-2 bg-white rounded-full mr-2 animate-pulse" />
+                    <div className="w-2 h-2 bg-card rounded-full mr-2 animate-pulse" />
                     LIVE - {formatTime(timeElapsed)}
                   </div>
                   {classItem.meetingLink && (
@@ -555,7 +555,7 @@ export function JitsiMeetComponent({
 
           {/* Chat Tab */}
           {activeTab === 'chat' && (
-            <div className="flex-1 flex flex-col bg-white dark:bg-slate-800">
+            <div className="flex-1 flex flex-col bg-card dark:bg-slate-800">
               <div className="flex-1 overflow-y-auto p-4 space-y-3">
                 {chatMessages.length === 0 ? (
                   <div className="flex flex-col items-center justify-center h-full text-slate-400">
@@ -586,8 +586,8 @@ export function JitsiMeetComponent({
                       </div>
                       <p className={`text-sm ${
                         message.senderId === 'mentor'
-                          ? 'text-slate-900 dark:text-white'
-                          : 'text-slate-900 dark:text-white'
+                          ? 'text-slate-900 dark:text-foreground'
+                          : 'text-slate-900 dark:text-foreground'
                       }`}>
                         {message.message}
                       </p>
@@ -595,7 +595,7 @@ export function JitsiMeetComponent({
                   ))
                 )}
               </div>
-              <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-white dark:bg-slate-800">
+              <div className="border-t border-slate-200 dark:border-slate-700 p-4 bg-card dark:bg-slate-800">
                 <div className="flex space-x-2">
                   <input
                     type="text"
@@ -608,7 +608,7 @@ export function JitsiMeetComponent({
                       }
                     }}
                     placeholder="Type a message..."
-                    className="flex-1 px-4 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="flex-1 px-4 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   />
                   <Button 
                     onClick={() => {
@@ -628,12 +628,12 @@ export function JitsiMeetComponent({
 
           {/* Waiting Room Tab */}
           {activeTab === 'waiting' && (
-            <div className="flex-1 overflow-y-auto p-6 bg-white dark:bg-slate-800">
+            <div className="flex-1 overflow-y-auto p-6 bg-card dark:bg-slate-800">
               <div className="mb-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Waiting Room</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                       {waitingParticipants.length} {waitingParticipants.length === 1 ? 'Participant' : 'Participants'}
                     </p>
                   </div>
@@ -658,7 +658,7 @@ export function JitsiMeetComponent({
                           {participant.displayName?.charAt(0) || 'U'}
                         </div>
                         <div>
-                          <p className="font-semibold text-slate-900 dark:text-white">
+                          <p className="font-semibold text-slate-900 dark:text-foreground">
                             {participant.displayName || 'Unknown User'}
                           </p>
                           <p className="text-sm text-slate-700 dark:text-slate-300">
@@ -692,12 +692,12 @@ export function JitsiMeetComponent({
 
           {/* Attendance Tab */}
           {activeTab === 'attendance' && (
-            <div className="flex-1 overflow-y-auto p-6 bg-white dark:bg-slate-800">
+            <div className="flex-1 overflow-y-auto p-6 bg-card dark:bg-slate-800">
               <div className="mb-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm text-slate-700 dark:text-slate-300 font-medium">Total Attendance</p>
-                    <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                    <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                       {attendance.length} / {classItem.enrolledStudents.length}
                     </p>
                   </div>
@@ -729,8 +729,8 @@ export function JitsiMeetComponent({
                         <div>
                           <p className={`font-semibold ${
                             attendanceRecord
-                              ? 'text-slate-900 dark:text-white'
-                              : 'text-slate-900 dark:text-white'
+                              ? 'text-slate-900 dark:text-foreground'
+                              : 'text-slate-900 dark:text-foreground'
                           }`}>
                             {student.name}
                           </p>

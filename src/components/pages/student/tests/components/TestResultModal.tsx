@@ -55,7 +55,7 @@ export function TestResultModal({ test, attempt, onClose }: TestResultModalProps
                   <XCircle className="w-12 h-12 text-red-600 dark:text-red-400" />
                 )}
                 <div>
-                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-foreground">
                     {attempt.passed ? 'Passed!' : 'Failed'}
                   </h3>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
@@ -64,7 +64,7 @@ export function TestResultModal({ test, attempt, onClose }: TestResultModalProps
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-bold text-slate-900 dark:text-white">
+                <div className="text-3xl font-bold text-slate-900 dark:text-foreground">
                   {attempt.percentage.toFixed(1)}%
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-400">
@@ -88,7 +88,7 @@ export function TestResultModal({ test, attempt, onClose }: TestResultModalProps
 
           {/* Questions Review */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-slate-900 dark:text-white">
+            <h4 className="text-lg font-semibold text-slate-900 dark:text-foreground">
               Question Review
             </h4>
             {test.questions.map((question, idx) => {
@@ -109,7 +109,7 @@ export function TestResultModal({ test, attempt, onClose }: TestResultModalProps
                       ) : (
                         <XCircle className="w-5 h-5 text-red-600 dark:text-red-400" />
                       )}
-                      <p className="font-semibold text-slate-900 dark:text-white">
+                      <p className="font-semibold text-slate-900 dark:text-foreground">
                         {idx + 1}. {question.question}
                       </p>
                     </div>
@@ -132,7 +132,7 @@ export function TestResultModal({ test, attempt, onClose }: TestResultModalProps
                               : 'bg-slate-50 dark:bg-slate-900/50'
                           }`}
                         >
-                          <span className="text-sm text-slate-900 dark:text-white">
+                          <span className="text-sm text-slate-900 dark:text-foreground">
                             {String.fromCharCode(97 + optIdx)}. {option}
                             {isStudentAnswer && (
                               <span className="ml-2 text-xs font-semibold">

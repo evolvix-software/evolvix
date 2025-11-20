@@ -61,9 +61,9 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* Personal Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Personal Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Personal Information</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your basic personal details
           </CardDescription>
@@ -87,12 +87,12 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
           
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 Gender <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('personalInfo.gender', { required: 'Gender is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
@@ -116,9 +116,9 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
       </Card>
 
       {/* ID Proof */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Identity Verification</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Identity Verification</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload a valid government-issued ID
           </CardDescription>
@@ -126,12 +126,12 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 ID Type <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('idProof.type', { required: 'ID type is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="">Select ID Type</option>
                 <option value="aadhar">Aadhaar Card</option>
@@ -165,9 +165,9 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
       </Card>
 
       {/* Education Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Education Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Education Information</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your current education details
           </CardDescription>
@@ -214,9 +214,9 @@ export function StudentVerificationForm({ onSubmit, isLoading }: StudentVerifica
       </Card>
 
       {/* Profile Picture */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Profile Picture</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Profile Picture</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload a clear profile picture for your account
           </CardDescription>

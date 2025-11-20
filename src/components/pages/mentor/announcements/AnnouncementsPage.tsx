@@ -73,7 +73,7 @@ export function AnnouncementsPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">
             Announcements
           </h2>
           <p className="text-slate-600 dark:text-slate-400">
@@ -106,7 +106,7 @@ export function AnnouncementsPage() {
             <select
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
-              className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+              className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
             >
               <option value="all">All Courses</option>
               {mentorCourses.map(course => (
@@ -124,7 +124,7 @@ export function AnnouncementsPage() {
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <Bell className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No Announcements Yet
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4">

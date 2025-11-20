@@ -46,7 +46,7 @@ export function UsersManagement({
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">User Management</h1>
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-foreground">User Management</h1>
         <Button onClick={onCreateUser}>
           <UserPlus className="w-4 h-4 mr-2" /> Create User
         </Button>

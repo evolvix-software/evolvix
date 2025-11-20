@@ -168,7 +168,7 @@ export function AdvancedStudentList({
             placeholder="Search students by name, email, or tags..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="w-full pl-10 pr-4 py-2.5 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           />
         </div>
 
@@ -178,7 +178,7 @@ export function AdvancedStudentList({
           <select
             value={filterByCourse}
             onChange={(e) => setFilterByCourse(e.target.value)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Courses</option>
             {mentorCourses.map(course => (
@@ -190,7 +190,7 @@ export function AdvancedStudentList({
           <select
             value={filterByPerformance}
             onChange={(e) => setFilterByPerformance(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Performance</option>
             <option value="high">High Achievers</option>
@@ -202,7 +202,7 @@ export function AdvancedStudentList({
           <select
             value={filterByEngagement}
             onChange={(e) => setFilterByEngagement(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Engagement</option>
             <option value="high">High Engagement</option>
@@ -214,7 +214,7 @@ export function AdvancedStudentList({
           <select
             value={filterByStatus}
             onChange={(e) => setFilterByStatus(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Status</option>
             <option value="enrolled">Enrolled</option>
@@ -227,7 +227,7 @@ export function AdvancedStudentList({
           <select
             value={filterByPayment}
             onChange={(e) => setFilterByPayment(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Payment</option>
             <option value="paid">Paid</option>
@@ -239,7 +239,7 @@ export function AdvancedStudentList({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
-            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="name">Sort by Name</option>
             <option value="progress">Sort by Progress</option>
@@ -252,13 +252,13 @@ export function AdvancedStudentList({
           <div className="flex items-center space-x-1 border border-slate-300 dark:border-slate-700 rounded-lg p-1">
             <button
               onClick={() => setViewMode('grid')}
-              className={`px-2 py-1 rounded text-sm ${viewMode === 'grid' ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}
+              className={`px-2 py-1 rounded text-sm ${viewMode === 'grid' ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-foreground' : 'text-slate-600 dark:text-slate-400'}`}
             >
               Grid
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-2 py-1 rounded text-sm ${viewMode === 'list' ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}
+              className={`px-2 py-1 rounded text-sm ${viewMode === 'list' ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-foreground' : 'text-slate-600 dark:text-slate-400'}`}
             >
               List
             </button>
@@ -282,7 +282,7 @@ export function AdvancedStudentList({
             <CardContent className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
-                  <span className="text-sm font-medium text-slate-900 dark:text-white">
+                  <span className="text-sm font-medium text-slate-900 dark:text-foreground">
                     {selectedStudents.size} student{selectedStudents.size !== 1 ? 's' : ''} selected
                   </span>
                   <Button
@@ -349,7 +349,7 @@ export function AdvancedStudentList({
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <Users className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No students found
             </h3>
             <p className="text-slate-600 dark:text-slate-400">
@@ -383,7 +383,7 @@ export function AdvancedStudentList({
                         handleSelectStudent(student.id);
                       }}
                       onClick={(e) => e.stopPropagation()}
-                      className="absolute -top-1 -left-1 w-5 h-5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 z-10"
+                      className="absolute -top-1 -left-1 w-5 h-5 rounded border-slate-300 dark:border-slate-600 bg-card dark:bg-slate-800 z-10"
                     />
                     {student.avatar ? (
                       <img
@@ -398,7 +398,7 @@ export function AdvancedStudentList({
                         </span>
                       </div>
                     )}
-                    <div className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-white dark:border-slate-800 rounded-full ${
+                    <div className={`absolute -bottom-1 -right-1 w-4 h-4 border-2 border-card dark:border-slate-800 rounded-full ${
                       student.status === 'at-risk' ? 'bg-slate-500' :
                       student.status === 'completed' ? 'bg-slate-600' :
                       'bg-slate-400 dark:bg-slate-500'
@@ -408,7 +408,7 @@ export function AdvancedStudentList({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
-                        <h4 className="font-semibold text-slate-900 dark:text-white truncate">
+                        <h4 className="font-semibold text-slate-900 dark:text-foreground truncate">
                           {student.name}
                         </h4>
                         <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
@@ -459,7 +459,7 @@ export function AdvancedStudentList({
                       <CheckCircle2 className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Assignments</span>
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    <p className="text-sm font-bold text-slate-900 dark:text-foreground">
                       {student.assignmentsCompleted}/{student.assignmentsTotal}
                     </p>
                   </div>
@@ -468,7 +468,7 @@ export function AdvancedStudentList({
                       <Users className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Courses</span>
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    <p className="text-sm font-bold text-slate-900 dark:text-foreground">
                       {student.enrolledCourses.length}
                     </p>
                   </div>
@@ -480,7 +480,7 @@ export function AdvancedStudentList({
                     <div className="flex items-center space-x-1">
                       <span className="text-xs text-slate-600 dark:text-slate-400">Engagement:</span>
                       <span className={`text-xs font-semibold ${
-                        student.engagementLevel === 'high' ? 'text-slate-900 dark:text-white' :
+                        student.engagementLevel === 'high' ? 'text-slate-900 dark:text-foreground' :
                         student.engagementLevel === 'medium' ? 'text-slate-700 dark:text-slate-300' :
                         'text-slate-500 dark:text-slate-500'
                       }`}>
@@ -491,7 +491,7 @@ export function AdvancedStudentList({
                   {student.rating && (
                     <div className="flex items-center space-x-1">
                       <Star className="w-3 h-3 text-slate-600 dark:text-slate-400 fill-slate-600 dark:fill-slate-400" />
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                         {student.rating.toFixed(1)}
                       </span>
                     </div>
@@ -575,26 +575,26 @@ export function AdvancedStudentList({
                   )}
                   <div className="flex-1 grid grid-cols-5 gap-4 items-center">
                     <div>
-                      <h4 className="font-semibold text-slate-900 dark:text-white">{student.name}</h4>
+                      <h4 className="font-semibold text-slate-900 dark:text-foreground">{student.name}</h4>
                       <p className="text-xs text-slate-500 dark:text-slate-400">{student.email}</p>
                     </div>
                     <div className="text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Progress: </span>
-                      <span className="font-semibold text-slate-900 dark:text-white">{student.overallProgress}%</span>
+                      <span className="font-semibold text-slate-900 dark:text-foreground">{student.overallProgress}%</span>
                     </div>
                     <div className="text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Courses: </span>
-                      <span className="font-semibold text-slate-900 dark:text-white">{student.enrolledCourses.length}</span>
+                      <span className="font-semibold text-slate-900 dark:text-foreground">{student.enrolledCourses.length}</span>
                     </div>
                     <div className="text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Assignments: </span>
-                      <span className="font-semibold text-slate-900 dark:text-white">{student.assignmentsCompleted}/{student.assignmentsTotal}</span>
+                      <span className="font-semibold text-slate-900 dark:text-foreground">{student.assignmentsCompleted}/{student.assignmentsTotal}</span>
                     </div>
                     <div className="flex items-center justify-end space-x-2">
                       {student.rating && (
                         <div className="flex items-center space-x-1">
                           <Star className="w-4 h-4 text-slate-600 dark:text-slate-400 fill-slate-600 dark:fill-slate-400" />
-                          <span className="text-sm font-semibold text-slate-900 dark:text-white">{student.rating.toFixed(1)}</span>
+                          <span className="text-sm font-semibold text-slate-900 dark:text-foreground">{student.rating.toFixed(1)}</span>
                         </div>
                       )}
                       {student.status && (

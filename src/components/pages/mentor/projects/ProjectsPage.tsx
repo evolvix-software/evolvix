@@ -13,19 +13,19 @@ export function MentorProjectsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Project Mentorship</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Project Mentorship</h2>
         <p className="text-slate-600 dark:text-slate-400">Track assigned projects and approve milestones</p>
       </div>
 
       <div className="grid gap-4">
         {projects.map((project) => (
-          <Card key={project.id} className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+          <Card key={project.id} className="border border-slate-200 dark:border-slate-700/50 bg-card dark:bg-slate-800/50 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <Lightbulb className="w-5 h-5 text-green-600 dark:text-green-400" />
-                    <h3 className="font-semibold text-slate-900 dark:text-white">{project.title}</h3>
+                    <h3 className="font-semibold text-slate-900 dark:text-foreground">{project.title}</h3>
                   </div>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
                     Entrepreneur: {project.entrepreneur}
@@ -39,7 +39,7 @@ export function MentorProjectsPage() {
                           style={{ width: `${(project.milestone / project.totalMilestones) * 100}%` }}
                         />
                       </div>
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                         {project.milestone}/{project.totalMilestones}
                       </span>
                     </div>

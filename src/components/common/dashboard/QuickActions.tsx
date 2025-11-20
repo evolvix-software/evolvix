@@ -17,9 +17,9 @@ const iconMap = {
 
 export function QuickActions({ actions }: QuickActionsProps) {
   return (
-    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+    <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="text-gray-900 dark:text-white">Quick Actions</CardTitle>
+        <CardTitle className="text-gray-900 dark:text-foreground">Quick Actions</CardTitle>
         <CardDescription className="text-gray-600 dark:text-gray-400">
           Common tasks and features
         </CardDescription>

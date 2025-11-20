@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { getMockClassesWithRecordings } from '@/data/mock/classesData';
 
 export interface EnrolledStudent {
   id: string;
@@ -102,24 +103,48 @@ const initialState: ClassesState = {
 };
 
 // Load from localStorage on initialization
+const loadClassesFromStorage = (): MentorClass[] => {
 if (typeof window !== 'undefined') {
   const saved = localStorage.getItem('evolvix_mentor_classes');
   if (saved) {
     try {
       const parsed = JSON.parse(saved);
-      initialState.classes = parsed.classes || [];
-      initialState.chatMessages = parsed.chatMessages || [];
-      initialState.attendance = parsed.attendance || [];
+        // If there are classes in storage, use them
+        if (parsed && parsed.classes && parsed.classes.length > 0) {
+          return parsed.classes;
+        }
     } catch (e) {
       console.error('Failed to load classes from localStorage:', e);
     }
   }
-}
+    // If no classes in storage, initialize with mock data
+    const mockClasses = getMockClassesWithRecordings();
+    localStorage.setItem('evolvix_mentor_classes', JSON.stringify({
+      classes: mockClasses,
+      chatMessages: [],
+      attendance: [],
+    }));
+    return mockClasses;
+  }
+  return [];
+};
+
+// Initialize classes from localStorage (only on client side)
+// This will be handled by the reducer's initial state or by components that need it
+// We don't initialize here to avoid SSR issues
 
 const classesSlice = createSlice({
   name: 'classes',
   initialState,
   reducers: {
+    initializeClasses: (state, action: PayloadAction<MentorClass[]>) => {
+      // Only initialize if classes array is empty
+      if (state.classes.length === 0) {
+        state.classes = action.payload;
+        state.chatMessages = [];
+        state.attendance = [];
+      }
+    },
     setLoading: (state, action: PayloadAction<boolean>) => {
       state.isLoading = action.payload;
     },
@@ -259,6 +284,7 @@ const classesSlice = createSlice({
 });
 
 export const {
+  initializeClasses,
   setLoading,
   setError,
   addClass,

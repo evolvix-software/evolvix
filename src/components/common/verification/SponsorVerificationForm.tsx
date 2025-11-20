@@ -56,9 +56,9 @@ export function SponsorVerificationForm({ onSubmit, isLoading }: SponsorVerifica
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
       {/* Organization Information */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Organization Information</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Organization Information</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Provide your organization details for CSR/Sponsorship
           </CardDescription>
@@ -72,12 +72,12 @@ export function SponsorVerificationForm({ onSubmit, isLoading }: SponsorVerifica
               required
             />
             <div>
-              <label className="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+              <label className="block text-sm font-medium text-gray-900 dark:text-foreground mb-2">
                 Country <span className="text-red-500">*</span>
               </label>
               <select
                 {...register('country', { required: 'Country is required' })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-card dark:bg-gray-700 text-gray-900 dark:text-foreground focus:ring-2 focus:ring-orange-500 focus:border-transparent"
               >
                 <option value="IN">India</option>
                 <option value="US">United States</option>
@@ -130,9 +130,9 @@ export function SponsorVerificationForm({ onSubmit, isLoading }: SponsorVerifica
       </Card>
 
       {/* Authorized Representative */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Authorized Representative</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Authorized Representative</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Details of the authorized person representing the organization
           </CardDescription>
@@ -156,9 +156,9 @@ export function SponsorVerificationForm({ onSubmit, isLoading }: SponsorVerifica
       </Card>
 
       {/* Organization KYC Documents */}
-      <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+      <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
         <CardHeader>
-          <CardTitle className="text-gray-900 dark:text-white">Organization KYC Documents</CardTitle>
+          <CardTitle className="text-gray-900 dark:text-foreground">Organization KYC Documents</CardTitle>
           <CardDescription className="text-gray-600 dark:text-gray-400">
             Upload organization registration and tax documents
           </CardDescription>

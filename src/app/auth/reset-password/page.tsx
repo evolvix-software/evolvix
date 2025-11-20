@@ -126,9 +126,9 @@ function ResetPasswordContent() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-2xl mb-4">
-            <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-              <div className="w-4 h-4 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-full" />
+          <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-2xl mb-4">
+            <div className="w-6 h-6 bg-card rounded-full flex items-center justify-center">
+              <div className="w-4 h-4 bg-gradient-to-br from-primary to-blue-600 rounded-full" />
             </div>
           </div>
         </div>
@@ -220,7 +220,7 @@ function ResetPasswordContent() {
               >
                 {isLoading ? (
                   <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                    <div className="w-4 h-4 border-2 border-card border-t-transparent rounded-full animate-spin mr-2" />
                     Resetting...
                   </>
                 ) : (

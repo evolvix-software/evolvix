@@ -59,7 +59,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
     <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Course Projects</h3>
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground">Course Projects</h3>
           <p className="text-sm text-slate-600 dark:text-slate-400">
             Define projects for this course. The final project will be student's choice.
           </p>
@@ -107,7 +107,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
       ) : (
         <div className="space-y-4">
           {projects.map((project, index) => (
-            <Card key={project.id} className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+            <Card key={project.id} className="border border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
               <CardHeader>
                 <div className="flex items-center justify-between">
                   <div>
@@ -137,7 +137,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       value={project.title}
                       onChange={(e) => updateProject(project.id, 'title', e.target.value)}
                       required
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder={project.isFinalProject ? 'Final Project (Student Choice)' : 'e.g., Todo App with React'}
                     />
                   </div>
@@ -146,7 +146,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                     <select
                       value={project.difficulty}
                       onChange={(e) => updateProject(project.id, 'difficulty', e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                     >
                       <option value="beginner">Beginner</option>
                       <option value="intermediate">Intermediate</option>
@@ -159,7 +159,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       value={project.estimatedDuration}
                       onChange={(e) => updateProject(project.id, 'estimatedDuration', e.target.value)}
                       required
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                       placeholder="e.g., 2 weeks, 1 month"
                     />
                   </div>
@@ -170,7 +170,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       value={project.maxScore}
                       onChange={(e) => updateProject(project.id, 'maxScore', parseInt(e.target.value) || 100)}
                       required
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                       min={1}
                     />
                   </div>
@@ -181,7 +181,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       value={project.weight}
                       onChange={(e) => updateProject(project.id, 'weight', parseInt(e.target.value) || 10)}
                       required
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                       min={1}
                       max={100}
                       step={1}
@@ -193,7 +193,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       type="date"
                       value={project.dueDate || ''}
                       onChange={(e) => updateProject(project.id, 'dueDate', e.target.value)}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground"
                     />
                   </div>
                 </div>
@@ -205,7 +205,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                     onChange={(e) => updateProject(project.id, 'description', e.target.value)}
                     required
                     rows={3}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                     placeholder="Describe what students will build in this project..."
                   />
                 </div>
@@ -216,7 +216,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                     value={project.technologies.join(', ')}
                     onChange={(e) => updateProject(project.id, 'technologies', e.target.value)}
                     required
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                     placeholder="e.g., React, Node.js, MongoDB, Express"
                   />
                 </div>
@@ -228,7 +228,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                     onChange={(e) => updateProject(project.id, 'requirements', e.target.value)}
                     required
                     rows={4}
-                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                    className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                     placeholder="User authentication&#10;CRUD operations&#10;Responsive design&#10;API integration"
                   />
                 </div>
@@ -240,7 +240,7 @@ export function ProjectsConfig({ projects, onProjectsChange, courseDuration }: P
                       value={project.finalProjectGuidelines || ''}
                       onChange={(e) => updateProject(project.id, 'finalProjectGuidelines', e.target.value)}
                       rows={3}
-                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                      className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                       placeholder="Guidelines for students choosing their final project..."
                     />
                   </div>

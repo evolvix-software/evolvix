@@ -73,7 +73,7 @@ export function ClassAnalyticsComponent({ analytics }: ClassAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Sessions</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {totalSessions}
                 </p>
               </div>
@@ -89,7 +89,7 @@ export function ClassAnalyticsComponent({ analytics }: ClassAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Students</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   {totalStudents}
                 </p>
               </div>
@@ -164,7 +164,7 @@ export function ClassAnalyticsComponent({ analytics }: ClassAnalyticsProps) {
 
                 {/* Recent Sessions */}
                 <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                  <h4 className="text-sm font-semibold text-slate-900 dark:text-white mb-3">
+                  <h4 className="text-sm font-semibold text-slate-900 dark:text-foreground mb-3">
                     Recent Sessions ({course.sessions.length})
                   </h4>
                   <div className="space-y-2">
@@ -176,7 +176,7 @@ export function ClassAnalyticsComponent({ analytics }: ClassAnalyticsProps) {
                           className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg border border-slate-200 dark:border-slate-700"
                         >
                           <div className="flex-1">
-                            <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                            <p className="text-sm font-semibold text-slate-900 dark:text-foreground">
                               {session.title}
                             </p>
                             <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">

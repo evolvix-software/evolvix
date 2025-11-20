@@ -102,7 +102,7 @@ export function TestAttemptModal({ test, onClose, onSubmit }: TestAttemptModalPr
                 className="border border-slate-200 dark:border-slate-700 rounded-lg p-4"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <p className="font-semibold text-slate-900 dark:text-white flex-1">
+                  <p className="font-semibold text-slate-900 dark:text-foreground flex-1">
                     {idx + 1}. {question.question}
                   </p>
                   <span className="text-sm text-slate-600 dark:text-slate-400 ml-4">
@@ -130,7 +130,7 @@ export function TestAttemptModal({ test, onClose, onSubmit }: TestAttemptModalPr
                           onChange={(e) => handleAnswerChange(question.id, e.target.value)}
                           className="mt-1 w-4 h-4"
                         />
-                        <span className="text-slate-900 dark:text-white flex-1">
+                        <span className="text-slate-900 dark:text-foreground flex-1">
                           {String.fromCharCode(97 + optIdx)}. {option}
                         </span>
                       </label>

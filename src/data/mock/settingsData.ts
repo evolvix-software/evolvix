@@ -13,19 +13,24 @@ export const settingsData = {
         icon: "User",
       },
       {
-        id: "picture",
-        label: "Profile Picture",
-        icon: "Camera",
-      },
-      {
         id: "education",
-        label: "Education Details",
+        label: "Education & School",
         icon: "GraduationCap",
       },
       {
         id: "skills",
         label: "Skills & Interests",
         icon: "Award",
+      },
+      {
+        id: "kyc",
+        label: "KYC & Verification",
+        icon: "Shield",
+      },
+      {
+        id: "achievements",
+        label: "Achievements",
+        icon: "Trophy",
       },
       {
         id: "password",

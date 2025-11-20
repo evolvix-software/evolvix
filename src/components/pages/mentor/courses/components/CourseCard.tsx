@@ -38,7 +38,7 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
 
   return (
     <Card 
-      className="group border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+      className="group border border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800 shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
       onClick={() => router.push(`/portal/mentor/courses/${course.id}`)}
     >
       {/* Image Header */}
@@ -85,7 +85,7 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
               e.stopPropagation();
               onEdit();
             }}
-            className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm hover:bg-white dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-0 shadow-md h-7 w-7 p-0"
+            className="bg-card/90 dark:bg-slate-800/90 backdrop-blur-sm hover:bg-card dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300 border-0 shadow-md h-7 w-7 p-0"
           >
             <Edit className="w-3.5 h-3.5" />
           </Button>
@@ -126,7 +126,7 @@ export function CourseCard({ course, onEdit, onDelete, onManageProjects }: Cours
 
       {/* Card Content */}
       <CardContent className="p-4">
-        <h3 className="font-bold text-slate-900 dark:text-white mb-1 line-clamp-1">
+        <h3 className="font-bold text-slate-900 dark:text-foreground mb-1 line-clamp-1">
           {course.title}
         </h3>
         <p className="text-sm text-slate-600 dark:text-slate-400 mb-3 line-clamp-2">

@@ -1,0 +1,2 @@
+export { StudentScholarshipsPage } from './ScholarshipsPage';
+

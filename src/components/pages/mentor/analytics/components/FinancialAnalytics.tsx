@@ -57,7 +57,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Total Earnings</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(totalEarnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -74,7 +74,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">This Month</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(currentMonth.earnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -91,7 +91,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Mentor Earnings</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${(mentorEarnings / 1000).toFixed(1)}K
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -108,7 +108,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mb-1">Pending Payments</p>
-                <p className="text-2xl font-bold text-slate-900 dark:text-white">
+                <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                   ${pendingPayments.reduce((sum, p) => sum + p.amount, 0)}
                 </p>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -167,13 +167,13 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
                 className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg"
               >
                 <div className="flex-1">
-                  <p className="font-semibold text-slate-900 dark:text-white">{course.course}</p>
+                  <p className="font-semibold text-slate-900 dark:text-foreground">{course.course}</p>
                   <p className="text-sm text-slate-600 dark:text-slate-400">
                     {course.students} students
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                  <p className="text-lg font-bold text-slate-900 dark:text-foreground">
                     ${course.earnings.toLocaleString()}
                   </p>
                   <p className="text-xs text-slate-600 dark:text-slate-400">
@@ -203,7 +203,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
                   <div key={idx} className="space-y-1">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-700 dark:text-slate-300">{method.method}</span>
-                      <span className="font-semibold text-slate-900 dark:text-white">
+                      <span className="font-semibold text-slate-900 dark:text-foreground">
                         ${method.amount.toLocaleString()} ({method.count})
                       </span>
                     </div>
@@ -235,12 +235,12 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
                   className="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-900/50 rounded-lg"
                 >
                   <div>
-                    <p className="font-semibold text-slate-900 dark:text-white">{payment.student}</p>
+                    <p className="font-semibold text-slate-900 dark:text-foreground">{payment.student}</p>
                     <p className="text-sm text-slate-600 dark:text-slate-400">
                       {payment.course} • Due: {new Date(payment.dueDate).toLocaleDateString()}
                     </p>
                   </div>
-                  <p className="text-lg font-bold text-slate-900 dark:text-white">
+                  <p className="text-lg font-bold text-slate-900 dark:text-foreground">
                     ${payment.amount}
                   </p>
                 </div>
@@ -272,13 +272,13 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
           <div className="grid md:grid-cols-3 gap-4">
             <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Total Revenue</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">
+              <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                 ${totalEarnings.toLocaleString()}
               </p>
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Platform Commission</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">
+              <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                 ${platformCommission.toLocaleString()}
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -287,7 +287,7 @@ export function FinancialAnalytics({ revenueData }: FinancialAnalyticsProps) {
             </div>
             <div className="p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Your Earnings</p>
-              <p className="text-2xl font-bold text-slate-900 dark:text-white">
+              <p className="text-2xl font-bold text-slate-900 dark:text-foreground">
                 ${mentorEarnings.toLocaleString()}
               </p>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">

@@ -89,7 +89,7 @@ export function ProjectSubmission({
   };
 
   return (
-    <Card className="border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800">
+    <Card className="border border-slate-200 dark:border-slate-700 bg-card dark:bg-slate-800">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           <span>
@@ -109,7 +109,7 @@ export function ProjectSubmission({
           <div>
             <p className="text-sm text-slate-700 dark:text-slate-300 mb-4">{project.description}</p>
             <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 mb-4">
-              <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Technologies Required:</h4>
+              <h4 className="font-semibold text-slate-900 dark:text-foreground mb-2">Technologies Required:</h4>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech, idx) => (
                   <span key={idx} className="px-3 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 rounded-full text-sm">
@@ -120,7 +120,7 @@ export function ProjectSubmission({
             </div>
             {project.requirements.length > 0 && (
               <div className="bg-slate-50 dark:bg-slate-900 rounded-lg p-4 mb-4">
-                <h4 className="font-semibold text-slate-900 dark:text-white mb-2">Requirements:</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-foreground mb-2">Requirements:</h4>
                 <ul className="list-disc list-inside space-y-1 text-sm text-slate-700 dark:text-slate-300">
                   {project.requirements.map((req, idx) => (
                     <li key={idx}>{req}</li>
@@ -145,7 +145,7 @@ export function ProjectSubmission({
                   value={formData.customProjectTitle}
                   onChange={(e) => setFormData({ ...formData, customProjectTitle: e.target.value })}
                   required
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
                   placeholder="e.g., E-commerce Platform with MERN Stack"
                 />
               </div>
@@ -157,7 +157,7 @@ export function ProjectSubmission({
                   onChange={(e) => setFormData({ ...formData, customDescription: e.target.value })}
                   required
                   rows={4}
-                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
+                  className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500 resize-none"
                   placeholder="Describe your project idea and features..."
                 />
               </div>
@@ -174,7 +174,7 @@ export function ProjectSubmission({
               value={formData.githubUrl}
               onChange={(e) => setFormData({ ...formData, githubUrl: e.target.value })}
               required
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="https://github.com/username/repository"
             />
           </div>
@@ -188,7 +188,7 @@ export function ProjectSubmission({
               type="url"
               value={formData.liveLink}
               onChange={(e) => setFormData({ ...formData, liveLink: e.target.value })}
-              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500"
+              className="w-full px-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground placeholder:text-slate-400 dark:placeholder:text-slate-500"
               placeholder="https://your-project.vercel.app"
             />
           </div>
@@ -198,7 +198,7 @@ export function ProjectSubmission({
               <FileText className="w-4 h-4 mr-2" />
               Supporting Documents (Optional)
             </Label>
-            <label className="flex items-center space-x-2 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+            <label className="flex items-center space-x-2 px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
               <Upload className="w-4 h-4" />
               <span className="text-sm">Upload Documents (PDF, DOC, ZIP)</span>
               <input

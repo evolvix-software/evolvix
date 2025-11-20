@@ -26,9 +26,9 @@ const colorMap = {
 
 export function UpcomingEvents({ events }: UpcomingEventsProps) {
   return (
-    <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+    <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2 text-gray-900 dark:text-white">
+        <CardTitle className="flex items-center space-x-2 text-gray-900 dark:text-foreground">
           <Calendar className="w-5 h-5 text-green-600 dark:text-green-400" />
           <span>Upcoming Events</span>
         </CardTitle>
@@ -56,14 +56,14 @@ export function UpcomingEvents({ events }: UpcomingEventsProps) {
                 <Icon className={`w-6 h-6 ${colors.text}`} />
               </div>
               <div className="flex-1">
-                <h4 className="font-semibold text-gray-900 dark:text-white">
+                <h4 className="font-semibold text-gray-900 dark:text-foreground">
                   {event.title}
                 </h4>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   {event.time}
                 </p>
               </div>
-              <button className="px-3 py-1 bg-[#635bff] hover:bg-[#4f48cc] text-white text-sm rounded-lg transition-colors">
+              <button className="px-3 py-1 bg-primary hover:bg-[#4f48cc] text-white text-sm rounded-lg transition-colors">
                 {event.action}
               </button>
             </div>

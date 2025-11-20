@@ -360,7 +360,7 @@ export function ClassesPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Classes</h2>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Classes</h2>
           <p className="text-slate-600 dark:text-slate-400">
             Schedule and manage live classes for your courses
           </p>
@@ -398,9 +398,9 @@ export function ClassesPage() {
 
       {/* Schedule New Class Form */}
       {showScheduleForm && (
-        <Card className="border-2 border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 shadow-lg">
+        <Card className="border-2 border-slate-300 dark:border-slate-600 bg-card dark:bg-slate-800 shadow-lg">
           <CardHeader>
-            <CardTitle className="text-xl font-bold text-slate-900 dark:text-white">
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-foreground">
               {editingClass ? 'Edit Class' : 'Schedule New Class'}
             </CardTitle>
             <CardDescription>
@@ -427,7 +427,7 @@ export function ClassesPage() {
                     id="category"
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                     required
                   >
                     {categories.map((cat) => (
@@ -494,7 +494,7 @@ export function ClassesPage() {
                           courseName: selectedCourse?.title || '',
                         });
                       }}
-                      className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                      className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                       required
                     >
                       <option value="">Select a course...</option>
@@ -516,13 +516,13 @@ export function ClassesPage() {
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   placeholder="Brief description of what will be covered in this class..."
                   rows={3}
-                  className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                  className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                 />
               </div>
 
               {/* Advanced Scheduling Options */}
               <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-slate-700">
-                <h4 className="font-semibold text-slate-900 dark:text-white">Advanced Options</h4>
+                <h4 className="font-semibold text-slate-900 dark:text-foreground">Advanced Options</h4>
                 
                 {/* Timezone */}
                 <div>
@@ -531,7 +531,7 @@ export function ClassesPage() {
                     id="timezone"
                     value={formData.timezone}
                     onChange={(e) => setFormData({ ...formData, timezone: e.target.value })}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   >
                     {Intl.supportedValuesOf('timeZone').slice(0, 50).map(tz => (
                       <option key={tz} value={tz}>{tz}</option>
@@ -546,7 +546,7 @@ export function ClassesPage() {
                     id="recurringPattern"
                     value={formData.recurringPattern}
                     onChange={(e) => setFormData({ ...formData, recurringPattern: e.target.value as any })}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   >
                     <option value="none">No Recurrence</option>
                     <option value="daily">Daily</option>
@@ -590,7 +590,7 @@ export function ClassesPage() {
                     onChange={(e) => setFormData({ ...formData, agenda: e.target.value.split('\n').filter(item => item.trim()) })}
                     placeholder="Enter agenda items, one per line..."
                     rows={4}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   />
                 </div>
 
@@ -603,7 +603,7 @@ export function ClassesPage() {
                     onChange={(e) => setFormData({ ...formData, preparationChecklist: e.target.value.split('\n').filter(item => item.trim()) })}
                     placeholder="Enter checklist items, one per line..."
                     rows={3}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   />
                 </div>
 
@@ -616,7 +616,7 @@ export function ClassesPage() {
                     onChange={(e) => setFormData({ ...formData, preClassAnnouncement: e.target.value })}
                     placeholder="Announcement to send to students before class..."
                     rows={2}
-                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
+                    className="w-full px-3 py-2 border-2 border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:border-slate-500 dark:focus:border-slate-400 focus:ring-2 focus:ring-slate-500/20 dark:focus:ring-slate-400/20"
                   />
                 </div>
               </div>
@@ -648,7 +648,7 @@ export function ClassesPage() {
       {/* Upcoming Classes */}
       {upcomingClasses.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-foreground mb-4 flex items-center">
             <Calendar className="w-6 h-6 mr-2 text-slate-600 dark:text-slate-400" />
             Upcoming Classes
           </h3>
@@ -658,7 +658,7 @@ export function ClassesPage() {
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <CardTitle className="text-lg font-bold text-slate-900 dark:text-white mb-1">
+                      <CardTitle className="text-lg font-bold text-slate-900 dark:text-foreground mb-1">
                         {classItem.topic}
                       </CardTitle>
                       <CardDescription className="text-sm">
@@ -687,18 +687,18 @@ export function ClassesPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Duration:</span>
-                      <span className="font-semibold text-slate-900 dark:text-white">{classItem.duration} min</span>
+                      <span className="font-semibold text-slate-900 dark:text-foreground">{classItem.duration} min</span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Enrolled:</span>
-                      <span className="font-semibold text-slate-900 dark:text-white flex items-center">
+                      <span className="font-semibold text-slate-900 dark:text-foreground flex items-center">
                         <Users className="w-4 h-4 mr-1" />
                         {classItem.enrolledStudents.length}
                       </span>
                     </div>
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-slate-600 dark:text-slate-400">Course:</span>
-                      <span className="font-semibold text-slate-900 dark:text-white truncate ml-2">{classItem.courseName}</span>
+                      <span className="font-semibold text-slate-900 dark:text-foreground truncate ml-2">{classItem.courseName}</span>
                     </div>
                     <Button
                       onClick={() => handleStartClass(classItem.id)}
@@ -718,7 +718,7 @@ export function ClassesPage() {
       {/* Past Classes */}
       {pastClasses.length > 0 && (
         <div>
-          <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4 flex items-center">
+          <h3 className="text-xl font-bold text-slate-900 dark:text-foreground mb-4 flex items-center">
             <Clock className="w-6 h-6 mr-2 text-slate-600 dark:text-slate-400" />
             Past Classes
           </h3>
@@ -726,7 +726,7 @@ export function ClassesPage() {
             {pastClasses.map((classItem) => (
               <Card key={classItem.id} className="border border-slate-200 dark:border-slate-700">
                 <CardHeader>
-                  <CardTitle className="text-lg font-bold text-slate-900 dark:text-white">
+                  <CardTitle className="text-lg font-bold text-slate-900 dark:text-foreground">
                     {classItem.topic}
                   </CardTitle>
                   <CardDescription>
@@ -778,7 +778,7 @@ export function ClassesPage() {
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <Calendar className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No classes scheduled yet
             </h3>
             <p className="text-slate-600 dark:text-slate-400 mb-4">

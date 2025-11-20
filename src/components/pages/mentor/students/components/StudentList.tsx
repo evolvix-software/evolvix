@@ -80,7 +80,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex items-center space-x-2">
           <Users className="w-5 h-5 text-slate-600 dark:text-slate-400" />
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground">
             Students ({filteredAndSortedStudents.length})
           </h3>
         </div>
@@ -94,7 +94,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
               placeholder="Search students..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-10 pr-4 py-2 w-full border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="pl-10 pr-4 py-2 w-full border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
 
@@ -102,7 +102,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value as 'name' | 'progress' | 'recent')}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="name">Sort by Name</option>
             <option value="progress">Sort by Progress</option>
@@ -113,7 +113,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
           <select
             value={filterByProgress}
             onChange={(e) => setFilterByProgress(e.target.value as 'all' | 'high' | 'medium' | 'low')}
-            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
+            className="px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-slate-500 dark:focus:ring-slate-400"
           >
             <option value="all">All Progress</option>
             <option value="high">High (80%+)</option>
@@ -128,7 +128,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
         <Card className="border border-slate-200 dark:border-slate-700">
           <CardContent className="p-12 text-center">
             <Users className="w-16 h-16 mx-auto mb-4 text-slate-400" />
-            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-foreground mb-2">
               No students found
             </h3>
             <p className="text-slate-600 dark:text-slate-400">
@@ -165,11 +165,11 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                         </span>
                       </div>
                     )}
-                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-400 dark:bg-slate-500 border-2 border-white dark:border-slate-800 rounded-full"></div>
+                    <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-slate-400 dark:bg-slate-500 border-2 border-card dark:border-slate-800 rounded-full"></div>
                   </div>
                   
                   <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-slate-900 dark:text-white truncate">
+                    <h4 className="font-semibold text-slate-900 dark:text-foreground truncate">
                       {student.name}
                     </h4>
                     <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
@@ -214,7 +214,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                       <CheckCircle2 className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Assignments</span>
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    <p className="text-sm font-bold text-slate-900 dark:text-foreground">
                       {student.assignmentsCompleted}/{student.assignmentsTotal}
                     </p>
                   </div>
@@ -223,7 +223,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                       <User className="w-3 h-3 text-slate-600 dark:text-slate-400" />
                       <span className="text-xs text-slate-600 dark:text-slate-400">Courses</span>
                     </div>
-                    <p className="text-sm font-bold text-slate-900 dark:text-white">
+                    <p className="text-sm font-bold text-slate-900 dark:text-foreground">
                       {student.enrolledCourses.length}
                     </p>
                   </div>
@@ -246,7 +246,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                             <span className="text-xs text-slate-600 dark:text-slate-400">Module Tests</span>
                           </div>
                           <div className="flex items-center space-x-2">
-                            <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                            <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                               {passedTests}/{totalTests} passed
                             </span>
                           </div>
@@ -263,7 +263,7 @@ export function StudentList({ students, onSelectStudent, selectedStudentId }: St
                     <span className="text-xs text-slate-600 dark:text-slate-400">Rating</span>
                     <div className="flex items-center space-x-1">
                       <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
-                      <span className="text-sm font-semibold text-slate-900 dark:text-white">
+                      <span className="text-sm font-semibold text-slate-900 dark:text-foreground">
                         {student.rating.toFixed(1)}
                       </span>
                     </div>

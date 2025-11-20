@@ -70,7 +70,7 @@ export function FeedbackForm({
     <div className="space-y-2">
       <div className="flex items-center justify-between">
         <div>
-          <label className="text-sm font-semibold text-slate-900 dark:text-white">
+          <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
             {label}
           </label>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
@@ -116,10 +116,10 @@ export function FeedbackForm({
                 <img
                   src={student.avatar}
                   alt={student.name}
-                  className="w-10 h-10 rounded-full object-cover border-2 border-white/50"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-card/50"
                 />
               ) : (
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border-2 border-white/50">
+                <div className="w-10 h-10 bg-card/20 rounded-full flex items-center justify-center border-2 border-card/50">
                   <span className="text-white font-bold">
                     {student.name.charAt(0).toUpperCase()}
                   </span>
@@ -134,7 +134,7 @@ export function FeedbackForm({
               variant="ghost"
               size="sm"
               onClick={onClose}
-              className="text-white hover:bg-white/20"
+              className="text-white hover:bg-card/20"
             >
               <X className="w-5 h-5" />
             </Button>
@@ -149,7 +149,7 @@ export function FeedbackForm({
                 <div>
                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">Overall Rating</p>
                   <div className="flex items-center space-x-2">
-                    <span className="text-3xl font-bold text-slate-900 dark:text-white">
+                    <span className="text-3xl font-bold text-slate-900 dark:text-foreground">
                       {overallRating}
                     </span>
                     <span className="text-slate-500 dark:text-slate-400">/ 5.0</span>
@@ -196,7 +196,7 @@ export function FeedbackForm({
 
             {/* Comments */}
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-900 dark:text-white">
+              <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
                 Additional Comments
               </label>
               <textarea
@@ -204,7 +204,7 @@ export function FeedbackForm({
                 onChange={(e) => setComments(e.target.value)}
                 placeholder="Provide detailed feedback about the student's performance, strengths, and areas for improvement..."
                 rows={6}
-                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-4 py-3 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 {comments.length} characters

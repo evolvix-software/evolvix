@@ -13,19 +13,19 @@ export function MentorInterviewsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Interview Evaluation</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-foreground mb-2">Interview Evaluation</h2>
         <p className="text-slate-600 dark:text-slate-400">AI-assisted or live interview evaluator</p>
       </div>
 
       <div className="grid gap-4">
         {interviews.map((interview) => (
-          <Card key={interview.id} className="border border-slate-200 dark:border-slate-700/50 bg-white dark:bg-slate-800/50 shadow-sm">
+          <Card key={interview.id} className="border border-slate-200 dark:border-slate-700/50 bg-card dark:bg-slate-800/50 shadow-sm">
             <CardContent className="p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center space-x-3 mb-2">
                     <ClipboardCheck className="w-5 h-5 text-green-600 dark:text-green-400" />
-                    <h3 className="font-semibold text-slate-900 dark:text-white">{interview.type}</h3>
+                    <h3 className="font-semibold text-slate-900 dark:text-foreground">{interview.type}</h3>
                     {interview.mode === 'live' ? (
                       <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-full text-xs flex items-center">
                         <Video className="w-3 h-3 mr-1" />

@@ -98,7 +98,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Assignment Type */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Assignment Type *
             </label>
             <div className="flex space-x-4">
@@ -115,7 +115,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 }`}
               >
                 <FileText className="w-6 h-6 mx-auto mb-2 text-blue-600 dark:text-blue-400" />
-                <p className="font-semibold text-slate-900 dark:text-white">Class Assignment</p>
+                <p className="font-semibold text-slate-900 dark:text-foreground">Class Assignment</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                   For daily/weekly assignments
                 </p>
@@ -130,7 +130,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 }`}
               >
                 <Code className="w-6 h-6 mx-auto mb-2 text-purple-600 dark:text-purple-400" />
-                <p className="font-semibold text-slate-900 dark:text-white">Project</p>
+                <p className="font-semibold text-slate-900 dark:text-foreground">Project</p>
                 <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">
                   For course projects
                 </p>
@@ -140,7 +140,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
 
           {/* Course Selection */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Course *
             </label>
             <select
@@ -149,7 +149,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 setSelectedCourseId(e.target.value);
                 setSelectedProjectId('');
               }}
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             >
               <option value="">Select a course</option>
@@ -164,7 +164,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
           {/* Project Selection (if type is project) */}
           {assignmentType === 'project' && selectedCourseId && (
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-900 dark:text-white">
+              <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
                 Project *
               </label>
               {availableProjects.length === 0 ? (
@@ -177,7 +177,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 <select
                   value={selectedProjectId}
                   onChange={(e) => setSelectedProjectId(e.target.value)}
-                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                   required
                 >
                   <option value="">Select a project</option>
@@ -194,7 +194,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
 
           {/* Title */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Assignment Title *
             </label>
             <input
@@ -202,14 +202,14 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="e.g., Daily Assignment: Personal Portfolio Page"
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Description *
             </label>
             <textarea
@@ -217,14 +217,14 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Brief description of the assignment..."
               rows={3}
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               required
             />
           </div>
 
           {/* Instructions */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Detailed Instructions *
             </label>
             <textarea
@@ -232,7 +232,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
               onChange={(e) => setInstructions(e.target.value)}
               placeholder="Step-by-step instructions for students..."
               rows={6}
-              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+              className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               required
             />
           </div>
@@ -240,7 +240,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
           {/* Due Date and Max Score */}
           <div className="grid md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-900 dark:text-white flex items-center space-x-2">
+              <label className="text-sm font-semibold text-slate-900 dark:text-foreground flex items-center space-x-2">
                 <Calendar className="w-4 h-4" />
                 <span>Due Date *</span>
               </label>
@@ -248,12 +248,12 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-semibold text-slate-900 dark:text-white">
+              <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
                 Maximum Score *
               </label>
               <input
@@ -261,7 +261,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                 value={maxScore}
                 onChange={(e) => setMaxScore(parseInt(e.target.value) || 100)}
                 min="1"
-                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-card dark:bg-slate-800 text-slate-900 dark:text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -269,7 +269,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
 
           {/* File Attachments */}
           <div className="space-y-2">
-            <label className="text-sm font-semibold text-slate-900 dark:text-white">
+            <label className="text-sm font-semibold text-slate-900 dark:text-foreground">
               Attachments (Optional)
             </label>
             <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-lg p-6">
@@ -302,7 +302,7 @@ export function UploadAssignment({ onSubmit, onCancel }: UploadAssignmentProps) 
                   >
                     <div className="flex items-center space-x-2">
                       <FileText className="w-4 h-4 text-slate-400" />
-                      <span className="text-sm text-slate-900 dark:text-white">{att.name}</span>
+                      <span className="text-sm text-slate-900 dark:text-foreground">{att.name}</span>
                     </div>
                     <Button
                       type="button"

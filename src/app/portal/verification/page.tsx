@@ -132,7 +132,7 @@ export default function VerificationPage() {
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
-          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Loading...</h1>
+          <h1 className="text-2xl font-bold mb-4 text-gray-900 dark:text-foreground">Loading...</h1>
         </div>
       </div>
     );
@@ -146,7 +146,7 @@ export default function VerificationPage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-2">
             Complete Your Verification
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
@@ -244,9 +244,9 @@ export default function VerificationPage() {
 
         {/* Verification Form */}
         {currentStatus === 'incomplete' && (
-          <Card className="border-0 shadow-sm bg-white dark:bg-gray-800">
+          <Card className="border-0 shadow-sm bg-card dark:bg-gray-800">
             <CardHeader>
-              <CardTitle className="text-gray-900 dark:text-white">
+              <CardTitle className="text-gray-900 dark:text-foreground">
                 {getRoleTitle(userData.role)} Verification Form
               </CardTitle>
               <CardDescription className="text-gray-600 dark:text-gray-400">
@@ -301,8 +301,8 @@ export default function VerificationPage() {
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid md:grid-cols-3 gap-4">
-              <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Level 0 - Basic Access</h4>
+              <div className="p-4 bg-card dark:bg-gray-800 rounded-lg">
+                <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Level 0 - Basic Access</h4>
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>• View profile</li>
                   <li>• Basic portal navigation</li>
@@ -310,16 +310,16 @@ export default function VerificationPage() {
                   <li>• Full feature access {/* Temporarily enabled for UI development */}</li>
                 </ul>
               </div>
-              <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Level 1 - Identity Verified</h4>
+              <div className="p-4 bg-card dark:bg-gray-800 rounded-lg">
+                <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Level 1 - Identity Verified</h4>
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>• Browse courses/mentors</li>
                   <li>• View detailed content</li>
                   <li>• Limited interactions</li>
                 </ul>
               </div>
-              <div className="p-4 bg-white dark:bg-gray-800 rounded-lg">
-                <h4 className="font-semibold text-gray-900 dark:text-white mb-2">Level 2 - Full Access</h4>
+              <div className="p-4 bg-card dark:bg-gray-800 rounded-lg">
+                <h4 className="font-semibold text-gray-900 dark:text-foreground mb-2">Level 2 - Full Access</h4>
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
                   <li>• All portal features</li>
                   <li>• Full interactions</li>

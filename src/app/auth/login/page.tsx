@@ -94,13 +94,13 @@ export default function LoginPage() {
             backgroundImage: `url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iODAwIiBoZWlnaHQ9IjEyMDAiIHZpZXdCb3g9IjAgMCA4MDAgMTIwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIxMjAwIiBmaWxsPSJ1cmwoI3BhaW50MF9saW5lYXJfMF8xKSIvPgo8ZGVmcz4KPGxpbmVhckdyYWRpZW50IGlkPSJwYWludDBfbGluZWFyXzBfMSIgeDE9IjAiIHkxPSIwIiB4Mj0iODAwIiB5Mj0iMTIwMCIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgo8c3RvcCBzdG9wLWNvbG9yPSIjRkY2QjQwIi8+CjxzdG9wIG9mZnNldD0iMC41IiBzdG9wLWNvbG9yPSIjRkY4QzYwIi8+CjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzM0NzRCNyIvPgo8L2xpbmVhckdyYWRpZW50Pgo8L2RlZnM+Cjwvc3ZnPgo=')`
           }}
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#635bff]/20 via-pink-400/20 to-blue-600/30" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-pink-400/20 to-blue-600/30" />
         
         {/* Logo */}
         <div className="absolute top-8 left-8 z-10">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-              <div className="w-5 h-5 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-full" />
+            <div className="w-8 h-8 bg-card rounded-full flex items-center justify-center">
+              <div className="w-5 h-5 bg-gradient-to-br from-primary to-blue-600 rounded-full" />
             </div>
             <span className="text-white text-xl font-bold">Evolvix</span>
           </div>
@@ -118,16 +118,16 @@ export default function LoginPage() {
       </div>
 
       {/* Right Column - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-white dark:bg-gray-900">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-card dark:bg-gray-900">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-2xl mb-4">
-              <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                <div className="w-4 h-4 bg-gradient-to-br from-[#635bff] to-blue-600 rounded-full" />
+            <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-primary to-blue-600 rounded-2xl mb-4">
+              <div className="w-6 h-6 bg-card rounded-full flex items-center justify-center">
+                <div className="w-4 h-4 bg-gradient-to-br from-primary to-blue-600 rounded-full" />
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-foreground mb-2">
               Welcome Back!
             </h1>
             <p className="text-gray-600 dark:text-gray-400">
@@ -175,7 +175,7 @@ export default function LoginPage() {
                       <div className="w-full border-t border-gray-200 dark:border-gray-700" />
                     </div>
                     <div className="relative flex justify-center text-sm">
-                      <span className="px-4 bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400">
+                      <span className="px-4 bg-card dark:bg-gray-900 text-gray-500 dark:text-gray-400">
                         Or continue with email
                       </span>
                     </div>
@@ -254,7 +254,7 @@ export default function LoginPage() {
                 >
                   {isLoading ? (
                     <>
-                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
+                      <div className="w-4 h-4 border-2 border-card border-t-transparent rounded-full animate-spin mr-2" />
                       Signing in...
                     </>
                   ) : (
