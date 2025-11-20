@@ -32,7 +32,11 @@ import {
   ClipboardCheck,
   BarChart3,
   Users,
-  FileVideo
+  FileVideo,
+  Megaphone,
+  Wallet,
+  UsersRound,
+  FileBarChart
 } from 'lucide-react';
 
 import { settingsData, SettingsSection } from '@/data/mock/settingsData';
@@ -40,7 +44,7 @@ import { settingsData, SettingsSection } from '@/data/mock/settingsData';
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
-  role: 'student' | 'mentor' | 'admin';
+  role: 'student' | 'mentor' | 'admin' | 'provider';
   onViewChange?: (view: string) => void;
   currentView?: string; // For admin to track current view
   adminUser?: { fullName?: string; email?: string }; // Admin user info
@@ -396,6 +400,114 @@ const mentorMenuCategories: MentorMenuCategory[] = [
 // Flattened version for backward compatibility
 const mentorMenuItems: MenuItem[] = mentorMenuCategories.flatMap(category => category.items);
 
+// Provider menu items organized by category
+interface ProviderMenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+const providerMenuCategories: ProviderMenuCategory[] = [
+  {
+    category: 'Overview',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        subtitle: 'Overview & Impact',
+        icon: <LayoutDashboard className="w-5 h-5" />,
+        path: '/portal/provider/dashboard',
+      },
+    ]
+  },
+  {
+    category: 'Scholarships',
+    items: [
+      {
+        id: 'programs',
+        label: 'Programs & Courses',
+        subtitle: 'Browse Available Courses',
+        icon: <GraduationCap className="w-5 h-5" />,
+        path: '/portal/provider/programs',
+      },
+      {
+        id: 'campaigns',
+        label: 'Campaigns',
+        subtitle: 'Manage Scholarship Campaigns',
+        icon: <Megaphone className="w-5 h-5" />,
+        path: '/portal/provider/campaigns',
+      },
+      {
+        id: 'applications',
+        label: 'Applications',
+        subtitle: 'Review & Verify',
+        icon: <FileText className="w-5 h-5" />,
+        path: '/portal/provider/applications',
+      },
+      {
+        id: 'scholars',
+        label: 'Scholars',
+        subtitle: 'Track Awarded Scholars',
+        icon: <Users className="w-5 h-5" />,
+        path: '/portal/provider/scholars',
+      },
+    ]
+  },
+  {
+    category: 'Management',
+    items: [
+      {
+        id: 'funds',
+        label: 'Fund Management',
+        subtitle: 'Transfers & Disbursements',
+        icon: <Wallet className="w-5 h-5" />,
+        path: '/portal/provider/funds',
+      },
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        subtitle: 'Impact & Growth Metrics',
+        icon: <BarChart3 className="w-5 h-5" />,
+        path: '/portal/provider/analytics',
+      },
+      {
+        id: 'mentors',
+        label: 'Mentors',
+        subtitle: 'Manage Mentors & Payroll',
+        icon: <UsersRound className="w-5 h-5" />,
+        path: '/portal/provider/mentors',
+      },
+      {
+        id: 'communications',
+        label: 'Communications',
+        subtitle: 'Messages & Announcements',
+        icon: <MessageSquare className="w-5 h-5" />,
+        path: '/portal/provider/communications',
+      },
+      {
+        id: 'reports',
+        label: 'Reports',
+        subtitle: 'Generate & Export',
+        icon: <FileBarChart className="w-5 h-5" />,
+        path: '/portal/provider/reports',
+      },
+    ]
+  },
+  {
+    category: 'Account',
+    items: [
+      {
+        id: 'settings',
+        label: 'Settings',
+        subtitle: 'Profile & Preferences',
+        icon: <Settings className="w-5 h-5" />,
+        path: '/portal/provider/settings',
+      },
+    ]
+  }
+];
+
+const providerMenuItems: MenuItem[] = providerMenuCategories.flatMap(category => category.items);
+
 const iconMap: Record<string, any> = {
   LayoutDashboard,
   User,
@@ -420,7 +532,11 @@ const iconMap: Record<string, any> = {
   Calendar,
   ClipboardCheck,
   BarChart3,
-  Users
+  Users,
+  Megaphone,
+  Wallet,
+  UsersRound,
+  FileBarChart
 };
 
 export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView, adminUser }: SidebarProps) {
@@ -444,6 +560,9 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const getMenuItems = (): MenuItem[] => {
     if (role === 'admin') {
       return adminMenuItems;
+    }
+    if (role === 'provider') {
+      return providerMenuItems;
     }
     const items = role === 'student' ? studentMenuItems : mentorMenuItems;
     
@@ -476,11 +595,16 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const activeBarColor = 'bg-primary';
   const activeIconColor = 'text-primary';
   const activeBadgeBg = 'bg-primary';
-  const portalTitle = role === 'student' ? 'Student Portal' : role === 'mentor' ? 'Mentor Portal' : 'Admin Portal';
+  const portalTitle = role === 'student' ? 'Student Portal' 
+    : role === 'mentor' ? 'Mentor Portal' 
+    : role === 'provider' ? 'Provider Portal'
+    : 'Admin Portal';
   const headerIcon = role === 'student' 
     ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
     : role === 'mentor'
     ? <User className="w-6 h-6 text-sidebar-primary-foreground" />
+    : role === 'provider'
+    ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
     : <Shield className="w-6 h-6 text-sidebar-primary-foreground" />;
   
   useEffect(() => {
@@ -605,7 +729,9 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             const isActive = activeSection === section.id || currentPath?.includes(section.id);
             const settingsPath = role === 'student' 
               ? `/portal/student/settings?section=${section.id}`
-              : `/portal/mentor/settings?section=${section.id}`;
+              : role === 'mentor'
+              ? `/portal/mentor/settings?section=${section.id}`
+              : `/portal/provider/settings?section=${section.id}`;
 
             return (
               <button
@@ -646,9 +772,11 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               </button>
             );
           })
-        ) : (role === 'student' || role === 'mentor') && !isCollapsed ? (
-          // Student or Mentor menu with categories
-          (role === 'student' ? studentMenuCategories : mentorMenuCategories).map((category) => (
+        ) : (role === 'student' || role === 'mentor' || role === 'provider') && !isCollapsed ? (
+          // Student, Mentor, or Provider menu with categories
+          (role === 'student' ? studentMenuCategories 
+            : role === 'mentor' ? mentorMenuCategories 
+            : providerMenuCategories).map((category) => (
             <div key={category.category} className="mb-4">
               <div className="px-3 mb-2">
                 <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
@@ -816,6 +944,43 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               </div>
             )}
           </div>
+        ) : role === 'provider' ? (
+          (() => {
+            // Get provider info from localStorage
+            const providerData = typeof window !== 'undefined' 
+              ? localStorage.getItem('evolvix_current_provider')
+              : null;
+            const provider = providerData ? JSON.parse(providerData) : null;
+            const registrationData = typeof window !== 'undefined'
+              ? localStorage.getItem('evolvix_registration')
+              : null;
+            const regData = registrationData ? JSON.parse(registrationData) : null;
+            
+            return (
+              <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
+                <div className="relative flex-shrink-0">
+                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+                    <GraduationCap className="w-5 h-5 text-foreground" />
+                  </div>
+                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
+                </div>
+                {!isCollapsed && (
+                  <div className="flex-1 min-w-0 text-left">
+                    <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                      {provider?.organizationName || regData?.fullName || 'Provider'}
+                    </p>
+                    <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                      {provider?.contactEmail || regData?.email || 'provider@evolvix.com'}
+                    </p>
+                    <div className="flex items-center space-x-1 mt-0.5">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-xs text-primary font-medium">Online</span>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })()
         ) : role !== 'admin' && (
           <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
             <div className="relative flex-shrink-0">

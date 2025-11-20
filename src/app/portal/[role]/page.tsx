@@ -45,7 +45,9 @@ export default function PortalPage({ params }: PortalPageProps) {
         router.push('/portal/entrepreneur');
         break;
       case 'sponsor':
-        router.push('/portal/sponsor');
+      case 'provider':
+        // Redirect sponsor/provider to provider dashboard
+        router.push('/portal/provider/dashboard');
         break;
       default:
         router.push('/auth/role-selection');

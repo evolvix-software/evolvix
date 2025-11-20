@@ -11,7 +11,7 @@ import { useMessaging } from '@/hooks/useMessaging';
 interface LayoutProps {
   children: React.ReactNode;
   title: string;
-  role: 'student' | 'mentor' | 'admin';
+  role: 'student' | 'mentor' | 'admin' | 'provider';
   onViewChange?: (view: string) => void;
   currentView?: string; // For admin to track current view
   adminUser?: { fullName?: string; email?: string }; // Admin user info
@@ -109,17 +109,33 @@ export function Layout({ children, title, role, onViewChange, currentView, admin
           {/* Text Navigation Bar - Inside Body */}
           <div className="bg-navbar border-b border-border px-4 py-2">
             <div className="text-xs text-navbar-text lowercase">
-              <button onClick={() => router.push('/portal/student')} className="hover:text-navbar-text-hover">
-                dashboard
-              </button>
-              <span> - </span>
-              <button onClick={() => router.push('/portal/student/courses')} className="hover:text-navbar-text-hover">
-                my courses
-              </button>
-              {title && (
+              {role === 'provider' ? (
                 <>
+                  <button onClick={() => router.push('/portal/provider/dashboard')} className="hover:text-navbar-text-hover">
+                    dashboard
+                  </button>
+                  {title && (
+                    <>
+                      <span> - </span>
+                      <span className="text-navbar-text-active">{title.toLowerCase()}</span>
+                    </>
+                  )}
+                </>
+              ) : (
+                <>
+                  <button onClick={() => router.push('/portal/student')} className="hover:text-navbar-text-hover">
+                    dashboard
+                  </button>
                   <span> - </span>
-                  <span className="text-navbar-text-active">{title.toLowerCase()}</span>
+                  <button onClick={() => router.push('/portal/student/courses')} className="hover:text-navbar-text-hover">
+                    my courses
+                  </button>
+                  {title && (
+                    <>
+                      <span> - </span>
+                      <span className="text-navbar-text-active">{title.toLowerCase()}</span>
+                    </>
+                  )}
                 </>
               )}
             </div>

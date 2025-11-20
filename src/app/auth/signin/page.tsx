@@ -66,7 +66,13 @@ export default function SignInPage() {
         return;
       }
       
-      // Check survey status
+      // Redirect provider/sponsor users directly to provider dashboard
+      if (user.primaryRole === 'provider' || user.primaryRole === 'sponsor') {
+        router.push('/portal/provider/dashboard');
+        return;
+      }
+      
+      // Check survey status for other roles
       if (survey && !survey.completed) {
         router.push(`/auth/survey?role=${user.primaryRole}`);
       } else {
@@ -123,7 +129,13 @@ export default function SignInPage() {
         return;
       }
       
-      // Check survey status
+      // Redirect provider/sponsor users directly to provider dashboard
+      if (user.primaryRole === 'provider' || user.primaryRole === 'sponsor') {
+        router.push('/portal/provider/dashboard');
+        return;
+      }
+      
+      // Check survey status for other roles
       if (survey && !survey.completed) {
         router.push(`/auth/survey?role=${user.primaryRole}`);
       } else {
