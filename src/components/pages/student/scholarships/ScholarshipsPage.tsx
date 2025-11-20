@@ -27,6 +27,7 @@ import { AccessControl } from '@/components/common/features/AccessControl';
 import { useAppSelector } from '@/hooks';
 import { ScholarshipApplication, ScholarshipApplicationStatus } from '@/types/student';
 import { Course } from '@/interfaces/course';
+import { Course as CourseData } from '@/data/mock/coursesData';
 
 export function StudentScholarshipsPage() {
   const { enrolledCourses, courses } = useAppSelector(state => state.courses);
@@ -35,9 +36,21 @@ export function StudentScholarshipsPage() {
   const [selectedCourse, setSelectedCourse] = useState<string>('');
 
   // Convert Enrollment[] to Course[] by mapping enrolled course IDs to full Course objects
+  // Convert coursesData Course to interfaces/course Course format
   const enrolledCoursesAsCourses: Course[] = enrolledCourses
     .map(enrollment => courses.find(c => c.id === enrollment.courseId))
-    .filter((course): course is Course => course !== undefined);
+    .filter((course): course is CourseData => course !== undefined)
+    .map(course => ({
+      ...course,
+      courseType: course.courseCategory === 'bootcamp' ? 'bootcamp' : (course.courseCategory === 'crash' ? 'crash' : 'skill-focused') as 'crash' | 'skill-focused' | 'bootcamp',
+      courseCategory: course.courseCategory === 'bootcamp' ? 'bootcamp' : (course.courseCategory === 'crash' ? 'crash' : 'skill-focused') as 'crash' | 'skill-focused' | 'bootcamp',
+      deliveryMethod: course.courseType === 'live' ? 'live' : 'recorded' as 'live' | 'recorded' | 'mixed',
+      isFree: course.price === 0,
+      hasHackathons: course.courseCategory === 'bootcamp' || false,
+      hasScholarships: course.scholarshipAvailable || false,
+      hasAIInterview: course.courseCategory === 'bootcamp' || false,
+      hasManualInterview: course.courseCategory === 'bootcamp' || false,
+    } as unknown as Course));
 
   // Mock data - replace with API call
   useEffect(() => {

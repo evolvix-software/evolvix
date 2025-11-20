@@ -512,12 +512,12 @@ export function MyCoursesPage() {
                         onClick={() => router.push(`/portal/student/courses/${courseId}`)}
                         className="bg-gradient-to-r from-primary to-primary hover:from-[#4f48cc] hover:to-[#635bff] text-white shadow-lg shadow-[#635bff]/25 hover:shadow-xl transition-all duration-200"
                       >
-                        {course.deliveryMethod === 'recorded' ? (
+                        {course.courseType === 'recorded' ? (
                           <>
                             <Video className="w-4 h-4 mr-2" />
                             {nextLesson ? 'Watch Recorded Videos' : progress > 0 ? 'Review Recorded Videos' : 'Start Watching Videos'}
                           </>
-                        ) : course.deliveryMethod === 'live' ? (
+                        ) : course.courseType === 'live' ? (
                           <>
                             <Video className="w-4 h-4 mr-2" />
                             {nextLesson ? 'Join Live Classes' : progress > 0 ? 'View Live Classes' : 'Start Live Classes'}

@@ -432,7 +432,7 @@ export function ApplicationsPage() {
              selectedApplication.status !== 'rejected' && (
               <div className="flex justify-end gap-3 pt-4 border-t border-border">
                 <Button
-                  variant="error"
+                  variant="danger"
                   onClick={() => {
                     setShowDetailsModal(false);
                     setShowWithdrawModal(true);
@@ -467,7 +467,7 @@ export function ApplicationsPage() {
             <Button variant="ghost" onClick={() => setShowWithdrawModal(false)}>
               Cancel
             </Button>
-            <Button variant="error" onClick={handleWithdraw}>
+            <Button variant="danger" onClick={handleWithdraw}>
               Withdraw Application
             </Button>
           </div>

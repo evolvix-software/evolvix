@@ -39,7 +39,7 @@ export function UpcomingCourses({ courses }: UpcomingCoursesProps) {
             <Button
               onClick={() => router.push('/portal/student/courses')}
               size="sm"
-              variant="primary"
+              variant="default"
             >
               Browse Courses
             </Button>

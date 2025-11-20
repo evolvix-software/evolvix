@@ -23,10 +23,10 @@ import { ProgressBar } from '@/components/common/ui/ProgressBar';
 import { Modal } from '@/components/common/ui/Modal';
 import { useAppSelector } from '@/hooks';
 import { AIInterviewResult, InterviewTrainingCoordination } from '@/interfaces/mentor';
-import { Mentor } from '@/interfaces/mentor';
 
 export function MentorInterviewManagementPage() {
-  const mentor = useAppSelector(state => state.mentor?.currentMentor) as Mentor | undefined;
+  const { courses } = useAppSelector(state => state.courses);
+  const [mentorId, setMentorId] = useState<string>('');
   const [aiInterviewResults, setAIInterviewResults] = useState<AIInterviewResult[]>([]);
   const [trainingCoordination, setTrainingCoordination] = useState<
     InterviewTrainingCoordination[]
@@ -35,7 +35,19 @@ export function MentorInterviewManagementPage() {
   const [showResultModal, setShowResultModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'ai-results' | 'training'>('ai-results');
 
-  const hasBootcampAccess = mentor?.hasPremiumFeatures || false;
+  // Get mentor ID from localStorage
+  useEffect(() => {
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setMentorId(parsedData.email || '');
+    }
+  }, []);
+
+  // Check if mentor has bootcamp courses
+  const hasBootcampAccess = courses.some(
+    course => course.instructor.id === mentorId && course.courseCategory === 'bootcamp'
+  );
 
   useEffect(() => {
     // Mock data - replace with API call
@@ -410,7 +422,7 @@ export function MentorInterviewManagementPage() {
                       <p className="text-xs text-gray-600 mb-1">Problem Solving</p>
                       <ProgressBar
                         value={selectedResult.feedback.scoreBreakdown.problemSolving}
-                        variant="info"
+                        variant="primary"
                       />
                     </div>
                     <div>

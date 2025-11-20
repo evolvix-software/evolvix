@@ -17,7 +17,7 @@ export function QuickActions() {
       <CardContent className="space-y-2">
         <Button
           onClick={() => router.push('/portal/student/classes')}
-          variant="primary"
+          variant="default"
           className="w-full justify-start"
         >
           <Video className="w-4 h-4 mr-2" />

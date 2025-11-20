@@ -4,6 +4,7 @@
  */
 
 import { CourseType, Course, DeliveryMethod } from '@/interfaces/course';
+import { Course as CourseData } from '@/data/mock/coursesData';
 import { Student } from '@/types/student';
 import { Mentor } from '@/interfaces/mentor';
 
@@ -235,7 +236,7 @@ export function isCourseAccessExpired(
 /**
  * Check if student is enrolled in coding-related bootcamp
  */
-export function isCodingBootcampStudent(enrolledCourses: Course[]): boolean {
+export function isCodingBootcampStudent(enrolledCourses: CourseData[]): boolean {
   const codingCategories = [
     'development',
     'data-science',
@@ -247,7 +248,7 @@ export function isCodingBootcampStudent(enrolledCourses: Course[]): boolean {
 
   return enrolledCourses.some(
     course =>
-      course.courseType === 'bootcamp' &&
+      course.courseCategory === 'bootcamp' &&
       codingCategories.includes(course.category.toLowerCase())
   );
 }

@@ -652,7 +652,7 @@ export function AlertsPage() {
             }}>
               Cancel
             </Button>
-            <Button variant="error" onClick={handleDelete}>
+            <Button variant="danger" onClick={handleDelete}>
               Delete
             </Button>
           </div>

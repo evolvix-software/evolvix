@@ -24,18 +24,33 @@ import { Badge } from '@/components/common/ui/Badge';
 import { ProgressBar } from '@/components/common/ui/ProgressBar';
 import { Modal } from '@/components/common/ui/Modal';
 import { useAppSelector } from '@/hooks';
-import { ScholarshipApplication, ScholarshipApplicationStatus, ScholarshipReview } from '@/types/student';
-import { Mentor } from '@/interfaces/mentor';
+import { ScholarshipApplication, ScholarshipApplicationStatus } from '@/types/student';
+import { ScholarshipReview } from '@/interfaces/mentor';
 
 export function MentorScholarshipsManagementPage() {
-  const mentor = useAppSelector(state => state.mentor?.currentMentor) as Mentor | undefined;
+  const { courses } = useAppSelector(state => state.courses);
+  const [mentorId, setMentorId] = useState<string>('');
+  const [mentorName, setMentorName] = useState<string>('Mentor');
   const [applications, setApplications] = useState<ScholarshipApplication[]>([]);
   const [selectedApplication, setSelectedApplication] = useState<ScholarshipApplication | null>(null);
   const [showReviewModal, setShowReviewModal] = useState(false);
   const [reviewDecision, setReviewDecision] = useState<'approve' | 'reject' | null>(null);
   const [reviewFeedback, setReviewFeedback] = useState('');
 
-  const hasBootcampAccess = mentor?.hasPremiumFeatures || false;
+  // Get mentor ID and name from localStorage
+  useEffect(() => {
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setMentorId(parsedData.email || '');
+      setMentorName(parsedData.fullName || 'Mentor');
+    }
+  }, []);
+
+  // Check if mentor has bootcamp courses
+  const hasBootcampAccess = courses.some(
+    course => course.instructor.id === mentorId && course.courseCategory === 'bootcamp'
+  );
 
   useEffect(() => {
     // Mock data - replace with API call
@@ -113,7 +128,7 @@ export function MentorScholarshipsManagementPage() {
 
     const review: ScholarshipReview = {
       applicationId: selectedApplication.id,
-      mentorId: mentor?.id || '',
+      mentorId: mentorId || '',
       reviewedAt: new Date().toISOString(),
       decision: reviewDecision,
       feedback: reviewFeedback,
@@ -128,20 +143,21 @@ export function MentorScholarshipsManagementPage() {
     };
 
     // Update application status
-    const updatedApplications = applications.map(app =>
+    const updatedApplications: ScholarshipApplication[] = applications.map(app =>
       app.id === selectedApplication.id
         ? {
             ...app,
-            status:
+            status: (
               reviewDecision === 'approve'
                 ? 'mentor-approved'
-                : 'mentor-rejected',
+                : 'mentor-rejected'
+            ) as ScholarshipApplicationStatus,
             reviewHistory: [
               ...app.reviewHistory,
               {
-                stage: 'mentor',
-                reviewerId: mentor?.id || '',
-                reviewerName: mentor?.name || 'Mentor',
+                stage: 'mentor' as const,
+                reviewerId: mentorId || '',
+                reviewerName: mentorName,
                 action: reviewDecision,
                 feedback: reviewFeedback,
                 reviewedAt: review.reviewedAt,

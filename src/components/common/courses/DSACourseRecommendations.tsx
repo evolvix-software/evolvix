@@ -12,7 +12,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/ui
 import { CourseCard } from '@/components/common/cards/CourseCard';
 import { Badge } from '@/components/common/ui/Badge';
 import { Button } from '@/components/common/ui/Button';
-import { Course, DSACourse, DSAFocusArea } from '@/interfaces/course';
+import { DSACourse, DSAFocusArea } from '@/interfaces/course';
+import { Course } from '@/data/mock/coursesData';
 import { isCodingBootcampStudent } from '@/utils/accessControl';
 import { useAppSelector } from '@/hooks';
 
@@ -25,17 +26,22 @@ export function DSACourseRecommendations({
   variant = 'dashboard',
   maxCourses = 6,
 }: DSACourseRecommendationsProps) {
-  const { enrolledCourses, allCourses } = useAppSelector(state => state.courses);
+  const { enrolledCourses, courses } = useAppSelector(state => state.courses);
+
+  // Map enrollments to their actual Course objects
+  const enrolledCourseObjects = enrolledCourses
+    .map(enrollment => courses.find(course => course.id === enrollment.courseId))
+    .filter((course): course is Course => course !== undefined);
 
   // Check if student is enrolled in coding-related bootcamp
-  const isEligible = isCodingBootcampStudent(enrolledCourses as Course[]);
+  const isEligible = isCodingBootcampStudent(enrolledCourseObjects);
 
   if (!isEligible) {
     return null; // Hidden for non-coding bootcamp students
   }
 
   // Filter DSA courses (mock - replace with actual DSA course filtering)
-  const dsaCourses: DSACourse[] = (allCourses as Course[])
+  const dsaCourses: DSACourse[] = courses
     .filter(course => {
       // Mock filter - in real implementation, check course tags/category
       const dsaKeywords = ['dsa', 'data structures', 'algorithms', 'problem solving'];
@@ -47,11 +53,21 @@ export function DSACourseRecommendations({
     .slice(0, maxCourses)
     .map(course => ({
       ...course,
+      // Add required fields from Course interface
+      courseType: course.courseCategory === 'bootcamp' ? 'bootcamp' : (course.courseType === 'live' ? 'crash' : 'skill-focused') as 'crash' | 'skill-focused' | 'bootcamp',
+      courseCategory: course.courseCategory || (course.courseType === 'live' ? 'crash' : 'skill-focused') as 'crash' | 'skill-focused' | 'bootcamp',
+      deliveryMethod: course.courseType === 'live' ? 'live' : 'recorded' as 'live' | 'recorded' | 'mixed',
+      isFree: course.price === 0,
+      hasHackathons: course.courseCategory === 'bootcamp' || false,
+      hasScholarships: course.scholarshipAvailable || false,
+      hasAIInterview: course.courseCategory === 'bootcamp' || false,
+      hasManualInterview: course.courseCategory === 'bootcamp' || false,
+      // DSA-specific fields
       focusAreas: ['problem-solving', 'hackathons', 'interviews'] as DSAFocusArea[],
       isRecommended: true,
       recommendationReason: 'Recommended for bootcamp students',
       bootcampStudentSuccessRate: 95,
-    }));
+    } as unknown as DSACourse));
 
   if (dsaCourses.length === 0) {
     return null;

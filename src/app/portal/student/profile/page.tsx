@@ -355,7 +355,7 @@ export default function ProfilePage() {
                         </div>
                         <div className="flex items-center gap-2 mt-4">
                           <Button
-                            variant="primary"
+                            variant="default"
                             size="sm"
                             onClick={() => handleAcceptConnectionRequest(request.id)}
                             className="bg-gradient-to-r from-primary to-primary hover:from-[#4f48cc] hover:to-[#635bff] text-white"

@@ -23,26 +23,45 @@ import { Badge } from '@/components/common/ui/Badge';
 import { Modal } from '@/components/common/ui/Modal';
 import { useAppSelector } from '@/hooks';
 import { ExternalLink as ExternalLinkType } from '@/interfaces/mentor';
-import { Mentor } from '@/interfaces/mentor';
 
 export function MentorHackathonsManagementPage() {
-  const mentor = useAppSelector(state => state.mentor?.currentMentor) as Mentor | undefined;
+  const { courses } = useAppSelector(state => state.courses);
+  const [mentorId, setMentorId] = useState<string>('');
   const [links, setLinks] = useState<ExternalLinkType[]>([]);
   const [showAddLinkModal, setShowAddLinkModal] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedStudents, setSelectedStudents] = useState<string[]>([]);
-  const [newLink, setNewLink] = useState({
+  const [newLink, setNewLink] = useState<{
+    title: string;
+    url: string;
+    type: 'practice-problem';
+    category: string;
+    difficulty: 'beginner' | 'intermediate' | 'advanced';
+    platform: 'leetcode' | 'hackerrank' | 'codeforces' | 'other';
+    tags: string[];
+  }>({
     title: '',
     url: '',
-    type: 'practice-problem' as const,
+    type: 'practice-problem',
     category: '',
-    difficulty: 'beginner' as const,
-    platform: 'leetcode' as const,
-    tags: [] as string[],
+    difficulty: 'beginner',
+    platform: 'leetcode',
+    tags: [],
   });
 
+  // Get mentor ID from localStorage
+  useEffect(() => {
+    const storedData = localStorage.getItem('evolvix_registration');
+    if (storedData) {
+      const parsedData = JSON.parse(storedData);
+      setMentorId(parsedData.email || '');
+    }
+  }, []);
+
   // Check if mentor has bootcamp courses
-  const hasBootcampAccess = mentor?.hasPremiumFeatures || false;
+  const hasBootcampAccess = courses.some(
+    course => course.instructor.id === mentorId && course.courseCategory === 'bootcamp'
+  );
 
   useEffect(() => {
     // Mock data - replace with API call
