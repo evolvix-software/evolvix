@@ -151,13 +151,13 @@ export default function SignupPage() {
         </div>
         
         {/* Logo */}
-        <div className="absolute top-[-60px] left-8 z-20">
+        <div className="absolute top-6 left-8 z-20">
           <div className="flex items-center space-x-3 group cursor-pointer">
             <Image 
               src={evolvixWhiteLogo} 
               alt="Evolvix" 
-              width={160}
-              height={50}
+              width={140}
+              height={40}
               className="h-auto w-auto drop-shadow-lg"
               priority
             />
@@ -165,7 +165,7 @@ export default function SignupPage() {
         </div>
 
         {/* Stats Badge */}
-        <div className="absolute top-8 right-8 z-20">
+        <div className="absolute top-6 right-8 z-20">
           <div className="bg-white/15 backdrop-blur-md rounded-xl px-5 py-2.5 border-2 border-white/30 shadow-xl">
             <div className="flex items-center space-x-2">
               <div className="flex -space-x-1">
@@ -179,8 +179,8 @@ export default function SignupPage() {
         </div>
 
         {/* Lottie Animation - Larger and more prominent */}
-        <div className="absolute inset-0 flex items-center justify-center z-10 px-12 py-16">
-          <div className="w-full h-full max-w-3xl max-h-3xl relative">
+        <div className="absolute inset-0 flex items-center justify-center z-10 px-16 py-20">
+          <div className="w-full h-full max-w-xl max-h-xl relative">
             {/* Animated Glow Rings - Blue themed */}
             <div className="absolute -inset-8 bg-gradient-to-r from-blue-400/20 via-blue-300/20 to-blue-500/20 rounded-full blur-3xl animate-pulse" />
             <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/30 to-blue-500/30 rounded-full blur-2xl" />

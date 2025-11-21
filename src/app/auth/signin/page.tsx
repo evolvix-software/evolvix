@@ -171,13 +171,13 @@ export default function SignInPage() {
         }} />
         
         {/* Logo */}
-        <div className="absolute top-[-40px] left-8 z-20">
+        <div className="absolute top-6 left-8 z-20">
           <div className="flex items-center space-x-3 group cursor-pointer">
             <Image 
               src={evolvixWhiteLogo} 
               alt="Evolvix" 
-              width={160}
-              height={50}
+              width={140}
+              height={40}
               className="h-auto w-auto drop-shadow-lg"
               priority
             />
