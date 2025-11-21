@@ -12,6 +12,8 @@ import { Input } from '@/components/common/forms/Input';
 import { signIn, signInWithGoogle } from '@/lib/firebase';
 import { authApi } from '@/lib/api/auth';
 import { LottieAnimation } from '@/components/common/LottieAnimation';
+import Image from 'next/image';
+import { evolvixWhiteLogo } from '@/assets/assets';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -169,14 +171,16 @@ export default function SignInPage() {
         }} />
         
         {/* Logo */}
-        <div className="absolute top-8 left-8 z-20">
+        <div className="absolute top-[-40px] left-8 z-20">
           <div className="flex items-center space-x-3 group cursor-pointer">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl border border-white/30 group-hover:bg-white/30 transition-all duration-300">
-              <div className="w-7 h-7 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                <Lock className="w-4 h-4 text-blue-600" />
-              </div>
-            </div>
-            <span className="text-white text-2xl font-bold tracking-tight drop-shadow-lg">Evolvix</span>
+            <Image 
+              src={evolvixWhiteLogo} 
+              alt="Evolvix" 
+              width={160}
+              height={50}
+              className="h-auto w-auto drop-shadow-lg"
+              priority
+            />
           </div>
         </div>
 
@@ -231,11 +235,15 @@ export default function SignInPage() {
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
-                <Lock className="w-6 h-6 text-white" />
-              </div>
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">Evolvix</span>
+            <div className="inline-flex items-center justify-center mb-4">
+              <Image 
+                src={evolvixWhiteLogo} 
+                alt="Evolvix" 
+                width={280}
+                height={90}
+                className="h-24 w-auto"
+                priority
+              />
             </div>
           </div>
 

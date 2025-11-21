@@ -13,6 +13,8 @@ import { authApi } from '@/lib/api';
 import { Button } from '@/components/common/forms/Button';
 import { Input } from '@/components/common/forms/Input';
 import { LottieAnimation } from '@/components/common/LottieAnimation';
+import Image from 'next/image';
+import { evolvixWhiteLogo } from '@/assets/assets';
 
 const signupSchema = z.object({
   fullName: z.string().min(2, 'Full name must be at least 2 characters'),
@@ -149,14 +151,16 @@ export default function SignupPage() {
         </div>
         
         {/* Logo */}
-        <div className="absolute top-8 left-8 z-20">
+        <div className="absolute top-[-60px] left-8 z-20">
           <div className="flex items-center space-x-3 group cursor-pointer">
-            <div className="w-12 h-12 bg-white/25 backdrop-blur-md rounded-2xl flex items-center justify-center shadow-xl border-2 border-white/40 group-hover:scale-110 group-hover:bg-white/35 transition-all duration-300">
-              <div className="w-7 h-7 bg-white rounded-xl flex items-center justify-center shadow-lg">
-                <ArrowRight className="w-4 h-4 text-blue-600 rotate-[-45deg]" />
-              </div>
-            </div>
-            <span className="text-white text-2xl font-bold tracking-tight drop-shadow-lg">Evolvix</span>
+            <Image 
+              src={evolvixWhiteLogo} 
+              alt="Evolvix" 
+              width={160}
+              height={50}
+              className="h-auto w-auto drop-shadow-lg"
+              priority
+            />
           </div>
         </div>
 
@@ -181,7 +185,7 @@ export default function SignupPage() {
             <div className="absolute -inset-8 bg-gradient-to-r from-blue-400/20 via-blue-300/20 to-blue-500/20 rounded-full blur-3xl animate-pulse" />
             <div className="absolute -inset-4 bg-gradient-to-r from-blue-400/30 to-blue-500/30 rounded-full blur-2xl" />
             
-            <div className="relative w-full h-full bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/30 shadow-2xl p-8 transform hover:scale-105 transition-transform duration-500">
+            <div className="relative w-full h-full bg-white/10 backdrop-blur-md rounded-3xl border-2 border-white/30 shadow-2xl p-8">
               <LottieAnimation
                 animationUrl="/animations/analytical-thinking-illustration.json"
                 animationId="VG6JPaMxag"
@@ -213,21 +217,25 @@ export default function SignupPage() {
       </div>
 
       {/* Right Column - Signup Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-8 lg:p-12 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md overflow-y-auto scrollbar-hide pt-16 lg:pt-12">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
           <div className="lg:hidden text-center mb-8">
-            <div className="inline-flex items-center space-x-3 mb-4">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-xl">
-                <ArrowRight className="w-6 h-6 text-white rotate-[-45deg]" />
-              </div>
-              <span className="text-2xl font-bold text-gray-900 dark:text-white">Evolvix</span>
+            <div className="inline-flex items-center justify-center mb-4">
+              <Image 
+                src={evolvixWhiteLogo} 
+                alt="Evolvix" 
+                width={280}
+                height={90}
+                className="h-24 w-auto"
+                priority
+              />
             </div>
           </div>
 
           {/* Header */}
           <div className="mb-8">
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center space-x-3 mb-4 mt-20">
               <div className="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center shadow-lg">
                 <User className="w-7 h-7 text-blue-600 dark:text-blue-400" />
               </div>

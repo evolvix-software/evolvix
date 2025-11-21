@@ -40,6 +40,8 @@ import {
 } from 'lucide-react';
 
 import { settingsData, SettingsSection } from '@/data/mock/settingsData';
+import Image from 'next/image';
+import { evolvixLogo } from '@/assets/assets';
 
 interface SidebarProps {
   isCollapsed: boolean;
@@ -670,13 +672,15 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
         <div className="flex items-center space-x-3">
-          {/* Evolvix Logo - Blue Diamond */}
-          <div className="w-10 h-10 bg-primary rounded flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-xs">EV</span>
-          </div>
-          <div>
-            <h1 className="text-sm font-bold text-foreground leading-tight">EVOLVIX</h1>
-          </div>
+          {/* Evolvix Logo */}
+          <Image 
+            src={evolvixLogo} 
+            alt="Evolvix" 
+            width={160}
+            height={50}
+            className="h-auto w-auto drop-shadow-lg"
+            priority
+          />
         </div>
       </div>
 
