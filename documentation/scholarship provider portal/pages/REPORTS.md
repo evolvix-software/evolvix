@@ -1,17 +1,26 @@
-# 📊 Reports & Exports Page
+# 📊 Reports & Exports Page (ADMIN ONLY)
 
 ## Overview
 
-The Reports & Exports page allows providers to generate comprehensive reports on campaigns, scholars, finances, and impact. It provides tools for custom report building, scheduled reports, and multiple export formats to support stakeholder reporting and decision-making.
+**IMPORTANT: This page is for ADMINISTRATORS ONLY, not scholarship providers.**
+
+The Reports & Exports page allows Evolvix administrators to generate comprehensive reports on campaigns, scholars, finances, and impact across the entire platform. It provides tools for custom report building, scheduled reports, and multiple export formats to support system-wide reporting and decision-making.
+
+**Scholarship providers do NOT have access to comprehensive reports.** Providers can only view:
+- Their own fund transactions (transparency)
+- Evolvix fund distribution to scholars (transparency)
+- Growth of scholars they've donated to (if applicable)
+
+All fund management reports and comprehensive analytics are managed exclusively by administrators.
 
 ## Route
 
 ```
-/portal/provider/reports
-/portal/provider/reports/campaign
-/portal/provider/reports/scholar
-/portal/provider/reports/financial
-/portal/provider/reports/impact
+/admin/reports
+/admin/reports/campaign
+/admin/reports/scholar
+/admin/reports/financial
+/admin/reports/impact
 ```
 
 ## Page Layout

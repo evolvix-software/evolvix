@@ -2,7 +2,14 @@
 
 ## Overview
 
-The Fund Management page allows providers to track fund transfers to Evolvix, monitor disbursements to scholars, view financial reports, and manage payment methods. It provides complete visibility into the financial flow from provider pledges to scholar disbursements.
+The Fund Management page allows providers to track fund transfers to Evolvix, monitor disbursements to scholars, and manage payment methods. **This page provides transparency into fund transactions, NOT comprehensive financial reports.**
+
+**Important Notes:**
+- Providers can see their own fund transactions (transfers, disbursements)
+- Providers can see Evolvix fund distribution of student  that scholors transferred t evolvix(for transparency)
+- Providers can see growth of scholars they've donated to (if applicable)
+- **Comprehensive financial reports are ADMIN-ONLY** (see `/admin/reports`)
+- All fund management reports are managed by administrators only
 
 ## Route
 

@@ -2,439 +2,544 @@
 
 ## Overview
 
-The Settings page allows providers to configure account settings, manage team members, set notification preferences, configure integrations, manage compliance settings, and customize portal preferences. It provides comprehensive control over the provider portal configuration.
+The Settings page allows scholarship providers to configure their organization profile, account security, payment methods, notification preferences, and system preferences. This page is essential for managing provider account details and customizing the portal experience.
 
 ## Route
 
 ```
 /portal/provider/settings
-/portal/provider/settings/profile
-/portal/provider/settings/team
-/portal/provider/settings/notifications
-/portal/provider/settings/integrations
-/portal/provider/settings/compliance
-/portal/provider/settings/security
+/portal/provider/settings/[section]
 ```
 
 ## Page Layout
 
 ### Header Section
 - Page title: "Settings"
-- Settings categories
-- Save button (context-aware)
-- Help link
+- Current organization name
+- Verification badge (if verified)
+- Save changes button (when editing)
 
-### Tabs
-- Profile
-- Team
-- Notifications
-- Integrations
-- Compliance
-- Security
-- Billing (if applicable)
+### Settings Sections Navigation
+- Sidebar or tab navigation
+- Section icons
+- Active section indicator
 
-## Components
+## Settings Sections
 
-### 1. Profile Tab
+### 1. Organization Profile
 
-#### Organization Information
+**Purpose:** Manage organization information and branding
+
+#### Basic Information
 **Fields:**
-- Organization Name* (text input)
-- Organization Slug* (text input, auto-generated)
-- Logo (image upload)
-- Banner (image upload)
-- Description (textarea)
-- Website (url input)
-- Contact Email* (email input)
-- Contact Phone (tel input)
-- Address (textarea)
+- **Organization Name*** (required)
+- **Organization Slug** (auto-generated, editable)
+- **Contact Email*** (required)
+- **Contact Phone**
+- **Website URL**
+- **Address**
+- **Country**
+- **City/State**
 
-**Features:**
-- Image upload with preview
-- Slug validation
-- Auto-save draft
+**Actions:**
+- Update organization name
+- Edit contact information
+- Update website and address
+- Save changes
+
+#### Branding
+**Fields:**
+- **Logo Upload**
+  - Supported formats: PNG, JPG, SVG
+  - Max size: 2MB
+  - Recommended dimensions: 200x200px
+  - Preview current logo
+  - Remove logo option
+- **Banner Upload**
+  - Supported formats: PNG, JPG
+  - Max size: 5MB
+  - Recommended dimensions: 1200x300px
+  - Preview current banner
+  - Remove banner option
+
+**Actions:**
+- Upload logo
+- Upload banner
+- Remove logo/banner
 - Preview changes
+- Save branding
 
----
-
-#### Contact Information
+#### Organization Description
 **Fields:**
-- Primary Contact Name* (text input)
-- Primary Contact Email* (email input)
-- Primary Contact Phone (tel input)
-- Secondary Contact (optional)
-- Billing Contact (optional)
+- **About Organization** (textarea)
+  - Mission statement
+  - Values
+  - Impact focus
+  - Max 2000 characters
+- **Focus Areas** (tags)
+  - Education
+  - Technology
+  - Healthcare
+  - Social Impact
+  - etc.
 
-**Validation:**
-- Email format validation
-- Phone format validation
-- Required field validation
+**Actions:**
+- Edit description
+- Add/remove focus areas
+- Save description
 
 ---
 
-#### Organization Details
+### 2. Account & Security
+
+**Purpose:** Manage account credentials and security settings
+
+#### Account Information
 **Fields:**
-- Industry (dropdown)
-- Organization Type (dropdown)
-- Tax ID (text input, masked)
-- Registration Number (text input)
-- Founded Year (number input)
-- Organization Size (dropdown)
+- **Email Address*** (read-only, contact support to change)
+- **User ID** (read-only, system-generated)
+- **Account Created** (read-only)
+- **Last Login** (read-only)
+- **Account Status** (Active, Suspended, etc.)
 
-**Security:**
-- Mask sensitive information
-- Encrypt sensitive data
-- Secure storage
+**Actions:**
+- View account details
+- Request email change (contact support)
+
+#### Password Management
+**Fields:**
+- **Current Password*** (required for changes)
+- **New Password*** (required)
+  - Minimum 8 characters
+  - Must include uppercase, lowercase, number
+  - Password strength indicator
+- **Confirm New Password*** (required)
+  - Must match new password
+
+**Password Requirements:**
+- Minimum 8 characters
+- At least one uppercase letter
+- At least one lowercase letter
+- At least one number
+- At least one special character
+
+**Actions:**
+- Change password
+- View password requirements
+- Show/hide password fields
+- Save new password
+
+#### Two-Factor Authentication (2FA)
+**Features:**
+- Enable/Disable 2FA
+- Setup QR code for authenticator app
+- Backup codes generation
+- Recovery email setup
+
+**2FA Methods:**
+- Authenticator App (TOTP)
+- SMS (optional)
+- Email (backup)
+
+**Actions:**
+- Enable 2FA
+- Disable 2FA
+- Generate backup codes
+- View recovery options
+
+#### Security Settings
+**Features:**
+- **Active Sessions**
+  - List of active sessions
+  - Device information
+  - Location
+  - Last activity
+  - Revoke session option
+- **Login History**
+  - Recent login attempts
+  - Success/failure status
+  - IP address
+  - Location
+  - Date/time
+- **Security Alerts**
+  - Enable email alerts for suspicious activity
+  - Enable alerts for password changes
+  - Enable alerts for new device login
+
+**Actions:**
+- View active sessions
+- Revoke sessions
+- View login history
+- Configure security alerts
 
 ---
 
-### 2. Team Tab
+### 3. Payment Methods
 
-#### Team Members List
+**Purpose:** Manage payment methods for fund transfers
+
+#### Payment Methods List
 **Displays:**
-- Team member name and photo
-- Email address
-- Role
-- Status (Active, Inactive, Pending)
-- Last active
-- Actions
+- Payment method type (Bank Transfer, UPI, etc.)
+- Account details (masked)
+- Default indicator
+- Status (Verified, Pending)
+- Last used date
+
+**Payment Method Types:**
+- **Bank Transfer**
+  - Bank name
+  - Account number (masked)
+  - IFSC code
+  - Account holder name
+  - Account type (Savings/Current)
+- **UPI**
+  - UPI ID
+  - Verified status
+- **Digital Wallet** (if applicable)
+  - Wallet type
+  - Wallet ID
 
 **Actions:**
-- Invite Member
-- Edit Member
-- Change Role
-- Deactivate Member
-- Remove Member
+- Add new payment method
+- Set default payment method
+- Edit payment method
+- Remove payment method
+- Verify payment method
 
----
+#### Add Payment Method
+**Form Fields:**
+- **Payment Method Type*** (dropdown)
+  - Bank Transfer
+  - UPI
+  - Digital Wallet
+- **Account Details** (based on type)
+  - Bank name, account number, IFSC (for bank)
+  - UPI ID (for UPI)
+  - Wallet details (for wallet)
+- **Account Holder Name*** (required)
+- **Set as Default** (checkbox)
 
-#### Invite Team Member Form
-**Fields:**
-- Email Address* (email input)
-- Name (text input, optional)
-- Role* (Admin, Reviewer, Finance, Viewer)
-- Permissions* (granular permissions)
-- Send Invitation Email (checkbox)
-
-**Role Permissions:**
-- **Admin**: Full access
-- **Reviewer**: Applications, Scholars (read/write)
-- **Finance**: Funds, Reports (read/write)
-- **Viewer**: Read-only access
-
-**Custom Permissions:**
-- Campaigns (create, read, update, delete)
-- Applications (read, verify, score, award)
-- Scholars (read, update)
-- Funds (read, transfer)
-- Reports (read, generate)
-- Settings (read, update)
-
-**Process:**
-1. Enter email and role
-2. Set permissions
-3. Send invitation
-4. Member receives email
-5. Member accepts and joins
-
----
-
-#### Edit Team Member
-**Fields:**
-- Name (text input)
-- Role (dropdown)
-- Permissions (checkboxes)
-- Status (Active, Inactive)
+**Verification:**
+- Upload proof document (bank statement, etc.)
+- Verification status
+- Verification notes
 
 **Actions:**
-- Update Role
-- Update Permissions
-- Deactivate Account
-- Remove from Team
+- Add payment method
+- Upload verification documents
+- Cancel addition
 
 ---
 
-### 3. Notifications Tab
+### 4. Notification Preferences
+
+**Purpose:** Configure email and in-app notification settings
 
 #### Email Notifications
 **Notification Types:**
-- New Application Received
-- Application Status Changed
-- Scholar Status Changed
-- Job Placement Updated
-- Graduation Recorded
-- Fund Transfer Status
-- Disbursement Completed
-- Campaign Updates
-- Team Member Actions
-- System Alerts
+- **Application Notifications**
+  - New application received
+  - Application status changed
+  - Application requires attention
+  - Bulk application updates
+- **Scholar Notifications**
+  - Scholar progress updates
+  - Scholar achievements
+  - Scholar at-risk alerts
+  - Job placement updates
+  - Graduation notifications
+- **Campaign Notifications**
+  - Campaign status changes
+  - Campaign assignment notifications
+  - Campaign deadline reminders
+- **Fund Notifications**
+  - Transfer status updates
+  - Transfer confirmations
+  - Disbursement notifications
+  - Balance alerts
+- **System Notifications**
+  - System updates
+  - Maintenance notices
+  - Security alerts
+  - Account changes
 
 **Settings:**
-- Enable/Disable each notification
-- Email frequency (Instant, Daily Digest, Weekly Digest)
+- Enable/Disable each notification type
+- Notification frequency (Instant, Daily Digest, Weekly Summary)
 - Email format (HTML, Plain Text)
 
----
+**Actions:**
+- Toggle notification types
+- Set notification frequency
+- Save preferences
+- Test email notification
 
 #### In-App Notifications
 **Settings:**
-- Enable in-app notifications
-- Notification sound
-- Desktop notifications
-- Notification categories
+- **Enable In-App Notifications** (toggle)
+- **Notification Sound** (toggle)
+- **Desktop Notifications** (toggle, requires permission)
+- **Notification Badge** (toggle)
 
-**Categories:**
+**Notification Categories:**
 - Applications
 - Scholars
-- Funds
 - Campaigns
-- Team
+- Funds
 - System
 
----
-
-#### Notification Preferences
-**Preferences:**
-- Quiet hours (time range)
-- Do not disturb mode
-- Priority notifications only
-- Notification grouping
+**Actions:**
+- Enable/disable notification categories
+- Configure notification display
+- Test notifications
 
 ---
 
-### 4. Integrations Tab
+### 5. Preferences
 
-#### Available Integrations
-**Integration Types:**
-- Payment Gateways
-- Email Services
-- Calendar (Google, Outlook)
-- Accounting Software
-- LMS Integration
-- Student Information System
-- Analytics Tools
-- Communication Tools
+**Purpose:** Customize portal appearance and behavior
 
----
-
-#### Integration Configuration
-**For Each Integration:**
-- Integration name
-- Status (Connected, Disconnected)
-- Configuration fields
-- Test connection button
-- Disconnect button
-
-**Example - Payment Gateway:**
-- API Key
-- Secret Key
-- Webhook URL
-- Test Mode toggle
-- Connection status
-
-**Example - Email Service:**
-- SMTP Server
-- Port
-- Username
-- Password
-- From Email
-- Test email button
-
----
-
-#### Webhook Configuration
-**Fields:**
-- Webhook URL* (url input)
-- Events* (multi-select)
-- Secret Key (text input, masked)
-- Status (Active, Inactive)
-- Test Webhook button
-
-**Events:**
-- Application submitted
-- Application awarded
-- Scholar graduated
-- Job placement
-- Fund transfer
-- Disbursement
-
----
-
-### 5. Compliance Tab
-
-#### Data Retention Settings
+#### Display Preferences
 **Settings:**
-- Application retention period (days/years)
-- Scholar data retention period
-- Financial data retention period
-- Archive old data (checkbox)
-- Auto-delete after retention (checkbox)
+- **Theme**
+  - Light
+  - Dark
+  - Auto (system preference)
+- **Language**
+  - English (default)
+  - Hindi
+  - Other languages (if available)
+- **Date Format**
+  - DD/MM/YYYY
+  - MM/DD/YYYY
+  - YYYY-MM-DD
+- **Time Format**
+  - 12-hour
+  - 24-hour
+- **Currency Display**
+  - INR (₹)
+  - USD ($)
+  - Other currencies
 
----
+**Actions:**
+- Select theme
+- Change language
+- Set date/time format
+- Save preferences
 
-#### Consent Management
+#### Dashboard Preferences
 **Settings:**
-- Require explicit consent for data sharing
-- Consent expiration period
-- Consent renewal reminders
-- Consent withdrawal process
+- **Default Dashboard View**
+  - Overview (default)
+  - Detailed
+  - Compact
+- **Default Landing Page**
+  - Dashboard
+  - Campaigns
+  - Applications
+  - Scholars
+- **Widget Visibility**
+  - Show/hide specific widgets
+  - Widget order preference
+- **Data Refresh Rate**
+  - Real-time
+  - Every 5 minutes
+  - Every 15 minutes
+  - Manual refresh only
 
-**Features:**
-- Consent tracking
-- Consent history
-- Consent reports
-- Consent audit log
+**Actions:**
+- Configure dashboard layout
+- Set default landing page
+- Customize widgets
+- Save dashboard preferences
+
+#### Table & List Preferences
+**Settings:**
+- **Default View Mode**
+  - Grid
+  - List
+  - Table
+- **Items Per Page**
+  - 10
+  - 25
+  - 50
+  - 100
+- **Default Sort**
+  - By date (newest first)
+  - By name (A-Z)
+  - By status
+  - Custom
+
+**Actions:**
+- Set default view mode
+- Configure pagination
+- Set default sort order
 
 ---
+
+### 6. Privacy & Security
+
+**Purpose:** Manage privacy settings and data sharing preferences
 
 #### Privacy Settings
 **Settings:**
-- Data anonymization
-- PII masking
-- Data export options
-- Data deletion requests
-- GDPR compliance mode
-- CCPA compliance mode
-
----
-
-#### Audit Logging
-**Settings:**
-- Enable audit logging
-- Log retention period
-- Log export options
-- Log access permissions
-
-**Logged Actions:**
-- User logins
-- Data access
-- Data modifications
-- Settings changes
-- Team member actions
-- Financial transactions
-
----
-
-### 6. Security Tab
-
-#### Password Settings
-**Settings:**
-- Minimum password length
-- Password complexity requirements
-- Password expiration (days)
-- Password history (prevent reuse)
-- Two-factor authentication (2FA)
-
-**2FA Configuration:**
-- Enable 2FA
-- Authentication method (SMS, Email, App)
-- Backup codes
-- Recovery options
-
----
-
-#### Session Management
-**Settings:**
-- Session timeout (minutes)
-- Remember me option
-- Concurrent session limit
-- Force logout on password change
-
-**Active Sessions:**
-- List of active sessions
-- Device information
-- Location
-- Last activity
-- Terminate session option
-
----
-
-#### Access Control
-**Settings:**
-- IP whitelist (optional)
-- IP blacklist
-- Geographic restrictions
-- Device restrictions
-- Time-based access
-
----
-
-#### Security Alerts
-**Settings:**
-- Failed login alerts
-- Unusual activity alerts
-- Password change alerts
-- Permission change alerts
-- Security breach alerts
-
-**Alert Methods:**
-- Email
-- In-app notification
-- SMS (optional)
-
----
-
-### 7. Billing Tab (If Applicable)
-
-#### Subscription Information
-**Displays:**
-- Current plan
-- Subscription status
-- Billing cycle
-- Next billing date
-- Amount
+- **Profile Visibility**
+  - Public (visible to all)
+  - Private (visible to Evolvix only)
+  - Limited (visible to assigned scholars)
+- **Data Sharing**
+  - Share analytics data (anonymized)
+  - Share success stories (with consent)
+  - Share impact metrics publicly
+- **Contact Information Visibility**
+  - Show email to scholars
+  - Show phone to scholars
+  - Show address publicly
 
 **Actions:**
-- Upgrade Plan
-- Downgrade Plan
-- Cancel Subscription
-- Update Payment Method
+- Configure visibility settings
+- Update data sharing preferences
+- Save privacy settings
+
+#### Data Management
+**Features:**
+- **Data Export**
+  - Export account data
+  - Export campaign data
+  - Export scholar data
+  - Export financial data
+  - Format: CSV, JSON, PDF
+- **Data Deletion**
+  - Request data deletion
+  - Account deletion request
+  - Data retention information
+
+**Actions:**
+- Request data export
+- Request data deletion
+- View data retention policy
+
+#### Cookie Preferences
+**Settings:**
+- **Essential Cookies** (required, cannot disable)
+- **Analytics Cookies** (optional)
+- **Marketing Cookies** (optional)
+
+**Actions:**
+- Manage cookie preferences
+- View cookie policy
 
 ---
 
-#### Payment Methods
-**Displays:**
-- Saved payment methods
-- Default payment method
-- Billing history
+### 8. Integration Settings (Future)
+
+**Purpose:** Configure integrations with external services
+
+#### API Access
+**Features:**
+- **API Keys**
+  - Generate API key
+  - Revoke API key
+  - View API usage
+  - Set API permissions
+- **Webhooks**
+  - Configure webhook URLs
+  - Test webhooks
+  - View webhook logs
 
 **Actions:**
-- Add Payment Method
-- Set Default
-- Remove Payment Method
-- View Invoices
+- Generate API key
+- Configure webhooks
+- View API documentation
+
+#### Third-Party Integrations
+**Available Integrations:**
+- Accounting software (future)
+- CRM systems (future)
+- Email marketing (future)
+- Analytics tools (future)
+
+**Actions:**
+- Connect integration
+- Disconnect integration
+- Configure integration settings
 
 ---
 
-#### Invoice History
-**Displays:**
-- Invoice number
-- Date
-- Amount
-- Status
-- Download link
+## User Interactions
 
-**Actions:**
-- Download Invoice
-- View Invoice Details
-- Request Receipt
+### 1. Update Organization Profile
+- Navigate to Settings → Organization Profile
+- Edit organization details
+- Upload logo/banner
+- Update description
+- Save changes
+- View confirmation message
+
+### 2. Change Password
+- Navigate to Settings → Account & Security
+- Click "Change Password"
+- Enter current password
+- Enter new password
+- Confirm new password
+- Save changes
+- Receive confirmation email
+
+### 3. Enable 2FA
+- Navigate to Settings → Account & Security
+- Click "Enable 2FA"
+- Scan QR code with authenticator app
+- Enter verification code
+- Save backup codes
+- Confirm 2FA enabled
+
+### 4. Add Payment Method
+- Navigate to Settings → Payment Methods
+- Click "Add Payment Method"
+- Select payment type
+- Enter payment details
+- Upload verification documents
+- Set as default (optional)
+- Save payment method
+- Wait for verification
+
+### 5. Configure Notifications
+- Navigate to Settings → Notification Preferences
+- Toggle notification types
+- Set notification frequency
+- Configure in-app notifications
+- Save preferences
+
+### 6. Update Preferences
+- Navigate to Settings → Preferences
+- Select theme
+- Change language
+- Configure dashboard preferences
+- Save preferences
+- See immediate changes
+
+### 7. Manage Privacy
+- Navigate to Settings → Privacy & Security
+- Configure visibility settings
+- Update data sharing preferences
+- Request data export
+- Save privacy settings
 
 ---
 
 ## Data Requirements
 
 ### API Endpoints
-- `GET /api/provider/settings/profile`
+- `GET /api/provider/settings`
 - `PUT /api/provider/settings/profile`
-- `GET /api/provider/settings/team`
-- `POST /api/provider/settings/team/invite`
-- `PUT /api/provider/settings/team/:memberId`
-- `GET /api/provider/settings/notifications`
-- `PUT /api/provider/settings/notifications`
-- `GET /api/provider/settings/integrations`
-- `POST /api/provider/settings/integrations`
-- `PUT /api/provider/settings/compliance`
 - `PUT /api/provider/settings/security`
+- `PUT /api/provider/settings/notifications`
+- `PUT /api/provider/settings/preferences`
+- `POST /api/provider/settings/payment-methods`
+- `DELETE /api/provider/settings/payment-methods/:id`
+- `GET /api/provider/settings/team` (if applicable)
+- `POST /api/provider/settings/team/invite` (if applicable)
 
 ### Data Structure
 ```typescript
@@ -442,143 +547,172 @@ interface ProviderSettings {
   profile: {
     organizationName: string;
     organizationSlug: string;
-    logo?: string;
-    banner?: string;
     contactEmail: string;
     contactPhone?: string;
+    website?: string;
+    address?: string;
+    logo?: string;
+    banner?: string;
+    description?: string;
+    focusAreas: string[];
   };
+  security: {
+    email: string;
+    twoFactorEnabled: boolean;
+    activeSessions: Session[];
+    loginHistory: LoginAttempt[];
+    securityAlerts: SecurityAlertSettings;
+  };
+  paymentMethods: PaymentMethod[];
   notifications: {
-    email: NotificationSettings;
-    inApp: NotificationSettings;
-    preferences: NotificationPreferences;
+    email: EmailNotificationSettings;
+    inApp: InAppNotificationSettings;
   };
-  integrations: Integration[];
-  compliance: ComplianceSettings;
-  security: SecuritySettings;
+  preferences: {
+    theme: 'light' | 'dark' | 'auto';
+    language: string;
+    dateFormat: string;
+    timeFormat: '12h' | '24h';
+    currency: string;
+    dashboardLayout: 'overview' | 'detailed' | 'compact';
+    defaultLandingPage: string;
+    itemsPerPage: number;
+    defaultViewMode: 'grid' | 'list' | 'table';
+  };
+  privacy: {
+    profileVisibility: 'public' | 'private' | 'limited';
+    dataSharing: DataSharingSettings;
+    contactVisibility: ContactVisibilitySettings;
+  };
+  team?: TeamMember[]; // Optional, if team management is enabled
 }
 ```
 
-## User Interactions
-
-### 1. Update Profile
-- Edit fields → Make changes
-- Upload images → Preview changes
-- Save → Update profile
-- View changes → Confirm updates
-
-### 2. Manage Team
-- Invite member → Send invitation
-- Edit member → Update role/permissions
-- Deactivate → Temporarily disable
-- Remove → Permanently remove
-
-### 3. Configure Notifications
-- Enable/disable → Toggle notifications
-- Set frequency → Choose timing
-- Test notifications → Verify settings
-- Save → Apply changes
-
-### 4. Set Up Integrations
-- Select integration → Choose type
-- Configure → Enter credentials
-- Test → Verify connection
-- Activate → Enable integration
-
-### 5. Manage Security
-- Enable 2FA → Set up authentication
-- Configure sessions → Set timeout
-- Review access → Check active sessions
-- Update password → Change password
+---
 
 ## Responsive Design
 
 ### Desktop (>1024px)
-- Multi-column layout
-- Side-by-side forms
+- Sidebar navigation for settings sections
+- Two-column layout for forms
 - Full feature set
-- Data tables
+- Inline editing
 
 ### Tablet (768px - 1024px)
-- 2-column layout
-- Stacked forms
-- Touch-optimized
-- Responsive tables
+- Collapsible sidebar
+- Single column forms
+- Touch-optimized inputs
+- Stacked layout
 
 ### Mobile (<768px)
+- Bottom navigation or drawer
 - Single column
-- Full-screen forms
-- Bottom navigation
-- Simplified interface
+- Simplified forms
+- Touch-friendly controls
+- Swipe gestures
 
-## Loading States
-
-### Initial Load
-- Skeleton loaders
-- Progressive loading
-- Smooth transitions
-
-### Saving Settings
-- Loading indicator
-- Save confirmation
-- Success message
-
-## Error Handling
-
-### Validation Errors
-- Inline validation
-- Error messages
-- Prevent save
-- Guidance text
-
-### API Errors
-- Error notifications
-- Retry buttons
-- Fallback data
-- Support contact
+---
 
 ## Security Considerations
 
-### Data Protection
-- Encrypt sensitive data
-- Mask sensitive fields
-- Secure file uploads
-- Audit logging
+### 1. Password Security
+- Enforce strong password requirements
+- Show password strength indicator
+- Prevent password reuse
+- Require current password for changes
 
-### Access Control
-- Role-based permissions
-- Session management
-- IP restrictions
-- 2FA enforcement
+### 2. Two-Factor Authentication
+- Encourage 2FA enablement
+- Provide backup codes
+- Support multiple 2FA methods
+- Clear setup instructions
+
+### 3. Session Management
+- Show active sessions
+- Allow session revocation
+- Display session details (device, location)
+- Auto-logout inactive sessions
+
+### 4. Data Privacy
+- Clear privacy settings
+- Data export functionality
+- Data deletion requests
+- Transparent data usage
+
+### 5. Payment Method Security
+- Mask sensitive information
+- Require verification
+- Secure storage
+- Audit trail
+
+---
+
+## Validation & Error Handling
+
+### 1. Form Validation
+- Required field validation
+- Email format validation
+- Phone number validation
+- URL format validation
+- File upload validation (size, type)
+- Password strength validation
+
+### 2. Error Messages
+- Clear error messages
+- Field-specific errors
+- Inline validation
+- Error summary at top
+
+### 3. Success Feedback
+- Success messages
+- Confirmation dialogs
+- Visual feedback
+- Auto-dismiss messages
+
+---
 
 ## Future Enhancements
 
-1. **Advanced Permissions**
-   - Custom role builder
-   - Granular permissions
-   - Permission templates
-   - Permission inheritance
-
-2. **Single Sign-On (SSO)**
-   - SAML integration
-   - OAuth integration
-   - LDAP integration
-   - Active Directory
-
-3. **Advanced Security**
+1. **Advanced Security**
    - Biometric authentication
-   - Risk-based authentication
-   - Security monitoring
-   - Threat detection
+   - Security keys support
+   - Advanced threat detection
 
-4. **Customization**
-   - Theme customization
-   - Branding options
-   - Custom fields
-   - Workflow customization
+2. **Customization**
+   - Custom dashboard widgets
+   - Custom color themes
+   - Custom notification sounds
 
-5. **API Management**
-   - API key management
-   - API usage analytics
-   - Rate limiting
-   - Webhook management
+3. **Integrations**
+   - Accounting software integration
+   - CRM integration
+   - Email marketing integration
+   - Analytics integration
+
+4. **Team Features**
+   - Role templates
+   - Permission groups
+   - Activity logs
+   - Audit trails
+
+5. **Automation**
+   - Notification rules
+   - Auto-responses
+   - Workflow automation
+
+6. **Reporting**
+   - Settings change history
+   - Activity reports
+   - Security reports
+
+---
+
+## Notes
+
+- All settings changes are saved automatically or require explicit save action
+- Critical changes (password, email, 2FA) require additional verification
+- Payment method changes require verification
+- Team management features are optional and may not be available for all providers
+- Settings are synced across devices when logged in
+- Some settings may require admin approval (e.g., organization name changes)
 

@@ -13,80 +13,56 @@
 
 ## 1. Campaign Management Workflows
 
-### 1.1 Create Scholarship Campaign
+**⚠️ IMPORTANT: Campaign Creation & Editing Restrictions**
+
+Campaigns are **NOT created or edited by scholarship providers**. 
+- Campaigns are created by **Evolvix Administrators/Organizers** through the admin/organizer portal
+- Providers can only **view and manage** campaigns assigned to them
+- Campaign creation, verification, and approval are handled by Evolvix admin team
+
+### 1.1 View & Manage Assigned Campaigns
 
 ```
-Start: Dashboard → Click "Create Campaign"
+Start: Dashboard → Click "Campaigns"
   ↓
-Step 1: Campaign Basics
-  ├─ Enter campaign title
-  ├─ Write description
-  ├─ Select campaign type (Course-specific/Pooled/General)
-  └─ Choose linked courses (if course-specific)
+Step 1: View Campaign List
+  ├─ See all campaigns assigned to provider
+  ├─ Filter by status (Open, Closed, Completed)
+  ├─ Search campaigns
+  └─ View campaign statistics
   ↓
-Step 2: Scholarship Details
-  ├─ Set total slots
-  ├─ Choose award type (Full/Partial)
-  ├─ Set award amount (if partial)
-  └─ Define funding model
+Step 2: View Campaign Details
+  ├─ Click campaign card
+  ├─ View campaign overview
+  ├─ Check application status
+  ├─ Monitor scholar progress
+  └─ View analytics
   ↓
-Step 3: Eligibility Rules
-  ├─ Set academic criteria (Min/Max CGPA)
-  ├─ Configure financial need requirements
-  ├─ Set merit/need-based flags
-  ├─ Add course restrictions (if any)
-  ├─ Set geographic restrictions (if any)
-  └─ Add custom criteria
-  ↓
-Step 4: Selection Criteria
-  ├─ Set scoring weights (Academic/Need/Motivation)
-  ├─ Configure auto-award threshold
-  ├─ Set interview requirements
-  └─ Configure selection process
-  ↓
-Step 5: Application Window
-  ├─ Set open date
-  ├─ Set close date
-  └─ Configure auto-close rules
-  ↓
-Step 6: Funding
-  ├─ Set required amount
-  ├─ Set funding goal
-  └─ Configure payment schedule
-  ↓
-Step 7: Review & Publish
-  ├─ Preview campaign
-  ├─ Review all details
-  └─ Publish campaign
-  ↓
-End: Campaign Published → Applications Open
+End: Campaign Details Viewed → Ready for Management
 ```
 
-### 1.2 Edit Campaign
+### 1.2 Request Campaign Changes
 
 ```
-Start: Campaigns → Select Campaign → Click "Edit"
+Start: Campaign Details → Settings Tab → Request Change
   ↓
-Step 1: Load Campaign Data
-  ├─ Fetch current campaign data
-  └─ Populate form fields
+Step 1: Identify Needed Change
+  ├─ Review current campaign settings
+  ├─ Identify required changes
+  └─ Document change request
   ↓
-Step 2: Make Changes
-  ├─ Edit any field
-  ├─ Update eligibility rules
-  └─ Modify funding details
+Step 2: Submit Change Request
+  ├─ Contact Evolvix support
+  ├─ Provide change details
+  ├─ Explain reason for change
+  └─ Submit request
   ↓
-Step 3: Validate Changes
-  ├─ Check if changes affect existing applications
-  ├─ Show warnings if needed
-  └─ Confirm changes
+Step 3: Wait for Admin Review
+  ├─ Admin reviews request
+  ├─ Admin approves/rejects
+  └─ Provider notified of decision
   ↓
-Step 4: Save Changes
-  ├─ Update database
-  ├─ Notify affected applicants (if needed)
-  └─ Update campaign status
-  ↓
-End: Campaign Updated → Changes Saved
+End: Change Request Processed → Campaign Updated (if approved)
 ```
 
 ---

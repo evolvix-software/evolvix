@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/hooks';
 import { Calendar } from 'lucide-react';
-import { 
+import {
   LayoutDashboard,
   User,
   BookOpen,
@@ -68,6 +68,20 @@ const adminMenuItems: MenuItem[] = [
     subtitle: 'Overview & Statistics',
     icon: <LayoutDashboard className="w-5 h-5" />,
     path: '/admin',
+  },
+  {
+    id: 'campaigns',
+    label: 'Scholarship Campaigns',
+    subtitle: 'Manage Campaigns',
+    icon: <Megaphone className="w-5 h-5" />,
+    path: '/admin/campaigns',
+  },
+  {
+    id: 'reports',
+    label: 'Reports & Exports',
+    subtitle: 'System-wide Reports',
+    icon: <FileText className="w-5 h-5" />,
+    path: '/admin/reports',
   },
   {
     id: 'users',
@@ -471,27 +485,6 @@ const providerMenuCategories: ProviderMenuCategory[] = [
         icon: <BarChart3 className="w-5 h-5" />,
         path: '/portal/provider/analytics',
       },
-      {
-        id: 'mentors',
-        label: 'Mentors',
-        subtitle: 'Manage Mentors & Payroll',
-        icon: <UsersRound className="w-5 h-5" />,
-        path: '/portal/provider/mentors',
-      },
-      {
-        id: 'communications',
-        label: 'Communications',
-        subtitle: 'Messages & Announcements',
-        icon: <MessageSquare className="w-5 h-5" />,
-        path: '/portal/provider/communications',
-      },
-      {
-        id: 'reports',
-        label: 'Reports',
-        subtitle: 'Generate & Export',
-        icon: <FileBarChart className="w-5 h-5" />,
-        path: '/portal/provider/reports',
-      },
     ]
   },
   {
@@ -541,23 +534,72 @@ const iconMap: Record<string, any> = {
   FileBarChart
 };
 
+// Provider Profile Component to avoid hydration issues
+function ProviderProfileSection({ isCollapsed }: { isCollapsed: boolean }) {
+  const [providerName, setProviderName] = useState('Provider');
+  const [providerEmail, setProviderEmail] = useState('provider@evolvix.com');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    // Get provider info from localStorage (client-side only)
+    const providerData = localStorage.getItem('evolvix_current_provider');
+    const provider = providerData ? JSON.parse(providerData) : null;
+    const registrationData = localStorage.getItem('evolvix_registration');
+    const regData = registrationData ? JSON.parse(registrationData) : null;
+
+    if (provider?.organizationName) {
+      setProviderName(provider.organizationName);
+      setProviderEmail(provider.contactEmail || regData?.email || 'provider@evolvix.com');
+    } else if (regData?.fullName) {
+      setProviderName(regData.fullName);
+      setProviderEmail(regData.email || 'provider@evolvix.com');
+    }
+  }, []);
+
+  return (
+    <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
+      <div className="relative flex-shrink-0">
+        <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
+          <GraduationCap className="w-5 h-5 text-foreground" />
+        </div>
+        <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
+      </div>
+      {!isCollapsed && (
+        <div className="flex-1 min-w-0 text-left">
+          <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+            {mounted ? providerName : 'Provider'}
+          </p>
+          <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+            {mounted ? providerEmail : 'provider@evolvix.com'}
+          </p>
+          <div className="flex items-center space-x-1 mt-0.5">
+            <div className="w-2 h-2 bg-primary rounded-full"></div>
+            <span className="text-xs text-primary font-medium">Online</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView, adminUser }: SidebarProps) {
   const router = useRouter();
-  
+
   // Get verification status from Redux
   const verificationStatus = useAppSelector((state) => state.verification.verificationStatus);
   const isVerified = verificationStatus?.status === 'approved';
   const verificationLevel = verificationStatus?.level || 0;
-  
+
   // Get enrolled courses count for student badge
   const enrolledCourses = useAppSelector((state) => state.courses.enrolledCourses);
   const enrolledCoursesCount = role === 'student' ? enrolledCourses.length : 0;
-  
+
   const [settingsMenuItems, setSettingsMenuItems] = useState<SettingsSection[]>([]);
   const [isSettingsPage, setIsSettingsPage] = useState(false);
   const [activeSection, setActiveSection] = useState(role === 'mentor' ? 'profile' : 'basic');
   const [currentPath, setCurrentPath] = useState('');
-  
+
   // Get menu items based on role
   const getMenuItems = (): MenuItem[] => {
     if (role === 'admin') {
@@ -567,7 +609,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
       return providerMenuItems;
     }
     const items = role === 'student' ? studentMenuItems : mentorMenuItems;
-    
+
     // TODO: Re-enable verification-based menu filtering after UI is complete
     // Filter menu items based on verification status
     // if (!isVerified) {
@@ -580,14 +622,14 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
     //     return items.filter(item => allowedForUnverified.includes(item.id));
     //   }
     // }
-    
+
     // If verified, show all menu items
     // For now, show all menu items regardless of verification status
     return items;
   };
-  
+
   const visibleMenuItems = getMenuItems();
-  
+
   // Use blue accent for all roles - matching the new theme
   const primaryColor = 'rgb(59, 130, 246)'; // Blue #3b82f6
   const primaryColorBg = 'bg-primary';
@@ -597,25 +639,25 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const activeBarColor = 'bg-primary';
   const activeIconColor = 'text-primary';
   const activeBadgeBg = 'bg-primary';
-  const portalTitle = role === 'student' ? 'Student Portal' 
-    : role === 'mentor' ? 'Mentor Portal' 
-    : role === 'provider' ? 'Provider Portal'
-    : 'Admin Portal';
-  const headerIcon = role === 'student' 
+  const portalTitle = role === 'student' ? 'Student Portal'
+    : role === 'mentor' ? 'Mentor Portal'
+      : role === 'provider' ? 'Provider Portal'
+        : 'Admin Portal';
+  const headerIcon = role === 'student'
     ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
     : role === 'mentor'
-    ? <User className="w-6 h-6 text-sidebar-primary-foreground" />
-    : role === 'provider'
-    ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
-    : <Shield className="w-6 h-6 text-sidebar-primary-foreground" />;
-  
+      ? <User className="w-6 h-6 text-sidebar-primary-foreground" />
+      : role === 'provider'
+        ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
+        : <Shield className="w-6 h-6 text-sidebar-primary-foreground" />;
+
   useEffect(() => {
     if (typeof window !== 'undefined') {
       setCurrentPath(window.location.pathname);
       setIsSettingsPage(window.location.pathname.includes('/settings'));
     }
   }, []);
-  
+
   useEffect(() => {
     const updatePath = () => {
       if (typeof window !== 'undefined') {
@@ -624,7 +666,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
         setIsSettingsPage(newPath.includes('/settings'));
       }
     };
-    
+
     updatePath();
     window.addEventListener('popstate', updatePath);
     const interval = setInterval(updatePath, 100);
@@ -633,14 +675,21 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
       clearInterval(interval);
     };
   }, []);
-  
+
   useEffect(() => {
     if (typeof window !== 'undefined' && isSettingsPage) {
       const updateSection = () => {
-        const params = new URLSearchParams(window.location.search);
-        setActiveSection(params.get('section') || (role === 'mentor' ? 'profile' : 'basic'));
+        if (role === 'provider') {
+          // Extract section from pathname for provider
+          const path = window.location.pathname;
+          const sectionMatch = path.match(/\/settings\/([^\/]+)/);
+          setActiveSection(sectionMatch ? sectionMatch[1] : 'profile');
+        } else {
+          const params = new URLSearchParams(window.location.search);
+          setActiveSection(params.get('section') || (role === 'mentor' ? 'profile' : 'basic'));
+        }
       };
-      
+
       updateSection();
       const interval = setInterval(updateSection, 100);
       return () => clearInterval(interval);
@@ -649,10 +698,23 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
 
   useEffect(() => {
     if (isSettingsPage) {
-      const sections = role === 'student' 
-        ? (settingsData.settingsSections.student as SettingsSection[])
-        : (settingsData.settingsSections.mentor as SettingsSection[]);
-      setSettingsMenuItems(sections);
+      if (role === 'provider') {
+        // Provider settings sections
+        const providerSections: SettingsSection[] = [
+          { id: 'profile', label: 'Organization Profile', icon: 'User' },
+          { id: 'security', label: 'Account & Security', icon: 'Shield' },
+          { id: 'payment', label: 'Payment Methods', icon: 'CreditCard' },
+          { id: 'notifications', label: 'Notifications', icon: 'Bell' },
+          { id: 'preferences', label: 'Preferences', icon: 'Palette' },
+          { id: 'privacy', label: 'Privacy & Security', icon: 'Lock' },
+        ];
+        setSettingsMenuItems(providerSections);
+      } else {
+        const sections = role === 'student'
+          ? (settingsData.settingsSections.student as SettingsSection[])
+          : (settingsData.settingsSections.mentor as SettingsSection[]);
+        setSettingsMenuItems(sections);
+      }
     }
   }, [isSettingsPage, role]);
 
@@ -666,61 +728,70 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   };
 
   return (
-    <div className={`flex flex-col h-screen bg-sidebar border-r border-border transition-all duration-300 shadow-2xl ${
-      isCollapsed ? 'w-0 overflow-hidden' : 'w-64'
-    }`}>
+    <div className={`flex flex-col h-screen bg-sidebar border-r border-border transition-all duration-300 shadow-2xl ${isCollapsed ? 'w-0 overflow-hidden' : 'w-64'
+      }`}>
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b border-border flex-shrink-0">
+      <div className="flex flex-col items-start p-4 border-b border-border flex-shrink-0 gap-2">
         <div className="flex items-center space-x-3">
           {/* Evolvix Logo */}
-          <Image 
-            src={evolvixLogo} 
-            alt="Evolvix" 
+          <Image
+            src={evolvixLogo}
+            alt="Evolvix"
             width={160}
             height={50}
             className="h-auto w-auto drop-shadow-lg"
             priority
           />
         </div>
+
+        {/* Portal Name Badge */}
+        <div className="px-1">
+          <div className="px-2 py-1 bg-primary/10 rounded text-xs font-medium text-primary uppercase tracking-wider w-fit">
+            {role === 'student' ? 'Student Portal' :
+              role === 'mentor' ? 'Mentor Portal' :
+                role === 'provider' ? 'Scholarship Provider Portal' :
+                  'Admin Portal'}
+          </div>
+        </div>
       </div>
 
       {/* Today's Tasks Card - Only for Student */}
       {role === 'student' && (
         !isCollapsed ? (
-        <div className="px-4 pt-4">
-          <div className="bg-secondary rounded-xl p-4 hover:bg-accent transition-colors cursor-pointer">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center space-x-3">
-                <div className={`w-8 h-8 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
-                  <Clock className="w-4 h-4 text-primary-foreground" />
+          <div className="px-4 pt-4">
+            <div className="bg-secondary rounded-xl p-4 hover:bg-accent transition-colors cursor-pointer">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center space-x-3">
+                  <div className={`w-8 h-8 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
+                    <Clock className="w-4 h-4 text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="text-foreground font-semibold text-sm">Today's Tasks</h3>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-foreground font-semibold text-sm">Today's Tasks</h3>
+                <div className="bg-muted text-foreground px-2.5 py-1 rounded-full text-xs font-bold">
+                  64
                 </div>
               </div>
-              <div className="bg-muted text-foreground px-2.5 py-1 rounded-full text-xs font-bold">
-                64
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 mt-3 text-muted-foreground">
-              <Calendar className="w-4 h-4" />
-              <p className="text-xs">Next: Assignment Due</p>
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="px-2 pt-4">
-          <div className="bg-secondary rounded-xl p-3 hover:bg-accent transition-colors cursor-pointer flex items-center justify-center">
-            <div className="relative">
-              <div className={`w-10 h-10 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
-                <Clock className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <div className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full flex items-center justify-center border-2 border-secondary">
-                <span className="text-sidebar-primary-foreground text-xs font-bold">64</span>
+              <div className="flex items-center space-x-2 mt-3 text-muted-foreground">
+                <Calendar className="w-4 h-4" />
+                <p className="text-xs">Next: Assignment Due</p>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <div className="px-2 pt-4">
+            <div className="bg-secondary rounded-xl p-3 hover:bg-accent transition-colors cursor-pointer flex items-center justify-center">
+              <div className="relative">
+                <div className={`w-10 h-10 ${primaryColorBg} rounded-lg flex items-center justify-center`}>
+                  <Clock className="w-5 h-5 text-primary-foreground" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-5 h-5 bg-destructive rounded-full flex items-center justify-center border-2 border-secondary">
+                  <span className="text-sidebar-primary-foreground text-xs font-bold">64</span>
+                </div>
+              </div>
+            </div>
+          </div>
         )
       )}
 
@@ -731,34 +802,31 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
           settingsMenuItems.map((section) => {
             const IconComponent = iconMap[section.icon] || Settings;
             const isActive = activeSection === section.id || currentPath?.includes(section.id);
-            const settingsPath = role === 'student' 
+            const settingsPath = role === 'student'
               ? `/portal/student/settings?section=${section.id}`
               : role === 'mentor'
-              ? `/portal/mentor/settings?section=${section.id}`
-              : `/portal/provider/settings?section=${section.id}`;
+                ? `/portal/mentor/settings?section=${section.id}`
+                : `/portal/provider/settings/${section.id}`;
 
             return (
               <button
                 key={section.id}
                 onClick={() => handleNavigation(settingsPath)}
-                className={`group relative w-full ${
-                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
-                } px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                  isActive
+                className={`group relative w-full ${!isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
+                  } px-3 py-2.5 rounded-lg transition-all duration-200 ${isActive
                     ? 'bg-secondary'
                     : 'hover:bg-secondary'
-                }`}
+                  }`}
                 title={isCollapsed ? section.label : undefined}
               >
                 {isActive && !isCollapsed && (
                   <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
                 )}
-                
-                <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
-                  isActive 
-                    ? 'bg-sidebar-primary-foreground' 
-                    : 'bg-transparent group-hover:bg-muted'
-                }`}>
+
+                <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${isActive
+                  ? 'bg-sidebar-primary-foreground'
+                  : 'bg-transparent group-hover:bg-muted'
+                  }`}>
                   <div className={isActive ? activeIconColor : 'text-foreground'}>
                     <IconComponent className="w-5 h-5" />
                   </div>
@@ -766,9 +834,8 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
 
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0 text-left">
-                    <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
-                      isActive ? 'text-foreground' : 'text-foreground'
-                    }`}>
+                    <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${isActive ? 'text-foreground' : 'text-foreground'
+                      }`}>
                       {section.label}
                     </span>
                   </div>
@@ -778,76 +845,72 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
           })
         ) : (role === 'student' || role === 'mentor' || role === 'provider') && !isCollapsed ? (
           // Student, Mentor, or Provider menu with categories
-          (role === 'student' ? studentMenuCategories 
-            : role === 'mentor' ? mentorMenuCategories 
-            : providerMenuCategories).map((category) => (
-            <div key={category.category} className="mb-4">
-              <div className="px-3 mb-2">
-                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                  {category.category}
-                </h3>
-              </div>
-              <div className="space-y-1">
-                {category.items.map((item) => {
-                  const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
-                  // Dynamic badge for My Courses
-                  const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0 
-                    ? enrolledCoursesCount.toString() 
-                    : item.badge;
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => handleNavigation(item.path, item.id)}
-                      className={`group relative w-full flex items-start space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                        isActive
-                          ? 'bg-secondary'
-                          : 'hover:bg-secondary'
-                      }`}
-                      title={item.label}
-                    >
-                      {isActive && (
-                        <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
-                      )}
-                      
-                      <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
-                        isActive 
-                          ? 'bg-sidebar-primary-foreground' 
-                          : 'bg-transparent group-hover:bg-muted'
-                      }`}>
-                        <div className={isActive ? activeIconColor : 'text-foreground'}>
-                          {item.icon}
-                        </div>
-                      </div>
-                      
-                      <div className="flex-1 min-w-0 text-left">
-                        <div className="flex items-center justify-between">
-                          <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
-                            isActive ? 'text-foreground' : 'text-foreground'
-                          }`}>
-                            {item.label}
-                          </span>
-                          {badgeToShow && (
-                            <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
-                              isActive 
-                                ? `${activeBadgeBg} text-primary-foreground` 
-                                : 'bg-muted text-muted-foreground'
-                            }`}>
-                              {badgeToShow}
-                            </span>
+          (role === 'student' ? studentMenuCategories
+            : role === 'mentor' ? mentorMenuCategories
+              : providerMenuCategories).map((category) => (
+                <div key={category.category} className="mb-4">
+                  <div className="px-3 mb-2">
+                    <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                      {category.category}
+                    </h3>
+                  </div>
+                  <div className="space-y-1">
+                    {category.items.map((item) => {
+                      const isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
+                      // Dynamic badge for My Courses
+                      const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0
+                        ? enrolledCoursesCount.toString()
+                        : item.badge;
+                      return (
+                        <button
+                          key={item.id}
+                          onClick={() => handleNavigation(item.path, item.id)}
+                          className={`group relative w-full flex items-start space-x-3 px-3 py-2.5 rounded-lg transition-all duration-200 ${isActive
+                            ? 'bg-secondary'
+                            : 'hover:bg-secondary'
+                            }`}
+                          title={item.label}
+                        >
+                          {isActive && (
+                            <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
                           )}
-                        </div>
-                        {item.subtitle && (
-                          <p className="text-xs text-muted-foreground mt-0.5 truncate block overflow-hidden text-ellipsis whitespace-nowrap">
-                            {item.subtitle}
-                          </p>
-                        )}
-                      </div>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-          ))
+
+                          <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${isActive
+                            ? 'bg-sidebar-primary-foreground'
+                            : 'bg-transparent group-hover:bg-muted'
+                            }`}>
+                            <div className={isActive ? activeIconColor : 'text-foreground'}>
+                              {item.icon}
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0 text-left">
+                            <div className="flex items-center justify-between">
+                              <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${isActive ? 'text-foreground' : 'text-foreground'
+                                }`}>
+                                {item.label}
+                              </span>
+                              {badgeToShow && (
+                                <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${isActive
+                                  ? `${activeBadgeBg} text-primary-foreground`
+                                  : 'bg-muted text-muted-foreground'
+                                  }`}>
+                                  {badgeToShow}
+                                </span>
+                              )}
+                            </div>
+                            {item.subtitle && (
+                              <p className="text-xs text-muted-foreground mt-0.5 truncate block overflow-hidden text-ellipsis whitespace-nowrap">
+                                {item.subtitle}
+                              </p>
+                            )}
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))
         ) : (
           // Regular menu items (for collapsed sidebar or admin role)
           visibleMenuItems.map((item) => {
@@ -859,53 +922,48 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             } else {
               isActive = currentPath === item.path || currentPath?.startsWith(item.path + '/');
             }
-            
+
             // Dynamic badge for My Courses
-            const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0 
-              ? enrolledCoursesCount.toString() 
+            const badgeToShow = item.id === 'my-courses' && enrolledCoursesCount > 0
+              ? enrolledCoursesCount.toString()
               : item.badge;
-            
+
             return (
-            <button
-              key={item.id}
-              onClick={() => handleNavigation(item.path, item.id)}
-                className={`group relative w-full ${
-                  !isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
-                } px-3 py-2.5 rounded-lg transition-all duration-200 ${
-                  isActive
+              <button
+                key={item.id}
+                onClick={() => handleNavigation(item.path, item.id)}
+                className={`group relative w-full ${!isCollapsed ? 'flex items-start space-x-3' : 'flex items-center justify-start'
+                  } px-3 py-2.5 rounded-lg transition-all duration-200 ${isActive
                     ? 'bg-secondary'
                     : 'hover:bg-secondary'
-                }`}
+                  }`}
                 title={isCollapsed ? item.label : undefined}
               >
                 {isActive && !isCollapsed && (
                   <div className={`absolute left-0 top-1/2 -translate-y-1/2 w-1 h-10 ${activeBarColor} rounded-r-full`} />
                 )}
-                
-                <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${
-                  isActive 
-                    ? 'bg-sidebar-primary-foreground' 
-                    : 'bg-transparent group-hover:bg-muted'
-                }`}>
+
+                <div className={`relative flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center transition-all ${isActive
+                  ? 'bg-sidebar-primary-foreground'
+                  : 'bg-transparent group-hover:bg-muted'
+                  }`}>
                   <div className={isActive ? activeIconColor : 'text-foreground'}>
                     {item.icon}
                   </div>
                 </div>
-                
+
                 {!isCollapsed && (
                   <div className="flex-1 min-w-0 text-left">
                     <div className="flex items-center justify-between">
-                      <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${
-                        isActive ? 'text-foreground' : 'text-foreground'
-                      }`}>
+                      <span className={`text-sm font-semibold transition-all block overflow-hidden text-ellipsis whitespace-nowrap ${isActive ? 'text-foreground' : 'text-foreground'
+                        }`}>
                         {item.label}
                       </span>
                       {badgeToShow && (
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${
-                          isActive 
-                            ? `${activeBadgeBg} text-primary-foreground` 
-                            : 'bg-muted text-muted-foreground'
-                        }`}>
+                        <span className={`px-2 py-0.5 rounded-full text-xs font-medium flex-shrink-0 ml-2 ${isActive
+                          ? `${activeBadgeBg} text-primary-foreground`
+                          : 'bg-muted text-muted-foreground'
+                          }`}>
                           {badgeToShow}
                         </span>
                       )}
@@ -917,8 +975,8 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
                     )}
                   </div>
                 )}
-            </button>
-          );
+              </button>
+            );
           })
         )}
       </nav>
@@ -949,42 +1007,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             )}
           </div>
         ) : role === 'provider' ? (
-          (() => {
-            // Get provider info from localStorage
-            const providerData = typeof window !== 'undefined' 
-              ? localStorage.getItem('evolvix_current_provider')
-              : null;
-            const provider = providerData ? JSON.parse(providerData) : null;
-            const registrationData = typeof window !== 'undefined'
-              ? localStorage.getItem('evolvix_registration')
-              : null;
-            const regData = registrationData ? JSON.parse(registrationData) : null;
-            
-            return (
-              <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
-                <div className="relative flex-shrink-0">
-                  <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-                    <GraduationCap className="w-5 h-5 text-foreground" />
-                  </div>
-                  <div className="absolute bottom-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-secondary"></div>
-                </div>
-                {!isCollapsed && (
-                  <div className="flex-1 min-w-0 text-left">
-                    <p className="text-sm font-semibold text-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
-                      {provider?.organizationName || regData?.fullName || 'Provider'}
-                    </p>
-                    <p className="text-xs text-muted-foreground truncate block overflow-hidden text-ellipsis whitespace-nowrap">
-                      {provider?.contactEmail || regData?.email || 'provider@evolvix.com'}
-                    </p>
-                    <div className="flex items-center space-x-1 mt-0.5">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-xs text-primary font-medium">Online</span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })()
+          <ProviderProfileSection isCollapsed={isCollapsed} />
         ) : role !== 'admin' && (
           <div className={`bg-secondary rounded-xl p-3 hover:bg-accent transition-all cursor-pointer ${!isCollapsed ? 'flex items-center space-x-3' : 'flex items-center justify-start'}`}>
             <div className="relative flex-shrink-0">

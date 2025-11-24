@@ -1,48 +1,49 @@
 "use client";
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Layout } from '@/components/common/layout/Layout';
-import { EmptyState } from '@/components/provider/common/EmptyState';
-import { FileBarChart } from 'lucide-react';
-import { providerService } from '@/data/mock/providerData';
+import { Card, CardContent } from '@/components/common/forms/Card';
+import { Info, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
-export default function ReportsPage() {
-  const router = useRouter();
-  const provider = providerService.getCurrentProvider();
-
-  useEffect(() => {
-    // If no provider exists, create one from registration data
-    if (!provider) {
-      const registrationData = localStorage.getItem('evolvix_registration');
-      if (registrationData) {
-        const regData = JSON.parse(registrationData);
-        providerService.createProvider({
-          organizationName: regData.fullName || 'My Organization',
-          organizationSlug: (regData.fullName || 'my-organization').toLowerCase().replace(/\s+/g, '-'),
-          contactEmail: regData.email || '',
-          userId: regData.email || '',
-        });
-      } else {
-        router.push('/auth/signin');
-      }
-    }
-  }, [provider, router]);
-
+export default function Page() {
   return (
-    <Layout title="Reports" role="provider">
+    <Layout title="Reports & Exports" role="provider" noCard>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold text-foreground">Reports & Exports</h1>
-          <p className="text-muted-foreground mt-1">Generate and export reports</p>
-        </div>
-        <EmptyState
-          icon={<FileBarChart className="w-12 h-12 text-muted-foreground" />}
-          title="Reports"
-          description="Report generation features coming soon"
-        />
+        <Card className="border-blue-200 bg-blue-50 dark:bg-blue-950 dark:border-blue-800">
+          <CardContent className="p-8">
+            <div className="flex items-start gap-4">
+              <Info className="w-8 h-8 text-blue-600 dark:text-blue-400 mt-1" />
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-blue-900 dark:text-blue-100 mb-3">
+                  Reports & Exports (Admin Only)
+                </h2>
+                <p className="text-blue-800 dark:text-blue-200 mb-4">
+                  Comprehensive financial reports and analytics are managed exclusively by Evolvix administrators.
+                </p>
+                <p className="text-blue-800 dark:text-blue-200 mb-4">
+                  As a scholarship provider, you can view:
+                </p>
+                <ul className="list-disc list-inside text-blue-800 dark:text-blue-200 mb-4 space-y-2">
+                  <li>Your own fund transactions (transparency)</li>
+                  <li>Evolvix fund distribution to scholars (transparency)</li>
+                  <li>Growth of scholars you've donated to (if applicable)</li>
+                </ul>
+                <p className="text-blue-800 dark:text-blue-200 mb-4">
+                  To access these transparency features, please visit the <strong>Fund Management</strong> page.
+                </p>
+                <div className="flex gap-3 mt-6">
+                  <Link href="/portal/provider/funds">
+                    <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2">
+                      Go to Fund Management
+                      <ArrowRight className="w-4 h-4" />
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </Layout>
   );
 }
-
