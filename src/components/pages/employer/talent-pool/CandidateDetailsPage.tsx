@@ -282,11 +282,11 @@ export function CandidateDetailsPage() {
                       <span className="text-foreground">{candidate.location}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-2">
-                      <Badge variant="outline" className={getInterestColor(candidate.interestLevel)}>
+                      <Badge variant="default" className={getInterestColor(candidate.interestLevel)}>
                         {candidate.interestLevel} Interest
                       </Badge>
                       {candidate.tags.map((tag, index) => (
-                        <Badge key={index} variant="outline">{tag}</Badge>
+                        <Badge key={index} variant="default">{tag}</Badge>
                       ))}
                     </div>
                   </div>
@@ -295,7 +295,7 @@ export function CandidateDetailsPage() {
                   <h3 className="font-semibold text-foreground mb-2">Skills</h3>
                   <div className="flex flex-wrap gap-2">
                     {candidate.skills.map((skill, index) => (
-                      <Badge key={index} variant="outline">{skill}</Badge>
+                      <Badge key={index} variant="default">{skill}</Badge>
                     ))}
                   </div>
                 </div>
@@ -406,7 +406,7 @@ export function CandidateDetailsPage() {
                     <div className="flex items-center justify-between">
                       <div className="flex flex-wrap gap-2">
                         {newTags.map((tag, index) => (
-                          <Badge key={index} variant="outline" className="cursor-pointer">
+                          <Badge key={index} variant="default" className="cursor-pointer">
                             {tag}
                             <X className="w-3 h-3 ml-1" onClick={() => setNewTags(newTags.filter((_, i) => i !== index))} />
                           </Badge>
@@ -446,7 +446,7 @@ export function CandidateDetailsPage() {
                     {note.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1">
                         {note.tags.map((tag, index) => (
-                          <Badge key={index} variant="outline" className="text-xs">{tag}</Badge>
+                          <Badge key={index} variant="default" className="text-xs">{tag}</Badge>
                         ))}
                       </div>
                     )}
@@ -498,7 +498,7 @@ export function CandidateDetailsPage() {
                   <div key={match.jobId} className="p-4 border border-border rounded-lg">
                     <div className="flex items-start justify-between mb-2">
                       <h3 className="font-semibold text-foreground">{match.jobTitle}</h3>
-                      <Badge variant="outline" className="bg-green-500/10 text-green-600 border-green-500/20">
+                      <Badge variant="default" className="bg-green-500/10 text-green-600 border-green-500/20">
                         {match.matchScore}% Match
                       </Badge>
                     </div>
@@ -507,7 +507,7 @@ export function CandidateDetailsPage() {
                         <p className="text-xs text-muted-foreground mb-1">Matching Skills:</p>
                         <div className="flex flex-wrap gap-1">
                           {match.matchingSkills.map((skill, index) => (
-                            <Badge key={index} variant="outline" className="text-xs bg-green-500/10">{skill}</Badge>
+                            <Badge key={index} variant="default" className="text-xs bg-green-500/10">{skill}</Badge>
                           ))}
                         </div>
                       </div>
@@ -516,7 +516,7 @@ export function CandidateDetailsPage() {
                           <p className="text-xs text-muted-foreground mb-1">Missing Skills:</p>
                           <div className="flex flex-wrap gap-1">
                             {match.missingSkills.map((skill, index) => (
-                              <Badge key={index} variant="outline" className="text-xs bg-gray-500/10">{skill}</Badge>
+                              <Badge key={index} variant="default" className="text-xs bg-gray-500/10">{skill}</Badge>
                             ))}
                           </div>
                         </div>

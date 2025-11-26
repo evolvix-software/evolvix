@@ -29,14 +29,14 @@ import {
   UserPlus,
   MoreVertical
 } from 'lucide-react';
-import { Application, PipelineStageType } from '@/store/features/employer/employerSlice';
-import { PipelineStage } from './components/PipelineStage';
+import { Application } from '@/store/features/employer/employerSlice';
+import { PipelineStage, PipelineStageType } from './components/PipelineStage';
 import { FiltersPanel, ApplicantFilters } from './components/FiltersPanel';
 import { ApplicantDetailsPanel } from './components/ApplicantDetailsPanel';
 import { StageStatistics } from './components/StageStatistics';
 import { cn } from '@/utils';
 
-const pipelineStages: Array<{
+const defaultPipelineStages: Array<{
   id: PipelineStageType;
   name: string;
   color: string;
@@ -296,7 +296,7 @@ export function ApplicantPipelinePage() {
   // Calculate stage metrics
   useEffect(() => {
     const metrics: Record<string, any> = {};
-    pipelineStages.forEach(stage => {
+    defaultPipelineStages.forEach(stage => {
       const stageApps = filteredApplications.filter(app => app.status === stage.id);
       const avgTime = stageApps.length > 0 ? 24 : 0; // Mock calculation
       const conversionRate = stageApps.length > 0 ? 75 : 0; // Mock calculation
@@ -310,7 +310,7 @@ export function ApplicantPipelinePage() {
       };
     });
     dispatch(setStageMetrics(metrics));
-  }, [filteredApplications, pipelineStages, dispatch]);
+  }, [filteredApplications, dispatch]);
 
   const totalApplications = filteredApplications.length;
 
@@ -386,7 +386,7 @@ export function ApplicantPipelinePage() {
                 />
               </div>
               {selectedApplications.size > 0 && (
-                <Badge variant="secondary" className="px-3 py-1">
+                <Badge variant="default" className="px-3 py-1">
                   {selectedApplications.size} selected
                 </Badge>
               )}
@@ -475,9 +475,10 @@ export function ApplicantPipelinePage() {
           <div className="space-y-6">
             {/* Stage Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-              {pipelineStages.map((stage) => {
+              {defaultPipelineStages.map((stage) => {
                 const stageApps = applicationsByStage[stage.id as PipelineStageType] || [];
                 const metrics = stageMetrics[stage.id];
+                const reduxStage = pipelineStages.find(s => s.id === stage.id);
                 return (
                   <StageStatistics
                     key={stage.id}
@@ -485,7 +486,7 @@ export function ApplicantPipelinePage() {
                     stageName={stage.name}
                     metrics={metrics}
                     applicantCount={stageApps.length}
-                    maxApplicants={stage.maxApplicants}
+                    maxApplicants={reduxStage?.maxApplicants}
                   />
                 );
               })}
@@ -494,7 +495,7 @@ export function ApplicantPipelinePage() {
             {/* Kanban Board */}
             <div className="relative">
               <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
-                {pipelineStages.map((stage) => (
+                {defaultPipelineStages.map((stage) => (
                   <PipelineStage
                     key={stage.id}
                     stage={stage}

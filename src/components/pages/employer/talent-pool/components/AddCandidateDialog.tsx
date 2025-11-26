@@ -178,7 +178,7 @@ export function AddCandidateDialog({ isOpen, onClose, onSave }: AddCandidateDial
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.skills.map((skill, index) => (
-                <Badge key={index} variant="outline" className="cursor-pointer">
+                <Badge key={index} variant="default" className="cursor-pointer">
                   {skill}
                   <X className="w-3 h-3 ml-1" onClick={() => handleRemoveSkill(skill)} />
                 </Badge>
@@ -204,7 +204,7 @@ export function AddCandidateDialog({ isOpen, onClose, onSave }: AddCandidateDial
             </div>
             <div className="flex flex-wrap gap-2">
               {formData.tags.map((tag, index) => (
-                <Badge key={index} variant="outline" className="cursor-pointer">
+                <Badge key={index} variant="default" className="cursor-pointer">
                   {tag}
                   <X className="w-3 h-3 ml-1" onClick={() => handleRemoveTag(tag)} />
                 </Badge>

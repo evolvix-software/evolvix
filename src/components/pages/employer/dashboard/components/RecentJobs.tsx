@@ -80,7 +80,7 @@ export function RecentJobs({ jobs }: RecentJobsProps) {
                   </div>
                 </div>
                 <Badge
-                  variant="outline"
+                  variant="default"
                   className={cn('border', statusColors[job.status])}
                 >
                   {job.status.charAt(0).toUpperCase() + job.status.slice(1)}

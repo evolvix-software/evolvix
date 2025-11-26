@@ -549,8 +549,8 @@ function CTAProperties({ content, onUpdate }: { content: SectionContent; onUpdat
       <div>
         <label className="text-sm font-medium text-foreground mb-2 block">Description</label>
         <textarea
-          value={content.description || ''}
-          onChange={(e) => onUpdate({ description: e.target.value })}
+          value={content.ctaDescription || ''}
+          onChange={(e) => onUpdate({ ctaDescription: e.target.value })}
           className="w-full px-3 py-2 border border-border rounded-lg bg-background min-h-[100px]"
         />
       </div>
@@ -561,7 +561,7 @@ function CTAProperties({ content, onUpdate }: { content: SectionContent; onUpdat
             size="sm"
             variant="outline"
             onClick={() => {
-              const newButtons = [...buttons, { id: Date.now().toString(), text: '', link: '', variant: 'primary' }];
+              const newButtons = [...buttons, { id: Date.now().toString(), text: '', link: '', variant: 'primary' as 'primary' | 'secondary' | 'outline' }];
               onUpdate({ buttons: newButtons });
             }}
           >

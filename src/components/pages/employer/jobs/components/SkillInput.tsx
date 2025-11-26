@@ -204,7 +204,7 @@ export function SkillInput({
       {/* Selected Skills */}
       <div className="flex flex-wrap gap-2">
         {skills.map((skill, index) => (
-          <Badge key={index} variant="secondary" className="flex items-center gap-1">
+          <Badge key={index} variant="default" className="flex items-center gap-1">
             {skill}
             <button
               type="button"
