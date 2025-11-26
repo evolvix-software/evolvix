@@ -244,7 +244,7 @@ export function TagManager({
                           style={{ backgroundColor: tag.color }}
                         />
                         <Badge
-                          variant="outline"
+                          variant="default"
                           style={{ borderColor: tag.color, color: tag.color }}
                         >
                           {tag.name}

@@ -100,7 +100,7 @@ export function TemplateSelector({ onSelectTemplate, onStartFromScratch }: Templ
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <span>{previewTemplate.name}</span>
-              <Badge variant="outline">{previewTemplate.category}</Badge>
+              <Badge variant="default">{previewTemplate.category}</Badge>
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -139,7 +139,7 @@ export function TemplateSelector({ onSelectTemplate, onStartFromScratch }: Templ
                 <h3 className="font-semibold text-foreground mb-2">Skills</h3>
                 <div className="flex flex-wrap gap-2">
                   {previewTemplate.data.skills.map((skill, index) => (
-                    <Badge key={index} variant="outline">{skill}</Badge>
+                    <Badge key={index} variant="default">{skill}</Badge>
                   ))}
                 </div>
               </div>
@@ -239,7 +239,7 @@ export function TemplateSelector({ onSelectTemplate, onStartFromScratch }: Templ
                       </div>
                     </div>
                     {template.isPreBuilt && (
-                      <Badge variant="outline" className="text-xs">Pre-built</Badge>
+                      <Badge variant="default" className="text-xs">Pre-built</Badge>
                     )}
                   </div>
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2">

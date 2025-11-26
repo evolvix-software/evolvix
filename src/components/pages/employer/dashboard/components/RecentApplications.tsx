@@ -97,7 +97,7 @@ export function RecentApplications({ applications }: RecentApplicationsProps) {
                   </div>
                 </div>
                 <Badge
-                  variant="outline"
+                  variant="default"
                   className={cn('border text-xs', statusColors[application.status])}
                 >
                   {application.status.charAt(0).toUpperCase() + application.status.slice(1)}

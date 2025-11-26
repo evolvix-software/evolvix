@@ -196,10 +196,10 @@ export function CompanyProfileTab({ onUnsavedChanges }: CompanyProfileTabProps) 
                   id="logo-upload"
                 />
                 <label htmlFor="logo-upload">
-                  <Button variant="outline" as="span">
+                  <span className="inline-flex items-center justify-center rounded-lg font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 cursor-pointer">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Logo
-                  </Button>
+                  </span>
                 </label>
                 <p className="text-xs text-muted-foreground mt-1">
                   Recommended: 200x200px, PNG or JPG
@@ -230,10 +230,10 @@ export function CompanyProfileTab({ onUnsavedChanges }: CompanyProfileTabProps) 
                   id="banner-upload"
                 />
                 <label htmlFor="banner-upload">
-                  <Button variant="outline" as="span">
+                  <span className="inline-flex items-center justify-center rounded-lg font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 cursor-pointer">
                     <Upload className="w-4 h-4 mr-2" />
                     Upload Banner
-                  </Button>
+                  </span>
                 </label>
                 <p className="text-xs text-muted-foreground mt-1">
                   Recommended: 1200x300px, PNG or JPG

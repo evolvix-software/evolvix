@@ -56,16 +56,16 @@ export function JobPreview({ formData, companyName = "Your Company", companyLogo
       <div className={cn("p-6 space-y-6", previewMode === 'mobile' && "p-4 space-y-4")}>
         {/* Job Details */}
         <div className="flex flex-wrap gap-2">
-          <Badge variant="outline" className="capitalize">
+          <Badge variant="default" className="capitalize">
             {formData.remoteType}
           </Badge>
           {formData.seniorityLevel && (
-            <Badge variant="outline" className="capitalize">
+            <Badge variant="default" className="capitalize">
               {formData.seniorityLevel}
             </Badge>
           )}
           {formatSalary() && (
-            <Badge variant="outline">
+            <Badge variant="default">
               {formatSalary()}
             </Badge>
           )}
@@ -112,7 +112,7 @@ export function JobPreview({ formData, companyName = "Your Company", companyLogo
             <h2 className="text-lg font-semibold mb-3">Required Skills</h2>
             <div className="flex flex-wrap gap-2">
               {formData.skills.map((skill, index) => (
-                <Badge key={index} variant="secondary">{skill}</Badge>
+                <Badge key={index} variant="default">{skill}</Badge>
               ))}
             </div>
           </div>
@@ -124,7 +124,7 @@ export function JobPreview({ formData, companyName = "Your Company", companyLogo
             <h2 className="text-lg font-semibold mb-3">Benefits</h2>
             <div className="flex flex-wrap gap-2">
               {formData.benefits.map((benefit, index) => (
-                <Badge key={index} variant="outline">{benefit}</Badge>
+                <Badge key={index} variant="default">{benefit}</Badge>
               ))}
             </div>
           </div>

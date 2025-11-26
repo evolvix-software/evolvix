@@ -46,7 +46,7 @@ export function EditJobPage() {
         requireCoverLetter: job.requireCoverLetter || false,
         requirePortfolio: job.requirePortfolio || false,
         customQuestions: job.customQuestions || [],
-        status: job.status,
+        status: (job.status === 'draft' || job.status === 'active') ? job.status : 'draft' as 'draft' | 'active',
         publishDate: job.publishDate || '',
         expirationDate: job.expiresAt || '',
         autoExpire: job.autoExpire || false,

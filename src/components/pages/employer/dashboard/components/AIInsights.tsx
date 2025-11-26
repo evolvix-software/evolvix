@@ -93,7 +93,7 @@ export function AIInsights() {
             <Sparkles className="w-5 h-5 text-primary" />
             AI Insights
           </CardTitle>
-          <Badge variant="outline" className="text-xs">
+          <Badge variant="info" className="text-xs">
             Powered by AI
           </Badge>
         </div>

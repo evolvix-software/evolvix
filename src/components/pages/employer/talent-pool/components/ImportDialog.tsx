@@ -151,12 +151,10 @@ export function ImportDialog({ isOpen, onClose, onImport }: ImportDialogProps) {
                   id="csv-upload"
                 />
                 <label htmlFor="csv-upload">
-                  <Button variant="outline" asChild>
-                    <span>
-                      <FileText className="w-4 h-4 mr-2" />
-                      Choose File
-                    </span>
-                  </Button>
+                  <span className="inline-flex items-center justify-center rounded-lg font-medium transition-colors border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 cursor-pointer">
+                    <FileText className="w-4 h-4 mr-2" />
+                    Choose File
+                  </span>
                 </label>
               </div>
             </div>
@@ -234,7 +232,7 @@ export function ImportDialog({ isOpen, onClose, onImport }: ImportDialogProps) {
                           <td className="p-2">{row.location || '-'}</td>
                           <td className="p-2">
                             {row.skills?.slice(0, 3).map((s: string, i: number) => (
-                              <Badge key={i} variant="outline" className="text-xs mr-1">{s}</Badge>
+                              <Badge key={i} variant="default" className="text-xs mr-1">{s}</Badge>
                             ))}
                           </td>
                         </tr>

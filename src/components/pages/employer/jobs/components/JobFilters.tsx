@@ -60,7 +60,7 @@ export function JobFiltersPanel({ filters, onFiltersChange, onClearFilters }: Jo
             <Filter className="w-5 h-5" />
             Filters
             {activeFilterCount > 0 && (
-              <Badge variant="secondary" className="ml-2">
+              <Badge variant="default" className="ml-2">
                 {activeFilterCount}
               </Badge>
             )}

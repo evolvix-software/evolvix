@@ -30,7 +30,8 @@ import {
   Clock,
   CheckCircle,
 } from 'lucide-react';
-import { Application, PipelineStageType } from '@/store/features/employer/employerSlice';
+import { Application } from '@/store/features/employer/employerSlice';
+import { PipelineStageType } from './PipelineStage';
 import { cn } from '@/utils';
 import { format } from 'date-fns';
 

@@ -36,7 +36,7 @@ export interface SectionContent {
   description?: string;
   mission?: string;
   vision?: string;
-  values?: string[];
+  aboutValues?: string[]; // Renamed to avoid conflict with Values section
   stats?: Array<{ label: string; value: string }>;
   layout?: 'single' | 'two-column' | 'grid' | 'carousel'; // Union of all layout types
   image?: string;
@@ -85,7 +85,7 @@ export interface SectionContent {
   sortOrder?: 'date' | 'title' | 'location';
   
   // CTA
-  description?: string;
+  ctaDescription?: string; // Renamed to avoid conflict with About description
   buttons?: Array<{
     id: string;
     text: string;

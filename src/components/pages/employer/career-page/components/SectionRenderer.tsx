@@ -177,7 +177,7 @@ function BenefitsSection({ content }: { content: SectionContent }) {
                       <h3 className="text-lg font-semibold mb-2">{benefit.name}</h3>
                       <p className="text-sm text-muted-foreground">{benefit.description}</p>
                       {benefit.category && (
-                        <Badge variant="outline" className="mt-2">{benefit.category}</Badge>
+                        <Badge variant="default" className="mt-2">{benefit.category}</Badge>
                       )}
                     </div>
                   </div>
@@ -331,15 +331,15 @@ function CTASection({ content, theme }: { content: SectionContent; theme?: any }
     >
       <div className="max-w-4xl mx-auto">
         <h2 className="text-4xl font-bold mb-4">{content.title || 'Ready to Join Us?'}</h2>
-        {content.description && (
-          <p className="text-xl mb-8 opacity-90">{content.description}</p>
+        {content.ctaDescription && (
+          <p className="text-xl mb-8 opacity-90">{content.ctaDescription}</p>
         )}
         <div className="flex flex-wrap gap-4 justify-center">
           {content.buttons && content.buttons.length > 0 ? (
             content.buttons.map((button) => (
               <Button
                 key={button.id}
-                variant={button.variant === 'secondary' ? 'secondary' : button.variant === 'outline' ? 'outline' : 'default'}
+                variant={button.variant === 'secondary' ? 'ghost' : button.variant === 'outline' ? 'outline' : 'default'}
                 size="lg"
                 className="bg-white text-primary hover:bg-gray-100"
               >
