@@ -36,7 +36,9 @@ import {
   Megaphone,
   Wallet,
   UsersRound,
-  FileBarChart
+  FileBarChart,
+  Building2,
+  Plug
 } from 'lucide-react';
 
 import { settingsData, SettingsSection } from '@/data/mock/settingsData';
@@ -551,13 +553,6 @@ const employerMenuCategories: EmployerMenuCategory[] = [
         icon: <Users className="w-5 h-5" />,
         path: '/portal/employer/applicants',
       },
-      {
-        id: 'pipeline',
-        label: 'Pipeline',
-        subtitle: 'Track Applications',
-        icon: <BarChart3 className="w-5 h-5" />,
-        path: '/portal/employer/applicants/pipeline',
-      },
     ]
   },
   {
@@ -591,18 +586,18 @@ const employerMenuCategories: EmployerMenuCategory[] = [
       },
     ]
   },
-  {
-    category: 'Communication',
-    items: [
-      {
-        id: 'messaging',
-        label: 'Messaging',
-        subtitle: 'Communicate',
-        icon: <MessageSquare className="w-5 h-5" />,
-        path: '/portal/employer/messaging',
-      },
-    ]
-  },
+  // {
+  //   category: 'Communication',
+  //   items: [
+  //     {
+  //       id: 'messaging',
+  //       label: 'Messaging',
+  //       subtitle: 'Communicate',
+  //       icon: <MessageSquare className="w-5 h-5" />,
+  //       path: '/portal/employer/messaging',
+  //     },
+  //   ]
+  // },
   {
     category: 'Analytics',
     items: [
@@ -659,7 +654,9 @@ const iconMap: Record<string, any> = {
   Megaphone,
   Wallet,
   UsersRound,
-  FileBarChart
+  FileBarChart,
+  Building2,
+  Plug
 };
 
 // Provider Profile Component to avoid hydration issues
@@ -820,7 +817,11 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
           setActiveSection(sectionMatch ? sectionMatch[1] : 'profile');
         } else {
           const params = new URLSearchParams(window.location.search);
-          setActiveSection(params.get('section') || (role === 'mentor' ? 'profile' : 'basic'));
+          if (role === 'employer') {
+            setActiveSection(params.get('tab') || 'profile');
+          } else {
+            setActiveSection(params.get('section') || (role === 'mentor' ? 'profile' : 'basic'));
+          }
         }
       };
 
@@ -843,6 +844,19 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
           { id: 'privacy', label: 'Privacy & Security', icon: 'Lock' },
         ];
         setSettingsMenuItems(providerSections);
+      } else if (role === 'employer') {
+        // Employer settings sections
+        const employerSections: SettingsSection[] = [
+          { id: 'profile', label: 'Company Profile', icon: 'Building2' },
+          { id: 'team', label: 'Team Management', icon: 'Users' },
+          { id: 'jobs', label: 'Job Posting Settings', icon: 'Briefcase' },
+          { id: 'notifications', label: 'Notification Preferences', icon: 'Bell' },
+          { id: 'integrations', label: 'Integrations', icon: 'Plug' },
+          { id: 'billing', label: 'Billing & Subscription', icon: 'CreditCard' },
+          { id: 'security', label: 'Security Settings', icon: 'Shield' },
+          { id: 'privacy', label: 'Data & Privacy', icon: 'Lock' },
+        ];
+        setSettingsMenuItems(employerSections);
       } else {
         const sections = role === 'student'
           ? (settingsData.settingsSections.student as SettingsSection[])
@@ -936,12 +950,14 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
           // Settings menu
           settingsMenuItems.map((section) => {
             const IconComponent = iconMap[section.icon] || Settings;
-            const isActive = activeSection === section.id || currentPath?.includes(section.id);
+            const isActive = activeSection === section.id;
             const settingsPath = role === 'student'
               ? `/portal/student/settings?section=${section.id}`
               : role === 'mentor'
                 ? `/portal/mentor/settings?section=${section.id}`
-                : `/portal/provider/settings/${section.id}`;
+                : role === 'employer'
+                  ? `/portal/employer/settings?tab=${section.id}`
+                  : `/portal/provider/settings/${section.id}`;
 
             return (
               <button

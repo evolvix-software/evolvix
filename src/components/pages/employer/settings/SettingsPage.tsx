@@ -1,22 +1,10 @@
 "use client";
 
 import { useState, useEffect, Suspense } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/common/layout/Layout';
-import { Card, CardContent } from '@/components/common/forms/Card';
-import { Button } from '@/components/common/forms/Button';
 import { Badge } from '@/components/common/ui/Badge';
-import {
-  Building2,
-  Users,
-  Briefcase,
-  Bell,
-  Plug,
-  CreditCard,
-  Shield,
-  Lock,
-  Settings as SettingsIcon
-} from 'lucide-react';
+import { Settings as SettingsIcon } from 'lucide-react';
 import { SettingsTab } from './types';
 import { CompanyProfileTab } from './tabs/CompanyProfileTab';
 import { TeamManagementTab } from './tabs/TeamManagementTab';
@@ -26,10 +14,8 @@ import { IntegrationsTab } from './tabs/IntegrationsTab';
 import { BillingTab } from './tabs/BillingTab';
 import { SecurityTab } from './tabs/SecurityTab';
 import { DataPrivacyTab } from './tabs/DataPrivacyTab';
-import { cn } from '@/utils';
 
 function SettingsContent() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState<SettingsTab>('profile');
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
@@ -38,24 +24,10 @@ function SettingsContent() {
     const tab = searchParams.get('tab') as SettingsTab;
     if (tab && ['profile', 'team', 'jobs', 'notifications', 'integrations', 'billing', 'security', 'privacy'].includes(tab)) {
       setActiveTab(tab);
+    } else {
+      setActiveTab('profile');
     }
   }, [searchParams]);
-
-  const handleTabChange = (tab: SettingsTab) => {
-    setActiveTab(tab);
-    router.push(`/portal/employer/settings?tab=${tab}`);
-  };
-
-  const tabs = [
-    { id: 'profile' as SettingsTab, label: 'Company Profile', icon: Building2 },
-    { id: 'team' as SettingsTab, label: 'Team', icon: Users },
-    { id: 'jobs' as SettingsTab, label: 'Job Settings', icon: Briefcase },
-    { id: 'notifications' as SettingsTab, label: 'Notifications', icon: Bell },
-    { id: 'integrations' as SettingsTab, label: 'Integrations', icon: Plug },
-    { id: 'billing' as SettingsTab, label: 'Billing', icon: CreditCard },
-    { id: 'security' as SettingsTab, label: 'Security', icon: Shield },
-    { id: 'privacy' as SettingsTab, label: 'Privacy', icon: Lock },
-  ];
 
   return (
     <Layout noCard title="Settings" role="employer" noPaddingX>
@@ -78,42 +50,16 @@ function SettingsContent() {
           </div>
         </div>
 
-        <div className="flex-1 flex overflow-hidden">
-          {/* Sidebar Navigation */}
-          <div className="w-64 border-r border-border bg-card overflow-y-auto p-4">
-            <nav className="space-y-1">
-              {tabs.map((tab) => {
-                const Icon = tab.icon;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => handleTabChange(tab.id)}
-                    className={cn(
-                      "w-full flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-lg transition-colors text-left",
-                      activeTab === tab.id
-                        ? "bg-primary text-primary-foreground"
-                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
-                    )}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <span>{tab.label}</span>
-                  </button>
-                );
-              })}
-            </nav>
-          </div>
-
-          {/* Main Content */}
-          <div className="flex-1 overflow-y-auto p-6">
-            {activeTab === 'profile' && <CompanyProfileTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'team' && <TeamManagementTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'jobs' && <JobPostingSettingsTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'notifications' && <NotificationPreferencesTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'integrations' && <IntegrationsTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'billing' && <BillingTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'security' && <SecurityTab onUnsavedChanges={setHasUnsavedChanges} />}
-            {activeTab === 'privacy' && <DataPrivacyTab onUnsavedChanges={setHasUnsavedChanges} />}
-          </div>
+        {/* Main Content */}
+        <div className="flex-1 overflow-y-auto p-6">
+          {activeTab === 'profile' && <CompanyProfileTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'team' && <TeamManagementTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'jobs' && <JobPostingSettingsTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'notifications' && <NotificationPreferencesTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'integrations' && <IntegrationsTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'billing' && <BillingTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'security' && <SecurityTab onUnsavedChanges={setHasUnsavedChanges} />}
+          {activeTab === 'privacy' && <DataPrivacyTab onUnsavedChanges={setHasUnsavedChanges} />}
         </div>
       </div>
     </Layout>
@@ -131,4 +77,3 @@ export function EmployerSettingsPage() {
     </Suspense>
   );
 }
-

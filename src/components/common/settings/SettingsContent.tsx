@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
+import { Input } from '@/components/common/forms/Input';
 import { useAppDispatch, useAppSelector, useTheme } from '@/hooks';
 import { 
   updatePersonalInfo, 

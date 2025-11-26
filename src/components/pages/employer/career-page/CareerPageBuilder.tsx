@@ -344,8 +344,8 @@ export function CareerPageBuilder() {
                     {sortedSections.filter(s => s.visible).map((section) => (
                       <div key={section.id}>
                         <SectionRenderer section={section} theme={theme} isPreview />
-                      </div>
-                    ))}
+                  </div>
+                ))}
                   </div>
                 </div>
               </div>
