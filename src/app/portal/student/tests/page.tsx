@@ -5,7 +5,7 @@ import { StudentTestsPage } from '@/components/pages/student/tests';
 
 export default function StudentTestsPageRoute() {
   return (
-    <Layout title="My Tests" role="student">
+    <Layout noCard title="My Tests" role="student">
       <StudentTestsPage />
     </Layout>
   );

@@ -11,7 +11,7 @@ interface AssignmentDetailPageProps {
 async function AssignmentDetailPageContent({ params }: AssignmentDetailPageProps) {
   const { id } = await params;
   return (
-    <Layout title="Assignment Details" role="student">
+    <Layout noCard title="Assignment Details" role="student">
       <AssignmentDetailPage assignmentId={id} />
     </Layout>
   );
@@ -20,7 +20,7 @@ async function AssignmentDetailPageContent({ params }: AssignmentDetailPageProps
 export default function StudentAssignmentDetailPageRoute({ params }: AssignmentDetailPageProps) {
   return (
     <Suspense fallback={
-      <Layout title="Assignment Details" role="student">
+      <Layout noCard title="Assignment Details" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] dark:border-[#735fff] mx-auto mb-4"></div>

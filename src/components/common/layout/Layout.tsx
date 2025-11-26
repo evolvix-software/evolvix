@@ -11,7 +11,7 @@ import { useMessaging } from '@/hooks/useMessaging';
 interface LayoutProps {
   children: React.ReactNode;
   title: string;
-  role: 'student' | 'mentor' | 'admin' | 'provider';
+  role: 'student' | 'mentor' | 'admin' | 'provider' | 'employer';
   onViewChange?: (view: string) => void;
   currentView?: string; // For admin to track current view
   adminUser?: { fullName?: string; email?: string }; // Admin user info

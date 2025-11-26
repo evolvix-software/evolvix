@@ -3,7 +3,7 @@ import { MentorAnalyticsPage } from '@/components/pages/mentor/analytics';
 
 export default function AnalyticsPage() {
   return (
-    <Layout title="Analytics" role="mentor">
+    <Layout noCard title="Analytics" role="mentor">
       <MentorAnalyticsPage />
     </Layout>
   );

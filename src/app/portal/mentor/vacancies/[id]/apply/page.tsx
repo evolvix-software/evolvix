@@ -3,7 +3,7 @@ import { ApplicationForm } from '@/components/pages/mentor/vacancies/Application
 
 export default function ApplyVacancyPage() {
   return (
-    <Layout title="Apply for Vacancy" role="mentor">
+    <Layout noCard title="Apply for Vacancy" role="mentor">
       <ApplicationForm />
     </Layout>
   );

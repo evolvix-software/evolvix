@@ -3,7 +3,7 @@ import { MentorStudentsPage } from '@/components/pages/mentor/students';
 
 export default function StudentsPage() {
   return (
-    <Layout title="Student Management" role="mentor">
+    <Layout noCard title="Student Management" role="mentor">
       <MentorStudentsPage />
     </Layout>
   );

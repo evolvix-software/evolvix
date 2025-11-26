@@ -39,7 +39,7 @@ function SettingsContentWrapper() {
   }
   
   return (
-    <Layout title="Settings" role="student">
+    <Layout noCard title="Settings" role="student">
       <SettingsContent section={activeSection} role="student" />
     </Layout>
   );

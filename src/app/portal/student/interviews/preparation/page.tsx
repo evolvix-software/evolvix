@@ -6,7 +6,7 @@ import { InterviewPreparationPage } from '@/components/pages/student/interviews'
 
 function InterviewPreparationPageContent() {
   return (
-    <Layout title="Interview Preparation" role="student">
+    <Layout noCard title="Interview Preparation" role="student">
       <InterviewPreparationPage />
     </Layout>
   );
@@ -15,7 +15,7 @@ function InterviewPreparationPageContent() {
 export default function StudentInterviewPreparationPageRoute() {
   return (
     <Suspense fallback={
-      <Layout title="Interview Preparation" role="student">
+      <Layout noCard title="Interview Preparation" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>

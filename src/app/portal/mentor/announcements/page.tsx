@@ -3,7 +3,7 @@ import { AnnouncementsPage } from '@/components/pages/mentor/announcements/Annou
 
 export default function AnnouncementsPageRoute() {
   return (
-    <Layout title="Announcements" role="mentor">
+    <Layout noCard title="Announcements" role="mentor">
       <AnnouncementsPage />
     </Layout>
   );

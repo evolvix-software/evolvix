@@ -8,7 +8,7 @@ function AssignmentsContentWrapper() {
 
 export default function AssignmentsPage() {
   return (
-    <Layout title="Assignments" role="mentor">
+    <Layout noCard title="Assignments" role="mentor">
       <Suspense fallback={<div className="p-6 text-center">Loading assignments...</div>}>
         <AssignmentsContentWrapper />
       </Suspense>

@@ -3,7 +3,7 @@ import { AdminVacanciesPage } from '@/components/pages/admin/bundle-courses/Admi
 
 export default function AdminVacanciesPageRoute() {
   return (
-    <Layout title="Course Vacancies" role="admin">
+    <Layout noCard title="Course Vacancies" role="admin">
       <AdminVacanciesPage />
     </Layout>
   );

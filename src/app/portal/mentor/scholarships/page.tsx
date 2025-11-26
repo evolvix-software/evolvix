@@ -6,7 +6,7 @@ import { MentorScholarshipsManagementPage } from '@/components/pages/mentor/scho
 
 function ScholarshipsManagementPageContent() {
   return (
-    <Layout title="Scholarships Management" role="mentor">
+    <Layout noCard title="Scholarships Management" role="mentor">
       <MentorScholarshipsManagementPage />
     </Layout>
   );
@@ -15,7 +15,7 @@ function ScholarshipsManagementPageContent() {
 export default function MentorScholarshipsPageRoute() {
   return (
     <Suspense fallback={
-      <Layout title="Scholarships Management" role="mentor">
+      <Layout noCard title="Scholarships Management" role="mentor">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>

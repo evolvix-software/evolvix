@@ -142,7 +142,7 @@ export default function VerificationPage() {
   const currentStatus = verificationStatus?.status || 'incomplete';
 
   return (
-    <Layout title="Verification" role={userData.role as 'student' | 'mentor'}>
+    <Layout noCard title="Verification" role={userData.role as 'student' | 'mentor'}>
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">

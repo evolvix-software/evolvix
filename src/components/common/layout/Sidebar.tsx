@@ -46,7 +46,7 @@ import { evolvixLogo } from '@/assets/assets';
 interface SidebarProps {
   isCollapsed: boolean;
   onToggle: () => void;
-  role: 'student' | 'mentor' | 'admin' | 'provider';
+  role: 'student' | 'mentor' | 'admin' | 'provider' | 'employer';
   onViewChange?: (view: string) => void;
   currentView?: string; // For admin to track current view
   adminUser?: { fullName?: string; email?: string }; // Admin user info
@@ -503,6 +503,134 @@ const providerMenuCategories: ProviderMenuCategory[] = [
 
 const providerMenuItems: MenuItem[] = providerMenuCategories.flatMap(category => category.items);
 
+// Employer menu items organized by category
+interface EmployerMenuCategory {
+  category: string;
+  items: MenuItem[];
+}
+
+const employerMenuCategories: EmployerMenuCategory[] = [
+  {
+    category: 'Overview',
+    items: [
+      {
+        id: 'dashboard',
+        label: 'Dashboard',
+        subtitle: 'Overview & Stats',
+        icon: <LayoutDashboard className="w-5 h-5" />,
+        path: '/portal/employer/dashboard',
+      },
+    ]
+  },
+  {
+    category: 'Jobs',
+    items: [
+      {
+        id: 'post-job',
+        label: 'Post a Job',
+        subtitle: 'Create New Job',
+        icon: <FileText className="w-5 h-5" />,
+        path: '/portal/employer/jobs/new',
+      },
+      {
+        id: 'manage-jobs',
+        label: 'Manage Jobs',
+        subtitle: 'View & Edit Jobs',
+        icon: <Briefcase className="w-5 h-5" />,
+        path: '/portal/employer/jobs/manage',
+      },
+    ]
+  },
+  {
+    category: 'Applicants',
+    items: [
+      {
+        id: 'applicants',
+        label: 'All Applicants',
+        subtitle: 'View All Candidates',
+        icon: <Users className="w-5 h-5" />,
+        path: '/portal/employer/applicants',
+      },
+      {
+        id: 'pipeline',
+        label: 'Pipeline',
+        subtitle: 'Track Applications',
+        icon: <BarChart3 className="w-5 h-5" />,
+        path: '/portal/employer/applicants/pipeline',
+      },
+    ]
+  },
+  {
+    category: 'Talent',
+    items: [
+      {
+        id: 'talent-pool',
+        label: 'Talent Pool',
+        subtitle: 'Saved Candidates',
+        icon: <UsersRound className="w-5 h-5" />,
+        path: '/portal/employer/talent-pool',
+      },
+      {
+        id: 'search',
+        label: 'Search Talent',
+        subtitle: 'Discover Candidates',
+        icon: <User className="w-5 h-5" />,
+        path: '/portal/employer/search',
+      },
+    ]
+  },
+  {
+    category: 'Branding',
+    items: [
+      {
+        id: 'career-page',
+        label: 'Career Page',
+        subtitle: 'Build Your Page',
+        icon: <FileBarChart className="w-5 h-5" />,
+        path: '/portal/employer/career-page',
+      },
+    ]
+  },
+  {
+    category: 'Communication',
+    items: [
+      {
+        id: 'messaging',
+        label: 'Messaging',
+        subtitle: 'Communicate',
+        icon: <MessageSquare className="w-5 h-5" />,
+        path: '/portal/employer/messaging',
+      },
+    ]
+  },
+  {
+    category: 'Analytics',
+    items: [
+      {
+        id: 'analytics',
+        label: 'Analytics',
+        subtitle: 'Performance Metrics',
+        icon: <BarChart3 className="w-5 h-5" />,
+        path: '/portal/employer/analytics',
+      },
+    ]
+  },
+  {
+    category: 'Account',
+    items: [
+      {
+        id: 'settings',
+        label: 'Settings',
+        subtitle: 'Profile & Preferences',
+        icon: <Settings className="w-5 h-5" />,
+        path: '/portal/employer/settings',
+      },
+    ]
+  }
+];
+
+const employerMenuItems: MenuItem[] = employerMenuCategories.flatMap(category => category.items);
+
 const iconMap: Record<string, any> = {
   LayoutDashboard,
   User,
@@ -608,6 +736,9 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
     if (role === 'provider') {
       return providerMenuItems;
     }
+    if (role === 'employer') {
+      return employerMenuItems;
+    }
     const items = role === 'student' ? studentMenuItems : mentorMenuItems;
 
     // TODO: Re-enable verification-based menu filtering after UI is complete
@@ -642,6 +773,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
   const portalTitle = role === 'student' ? 'Student Portal'
     : role === 'mentor' ? 'Mentor Portal'
       : role === 'provider' ? 'Provider Portal'
+        : role === 'employer' ? 'Employer Portal'
         : 'Admin Portal';
   const headerIcon = role === 'student'
     ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
@@ -649,6 +781,8 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
       ? <User className="w-6 h-6 text-sidebar-primary-foreground" />
       : role === 'provider'
         ? <GraduationCap className="w-6 h-6 text-sidebar-primary-foreground" />
+        : role === 'employer'
+          ? <Briefcase className="w-6 h-6 text-sidebar-primary-foreground" />
         : <Shield className="w-6 h-6 text-sidebar-primary-foreground" />;
 
   useEffect(() => {
@@ -750,6 +884,7 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
             {role === 'student' ? 'Student Portal' :
               role === 'mentor' ? 'Mentor Portal' :
                 role === 'provider' ? 'Scholarship Provider Portal' :
+                  role === 'employer' ? 'Employer Portal' :
                   'Admin Portal'}
           </div>
         </div>
@@ -843,11 +978,12 @@ export function Sidebar({ isCollapsed, onToggle, role, onViewChange, currentView
               </button>
             );
           })
-        ) : (role === 'student' || role === 'mentor' || role === 'provider') && !isCollapsed ? (
-          // Student, Mentor, or Provider menu with categories
+        ) : (role === 'student' || role === 'mentor' || role === 'provider' || role === 'employer') && !isCollapsed ? (
+          // Student, Mentor, Provider, or Employer menu with categories
           (role === 'student' ? studentMenuCategories
             : role === 'mentor' ? mentorMenuCategories
-              : providerMenuCategories).map((category) => (
+              : role === 'provider' ? providerMenuCategories
+                : employerMenuCategories).map((category) => (
                 <div key={category.category} className="mb-4">
                   <div className="px-3 mb-2">
                     <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">

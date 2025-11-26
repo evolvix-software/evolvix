@@ -259,7 +259,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <Layout title="My Profile" role="student">
+    <Layout noCard title="My Profile" role="student">
       <div className="space-y-6">
         {/* Milestones Section - GitHub Style */}
         <Card className="border-slate-200 dark:border-border bg-card dark:bg-card">

@@ -109,7 +109,7 @@ export function AdminCampaignsPage() {
 
   if (loading) {
     return (
-      <Layout title="Scholarship Campaigns" role="admin">
+      <Layout noCard title="Scholarship Campaigns" role="admin">
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
@@ -118,7 +118,7 @@ export function AdminCampaignsPage() {
   }
 
   return (
-    <Layout title="Scholarship Campaigns" role="admin" noCard>
+    <Layout noCard title="Scholarship Campaigns" role="admin" noCard>
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

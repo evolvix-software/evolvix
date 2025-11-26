@@ -6,7 +6,7 @@ import { CoursesPage } from '@/components/pages/student/courses';
 
 function CoursesPageContent() {
   return (
-    <Layout title="Browse Courses" role="student">
+    <Layout noCard title="Browse Courses" role="student">
       <CoursesPage />
     </Layout>
   );
@@ -15,7 +15,7 @@ function CoursesPageContent() {
 export default function StudentCoursesPage() {
   return (
     <Suspense fallback={
-      <Layout title="Browse Courses" role="student">
+      <Layout noCard title="Browse Courses" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] dark:border-[#735fff] mx-auto mb-4"></div>

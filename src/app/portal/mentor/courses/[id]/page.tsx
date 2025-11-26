@@ -45,7 +45,7 @@ export default function MentorCourseDetailPage() {
 
   if (!course) {
     return (
-      <Layout title="Course Details" role="mentor">
+      <Layout noCard title="Course Details" role="mentor">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500 mx-auto mb-4"></div>
@@ -70,7 +70,7 @@ export default function MentorCourseDetailPage() {
   };
 
   return (
-    <Layout title={course.title} role="mentor">
+    <Layout noCard title={course.title} role="mentor">
       <div className="space-y-6">
         {/* Course Header */}
         <Card className="border border-slate-200 dark:border-slate-700">

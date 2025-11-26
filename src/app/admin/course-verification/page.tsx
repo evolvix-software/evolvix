@@ -3,7 +3,7 @@ import { AdminCourseVerificationPage } from '@/components/pages/admin/bundle-cou
 
 export default function AdminCourseVerificationPageRoute() {
   return (
-    <Layout title="Course Verification" role="admin">
+    <Layout noCard title="Course Verification" role="admin">
       <AdminCourseVerificationPage />
     </Layout>
   );

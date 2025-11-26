@@ -167,7 +167,7 @@ export default function ProfilePage() {
     : 'student';
 
   return (
-    <Layout title="Profile" role={layoutRole}>
+    <Layout noCard title="Profile" role={layoutRole}>
       <div className="space-y-6">
         {/* Header */}
         <div className="mb-8">

@@ -4,7 +4,7 @@ import { TestAnalyticsPage } from '@/components/pages/mentor/tests/TestAnalytics
 
 function TestAnalyticsPageContent() {
   return (
-    <Layout title="Test Analytics" role="mentor">
+    <Layout noCard title="Test Analytics" role="mentor">
       <TestAnalyticsPage />
     </Layout>
   );
@@ -13,7 +13,7 @@ function TestAnalyticsPageContent() {
 export default function TestAnalyticsPageRoute() {
   return (
     <Suspense fallback={
-      <Layout title="Test Analytics" role="mentor">
+      <Layout noCard title="Test Analytics" role="mentor">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-500 mx-auto mb-4"></div>

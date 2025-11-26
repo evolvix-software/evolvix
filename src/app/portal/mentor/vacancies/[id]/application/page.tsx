@@ -3,7 +3,7 @@ import { ApplicationStatus } from '@/components/pages/mentor/vacancies/Applicati
 
 export default function ViewApplicationPage() {
   return (
-    <Layout title="Application Status" role="mentor">
+    <Layout noCard title="Application Status" role="mentor">
       <ApplicationStatus />
     </Layout>
   );

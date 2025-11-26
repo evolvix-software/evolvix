@@ -25,7 +25,7 @@ export default function CourseAnalyticsPage() {
 
   if (!course) {
     return (
-      <Layout title="Course Analytics" role="mentor">
+      <Layout noCard title="Course Analytics" role="mentor">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
@@ -91,7 +91,7 @@ export default function CourseAnalyticsPage() {
   const courseRevenue = course.price * (course.enrolledCount || 0);
 
   return (
-    <Layout title={`${course.title} - Analytics`} role="mentor">
+    <Layout noCard title={`${course.title} - Analytics`} role="mentor">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

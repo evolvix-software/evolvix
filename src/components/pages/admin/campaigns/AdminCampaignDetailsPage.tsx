@@ -48,7 +48,7 @@ export function AdminCampaignDetailsPage({ campaignId }: AdminCampaignDetailsPag
 
   if (loading) {
     return (
-      <Layout title="Campaign Details" role="admin">
+      <Layout noCard title="Campaign Details" role="admin">
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
@@ -58,7 +58,7 @@ export function AdminCampaignDetailsPage({ campaignId }: AdminCampaignDetailsPag
 
   if (!campaign) {
     return (
-      <Layout title="Campaign Details" role="admin">
+      <Layout noCard title="Campaign Details" role="admin">
         <div className="flex items-center justify-center h-64">
           <p className="text-muted-foreground">Campaign not found</p>
         </div>
@@ -81,7 +81,7 @@ export function AdminCampaignDetailsPage({ campaignId }: AdminCampaignDetailsPag
   ];
 
   return (
-    <Layout title={campaign.title} role="admin">
+    <Layout noCard title={campaign.title} role="admin">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

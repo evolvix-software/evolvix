@@ -36,7 +36,7 @@ export function MentorsPage() {
 
   if (loading) {
     return (
-      <Layout title="Mentors & Payroll" role="provider">
+      <Layout noCard title="Mentors & Payroll" role="provider">
         <div className="flex items-center justify-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
         </div>
@@ -45,7 +45,7 @@ export function MentorsPage() {
   }
 
   return (
-    <Layout title="Mentors & Payroll" role="provider" noCard>
+    <Layout noCard title="Mentors & Payroll" role="provider" noCard>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

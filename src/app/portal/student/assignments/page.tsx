@@ -4,7 +4,7 @@ import { StudentAssignmentsPage } from '@/components/pages/student/assignments';
 
 function AssignmentsPageContent() {
   return (
-    <Layout title="My Assignments" role="student">
+    <Layout noCard title="My Assignments" role="student">
       <StudentAssignmentsPage />
     </Layout>
   );
@@ -13,7 +13,7 @@ function AssignmentsPageContent() {
 export default function StudentAssignmentsPageRoute() {
   return (
     <Suspense fallback={
-      <Layout title="My Assignments" role="student">
+      <Layout noCard title="My Assignments" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] dark:border-[#735fff] mx-auto mb-4"></div>

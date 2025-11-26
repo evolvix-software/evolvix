@@ -180,7 +180,7 @@ export function StudentDashboardPage() {
 
   if (isLoading) {
     return (
-      <Layout title="Dashboard" role="student">
+      <Layout noCard title="Dashboard" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] mx-auto mb-4"></div>
@@ -193,7 +193,7 @@ export function StudentDashboardPage() {
 
   if (error) {
     return (
-      <Layout title="Dashboard" role="student">
+      <Layout noCard title="Dashboard" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -208,7 +208,7 @@ export function StudentDashboardPage() {
   }
 
   return (
-    <Layout title="Dashboard" role="student">
+    <Layout noCard title="Dashboard" role="student">
       <div className="space-y-6">
         {/* New User Welcome Banner */}
         {isNewUser && (

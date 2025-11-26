@@ -1,6 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './features/auth/authSlice';
 import studentReducer from './features/student/studentSlice';
+import mentorReducer from './features/mentor/mentorSlice';
+import providerReducer from './features/provider/providerSlice';
+import employerReducer from './features/employer/employerSlice';
 import verificationReducer from './features/verification/verificationSlice';
 import profileReducer from './features/profile/profileSlice';
 import coursesReducer from './features/courses/coursesSlice';
@@ -13,6 +16,9 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     student: studentReducer,
+    mentor: mentorReducer,
+    provider: providerReducer,
+    employer: employerReducer,
     verification: verificationReducer,
     profile: profileReducer,
     courses: coursesReducer,

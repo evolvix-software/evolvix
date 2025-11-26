@@ -4,7 +4,7 @@ import { MyCoursesPage } from '@/components/pages/student/courses';
 
 function MyCoursesPageContent() {
   return (
-    <Layout title="My Courses" role="student">
+    <Layout noCard title="My Courses" role="student">
       <MyCoursesPage />
     </Layout>
   );
@@ -13,7 +13,7 @@ function MyCoursesPageContent() {
 export default function StudentMyCoursesPage() {
   return (
     <Suspense fallback={
-      <Layout title="My Courses" role="student">
+      <Layout noCard title="My Courses" role="student">
         <div className="flex items-center justify-center h-64">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#635bff] dark:border-[#735fff] mx-auto mb-4"></div>

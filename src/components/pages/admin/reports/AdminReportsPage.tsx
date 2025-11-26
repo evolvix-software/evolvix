@@ -25,7 +25,7 @@ export function AdminReportsPage() {
   ];
 
   return (
-    <Layout title="Reports & Exports" role="admin" noCard>
+    <Layout noCard title="Reports & Exports" role="admin" noCard>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

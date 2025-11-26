@@ -86,7 +86,7 @@ import {
 
 interface SettingsContentProps {
   section?: string;
-  role: 'student' | 'mentor';
+  role: 'student' | 'mentor' | 'employer';
 }
 
 export function SettingsContent({ section, role }: SettingsContentProps) {
@@ -2190,6 +2190,476 @@ export function SettingsContent({ section, role }: SettingsContentProps) {
         </Card>
       )}
     </div>
+    );
+  }
+
+  // EMPLOYER SECTIONS
+  if (role === 'employer') {
+    const [companyInfo, setCompanyInfo] = useState({
+      companyName: '',
+      companySlug: '',
+      industry: '',
+      companySize: '',
+      headquarters: '',
+      website: '',
+      description: '',
+      linkedinUrl: '',
+      twitterUrl: '',
+      facebookUrl: '',
+    });
+
+    const [teamMembers, setTeamMembers] = useState<any[]>([]);
+    const [jobSettings, setJobSettings] = useState({
+      defaultEmploymentType: 'full-time',
+      defaultLocation: '',
+      defaultRemoteType: 'remote',
+      autoPublish: false,
+      requireApproval: false,
+      requireCoverLetter: false,
+      requirePortfolio: false,
+    });
+
+    return (
+      <div className="space-y-6">
+        {section === 'profile' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Building2 className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Company Profile</span>
+              </CardTitle>
+              <CardDescription>Manage your company information and branding</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Company Name *
+                  </label>
+                  <Input
+                    value={companyInfo.companyName}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, companyName: e.target.value })}
+                    placeholder="Your Company Name"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Company Slug
+                  </label>
+                  <Input
+                    value={companyInfo.companySlug}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, companySlug: e.target.value })}
+                    placeholder="company-slug"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Industry *
+                  </label>
+                  <select
+                    value={companyInfo.industry}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, industry: e.target.value })}
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+                  >
+                    <option value="">Select Industry</option>
+                    <option value="technology">Technology</option>
+                    <option value="finance">Finance</option>
+                    <option value="healthcare">Healthcare</option>
+                    <option value="education">Education</option>
+                    <option value="retail">Retail</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Company Size
+                  </label>
+                  <select
+                    value={companyInfo.companySize}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, companySize: e.target.value })}
+                    className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+                  >
+                    <option value="">Select Size</option>
+                    <option value="1-10">1-10 employees</option>
+                    <option value="11-50">11-50 employees</option>
+                    <option value="51-200">51-200 employees</option>
+                    <option value="201-1000">201-1000 employees</option>
+                    <option value="1000+">1000+ employees</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Headquarters
+                  </label>
+                  <Input
+                    value={companyInfo.headquarters}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, headquarters: e.target.value })}
+                    placeholder="City, State, Country"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-foreground mb-2 block">
+                    Website
+                  </label>
+                  <Input
+                    value={companyInfo.website}
+                    onChange={(e) => setCompanyInfo({ ...companyInfo, website: e.target.value })}
+                    placeholder="https://www.example.com"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-foreground mb-2 block">
+                  Company Description
+                </label>
+                <textarea
+                  value={companyInfo.description}
+                  onChange={(e) => setCompanyInfo({ ...companyInfo, description: e.target.value })}
+                  className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground min-h-[100px]"
+                  placeholder="Tell us about your company..."
+                />
+              </div>
+              <div className="space-y-4">
+                <h3 className="font-semibold text-foreground">Social Media Links</h3>
+                <div className="grid md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      LinkedIn URL
+                    </label>
+                    <Input
+                      value={companyInfo.linkedinUrl}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, linkedinUrl: e.target.value })}
+                      placeholder="https://linkedin.com/company/..."
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Twitter URL
+                    </label>
+                    <Input
+                      value={companyInfo.twitterUrl}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, twitterUrl: e.target.value })}
+                      placeholder="https://twitter.com/..."
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Facebook URL
+                    </label>
+                    <Input
+                      value={companyInfo.facebookUrl}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, facebookUrl: e.target.value })}
+                      placeholder="https://facebook.com/..."
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button className="bg-gradient-to-r from-primary to-purple-600">
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Changes
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'team' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Users className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Team Management</span>
+              </CardTitle>
+              <CardDescription>Manage your team members and their permissions</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex justify-end">
+                <Button className="bg-gradient-to-r from-primary to-purple-600">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Invite Team Member
+                </Button>
+              </div>
+              {teamMembers.length === 0 ? (
+                <div className="text-center py-12">
+                  <Users className="w-16 h-16 mx-auto mb-4 text-muted-foreground opacity-50" />
+                  <p className="text-muted-foreground">No team members yet</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    Invite team members to collaborate on hiring
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {teamMembers.map((member) => (
+                    <div key={member.id} className="p-4 border border-border rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-foreground">{member.name}</p>
+                          <p className="text-sm text-muted-foreground">{member.email}</p>
+                          <Badge variant="outline" className="mt-1">{member.role}</Badge>
+                        </div>
+                        <Button variant="outline" size="sm">
+                          Edit
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'jobs' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Briefcase className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Job Posting Settings</span>
+              </CardTitle>
+              <CardDescription>Configure default settings for job postings</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div>
+                <h3 className="font-semibold text-foreground mb-4">Default Settings</h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Default Employment Type
+                    </label>
+                    <select
+                      value={jobSettings.defaultEmploymentType}
+                      onChange={(e) => setJobSettings({ ...jobSettings, defaultEmploymentType: e.target.value })}
+                      className="w-full px-3 py-2 border border-border rounded-lg bg-background text-foreground"
+                    >
+                      <option value="full-time">Full-time</option>
+                      <option value="part-time">Part-time</option>
+                      <option value="contract">Contract</option>
+                      <option value="internship">Internship</option>
+                      <option value="freelance">Freelance</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-foreground mb-2 block">
+                      Default Location
+                    </label>
+                    <Input
+                      value={jobSettings.defaultLocation}
+                      onChange={(e) => setJobSettings({ ...jobSettings, defaultLocation: e.target.value })}
+                      placeholder="e.g., Remote, San Francisco, CA"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-4">Application Settings</h3>
+                <div className="space-y-3">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={jobSettings.requireCoverLetter}
+                      onChange={(e) => setJobSettings({ ...jobSettings, requireCoverLetter: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm text-foreground">Require Cover Letter by default</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={jobSettings.requirePortfolio}
+                      onChange={(e) => setJobSettings({ ...jobSettings, requirePortfolio: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm text-foreground">Require Portfolio by default</span>
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={jobSettings.autoPublish}
+                      onChange={(e) => setJobSettings({ ...jobSettings, autoPublish: e.target.checked })}
+                      className="w-4 h-4"
+                    />
+                    <span className="text-sm text-foreground">Auto-publish new jobs</span>
+                  </label>
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button className="bg-gradient-to-r from-primary to-purple-600">
+                  <Save className="w-4 h-4 mr-2" />
+                  Save Settings
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'notifications' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Bell className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Notification Preferences</span>
+              </CardTitle>
+              <CardDescription>Control what notifications you receive</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {[
+                { name: 'New Applications', desc: 'Notify when new applications are received', key: 'newApplications' },
+                { name: 'Application Status Changes', desc: 'Notify when application status changes', key: 'statusChanges' },
+                { name: 'Job Expiring Soon', desc: 'Notify when jobs are about to expire', key: 'jobExpiring' },
+                { name: 'New Messages', desc: 'Notify when you receive new messages', key: 'newMessages' },
+                { name: 'Team Activity', desc: 'Notify about team member activities', key: 'teamActivity' },
+                { name: 'System Updates', desc: 'Notify about platform updates', key: 'systemUpdates' },
+              ].map((item) => (
+                <div key={item.key} className="flex items-center justify-between p-3 border border-border rounded-lg">
+                  <div>
+                    <p className="font-medium text-foreground">{item.name}</p>
+                    <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" defaultChecked />
+                    <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  </label>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'integrations' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <LinkIcon className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Integrations</span>
+              </CardTitle>
+              <CardDescription>Connect with external tools and services</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {[
+                { name: 'ATS Systems', desc: 'Greenhouse, Lever, Workday', status: 'disconnected' },
+                { name: 'Calendar', desc: 'Google Calendar, Outlook', status: 'disconnected' },
+                { name: 'Email', desc: 'Gmail, Outlook', status: 'disconnected' },
+                { name: 'Slack', desc: 'Team communication', status: 'disconnected' },
+                { name: 'Zapier', desc: 'Automation platform', status: 'disconnected' },
+              ].map((integration) => (
+                <div key={integration.name} className="flex items-center justify-between p-4 border border-border rounded-lg">
+                  <div>
+                    <p className="font-medium text-foreground">{integration.name}</p>
+                    <p className="text-sm text-muted-foreground">{integration.desc}</p>
+                  </div>
+                  <Button variant={integration.status === 'connected' ? 'outline' : 'default'}>
+                    {integration.status === 'connected' ? 'Disconnect' : 'Connect'}
+                  </Button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'billing' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <CreditCard className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Billing & Subscription</span>
+              </CardTitle>
+              <CardDescription>Manage your subscription and payment methods</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="p-4 border border-border rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="font-semibold text-foreground">Current Plan</p>
+                    <p className="text-sm text-muted-foreground">Professional Plan</p>
+                  </div>
+                  <Button variant="outline">Upgrade Plan</Button>
+                </div>
+                <div className="mt-4 space-y-2 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Job Postings</span>
+                    <span className="text-foreground">10 / Unlimited</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Active Jobs</span>
+                    <span className="text-foreground">8 / Unlimited</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-4">Payment Method</h3>
+                <div className="p-4 border border-border rounded-lg">
+                  <p className="text-sm text-muted-foreground mb-2">No payment method on file</p>
+                  <Button variant="outline" size="sm">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Payment Method
+                  </Button>
+                </div>
+              </div>
+              <div>
+                <h3 className="font-semibold text-foreground mb-4">Billing History</h3>
+                <div className="text-center py-8 text-muted-foreground">
+                  <Receipt className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                  <p>No billing history</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {section === 'security' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Shield className="w-5 h-5 text-slate-600 dark:text-slate-400" />
+                <span>Security Settings</span>
+              </CardTitle>
+              <CardDescription>Manage your account security</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="p-4 border border-border rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="font-medium text-foreground">Password</p>
+                    <p className="text-sm text-muted-foreground">Last changed 30 days ago</p>
+                  </div>
+                  <Button variant="outline" size="sm">Change Password</Button>
+                </div>
+              </div>
+              <div className="p-4 border border-border rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="font-medium text-foreground">Two-Factor Authentication</p>
+                    <p className="text-sm text-muted-foreground">Add an extra layer of security</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" className="sr-only peer" />
+                    <div className="w-11 h-6 bg-muted peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-card after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-card after:border-border after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+                  </label>
+                </div>
+              </div>
+              <div className="p-4 border border-border rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="font-medium text-foreground">Active Sessions</p>
+                    <p className="text-sm text-muted-foreground">Manage your active login sessions</p>
+                  </div>
+                  <Button variant="outline" size="sm">View Sessions</Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {!section && (
+          <Card>
+            <CardHeader>
+              <CardTitle>Employer Settings</CardTitle>
+              <CardDescription>Select a section from the sidebar to configure your settings.</CardDescription>
+            </CardHeader>
+          </Card>
+        )}
+      </div>
     );
   }
 
