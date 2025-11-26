@@ -107,8 +107,8 @@ export function AccountSecurityTab({ provider }: AccountSecurityTabProps) {
     }
   };
 
-  const getPasswordStrength = (password: string) => {
-    if (password.length === 0) return { strength: 0, label: '' };
+  const getPasswordStrength = (password: string): { strength: number; label: string; color: string } => {
+    if (password.length === 0) return { strength: 0, label: '', color: 'bg-muted' };
     if (password.length < 6) return { strength: 1, label: 'Weak', color: 'bg-red-500' };
     if (password.length < 8) return { strength: 2, label: 'Fair', color: 'bg-yellow-500' };
     if (password.length < 12) return { strength: 3, label: 'Good', color: 'bg-blue-500' };
@@ -116,6 +116,7 @@ export function AccountSecurityTab({ provider }: AccountSecurityTabProps) {
   };
 
   const passwordStrength = getPasswordStrength(passwordData.newPassword);
+  const strengthColor = passwordStrength.color || 'bg-muted';
 
   return (
     <div className="space-y-6">
@@ -201,13 +202,13 @@ export function AccountSecurityTab({ provider }: AccountSecurityTabProps) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <span className="text-xs text-muted-foreground">Password Strength</span>
-                <span className={`text-xs font-medium ${passwordStrength.color.replace('bg-', 'text-')}`}>
+                <span className={`text-xs font-medium ${strengthColor.replace('bg-', 'text-')}`}>
                   {passwordStrength.label}
                 </span>
               </div>
               <div className="w-full bg-muted rounded-full h-2">
                 <div
-                  className={`${passwordStrength.color} h-2 rounded-full transition-all`}
+                  className={`${strengthColor} h-2 rounded-full transition-all`}
                   style={{ width: `${(passwordStrength.strength / 4) * 100}%` }}
                 />
               </div>

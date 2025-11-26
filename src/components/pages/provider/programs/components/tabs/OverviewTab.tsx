@@ -55,25 +55,25 @@ export function OverviewTab({ course }: OverviewTabProps) {
           title="Enrolled Students"
           value={course.enrolledCount || 0}
           icon={<Users className="w-5 h-5" />}
-          trend={null}
+          trend={undefined}
         />
         <StatCard
           title="Scholarship Slots"
           value={`${course.scholarshipSlotsAvailable} / ${course.scholarshipSlots}`}
           icon={<Award className="w-5 h-5" />}
-          trend={null}
+          trend={undefined}
         />
         <StatCard
           title="Applications"
           value={course.appliedForScholarships || 0}
           icon={<BookOpen className="w-5 h-5" />}
-          trend={null}
+          trend={undefined}
         />
         <StatCard
           title="Avg Completion"
           value={`${averageCompletionRate}%`}
           icon={<TrendingUp className="w-5 h-5" />}
-          trend={null}
+          trend={undefined}
         />
       </div>
 

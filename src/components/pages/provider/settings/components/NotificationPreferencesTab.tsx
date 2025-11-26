@@ -121,16 +121,23 @@ export function NotificationPreferencesTab() {
   }, []);
 
   const handleEmailToggle = (category: string, field: string, value: boolean) => {
-    setSettings(prev => ({
-      ...prev,
-      email: {
-        ...prev.email,
-        [category]: {
-          ...prev.email[category as keyof typeof prev.email],
-          [field]: value,
-        },
-      },
-    }));
+    setSettings(prev => {
+      const categoryKey = category as keyof typeof prev.email;
+      const categoryData = prev.email[categoryKey];
+      if (categoryData && typeof categoryData === 'object' && !Array.isArray(categoryData)) {
+        return {
+          ...prev,
+          email: {
+            ...prev.email,
+            [category]: {
+              ...categoryData,
+              [field]: value,
+            },
+          },
+        };
+      }
+      return prev;
+    });
   };
 
   const handleInAppToggle = (field: string, value: boolean) => {

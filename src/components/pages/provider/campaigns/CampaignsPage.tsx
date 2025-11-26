@@ -43,31 +43,45 @@ export function CampaignsPage() {
 
   useEffect(() => {
     const loadData = async () => {
+      console.log('[CampaignsPage] Starting data load...');
       let currentProvider = provider;
       
       if (!currentProvider) {
+        console.log('[CampaignsPage] No provider found, checking registration data...');
         const registrationData = localStorage.getItem('evolvix_registration');
         if (registrationData) {
           const regData = JSON.parse(registrationData);
+          console.log('[CampaignsPage] Creating provider from registration data:', regData);
           currentProvider = providerService.createProvider({
             organizationName: regData.fullName || 'My Organization',
             organizationSlug: (regData.fullName || 'my-organization').toLowerCase().replace(/\s+/g, '-'),
             contactEmail: regData.email || '',
             userId: regData.email || '',
           });
+          console.log('[CampaignsPage] Created provider:', currentProvider);
           setProvider(currentProvider);
         } else {
+          console.log('[CampaignsPage] No registration data found, redirecting to signin');
           router.push('/auth/signin');
           return;
         }
       }
 
       if (currentProvider) {
+        console.log('[CampaignsPage] Provider found:', currentProvider.id);
+        
         // Ensure data is assigned to this provider
+        console.log('[CampaignsPage] Ensuring data is assigned to provider...');
         providerService.ensureDataAssigned(currentProvider.id);
+        
+        // Get all campaigns first to check what exists
+        const allCampaigns = campaignService.getAll();
+        console.log('[CampaignsPage] All campaigns in storage:', allCampaigns.length, allCampaigns);
         
         // Get campaigns for this provider
         const providerCampaigns = campaignService.getAll(currentProvider.id);
+        console.log('[CampaignsPage] Provider campaigns:', providerCampaigns.length, providerCampaigns);
+        
         setCampaigns(providerCampaigns);
         setFilteredCampaigns(providerCampaigns);
         setLoading(false);

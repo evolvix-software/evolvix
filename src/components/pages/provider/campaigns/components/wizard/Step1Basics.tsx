@@ -1,9 +1,10 @@
 "use client";
 
 import { useFormContext } from 'react-hook-form';
+import { usePathname } from 'next/navigation';
 import { Input } from '@/components/common/forms/Input';
 import { CampaignWizardFormData } from '../CampaignCreationWizard';
-import { courseService } from '@/data/mock/providerData';
+import { courseService, providerService, Provider } from '@/data/mock/providerData';
 import { useEffect, useState } from 'react';
 
 export function Step1Basics() {
@@ -14,10 +15,21 @@ export function Step1Basics() {
     formState: { errors },
   } = useFormContext<CampaignWizardFormData>();
 
+  const pathname = usePathname();
+  const isAdmin = pathname?.includes('/admin') || false;
+  const [providers, setProviders] = useState<Provider[]>([]);
+
   const campaignType = watch('campaignType');
   const title = watch('title');
   const [courses] = useState(courseService.getAll());
   const linkedCourseIds = watch('linkedCourseIds') || [];
+
+  // Load providers if admin
+  useEffect(() => {
+    if (isAdmin) {
+      setProviders(providerService.getAll());
+    }
+  }, [isAdmin]);
 
   // Auto-generate slug from title
   useEffect(() => {

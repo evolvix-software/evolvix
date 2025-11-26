@@ -9,7 +9,7 @@ type SettingsSection = 'profile' | 'security' | 'payment' | 'notifications' | 'p
 
 interface SettingsLayoutProps {
   activeSection: SettingsSection;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   loading?: boolean;
 }
 
@@ -66,7 +66,7 @@ export function SettingsLayout({ activeSection, children, loading = false }: Set
 
         {/* Main Content - Full Width */}
         <div>
-          {children}
+          {children || null}
         </div>
       </div>
     </Layout>

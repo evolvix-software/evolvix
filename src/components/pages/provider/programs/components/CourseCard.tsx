@@ -20,12 +20,9 @@ interface CourseCardProps {
 }
 
 export function CourseCard({ course, viewMode, onClick }: CourseCardProps) {
-  const instructorName =
-    typeof course.instructor === 'string'
-      ? course.instructor
-      : course.instructor?.name || 'Unknown';
+  const instructorName = course.instructor || 'Unknown';
 
-  const progressPercentage = course.enrolledCount > 0 ? Math.min(100, (course.enrolledCount / (course.maxStudents || 100)) * 100) : 0;
+  const progressPercentage = (course.enrolledCount ?? 0) > 0 ? Math.min(100, ((course.enrolledCount ?? 0) / 100) * 100) : 0;
 
   if (viewMode === 'list') {
     return (
@@ -47,7 +44,7 @@ export function CourseCard({ course, viewMode, onClick }: CourseCardProps) {
                   </span>
                   <span className="text-muted-foreground flex items-center gap-1">
                     <Users className="w-4 h-4" />
-                    {course.enrolledCount} enrolled
+                    {course.enrolledCount ?? 0} enrolled
                   </span>
                 </div>
               </div>
@@ -102,7 +99,7 @@ export function CourseCard({ course, viewMode, onClick }: CourseCardProps) {
               <Users className="w-4 h-4" />
               Enrolled
             </span>
-            <span className="font-semibold text-foreground">{course.enrolledCount}</span>
+            <span className="font-semibold text-foreground">{course.enrolledCount ?? 0}</span>
           </div>
         </div>
 

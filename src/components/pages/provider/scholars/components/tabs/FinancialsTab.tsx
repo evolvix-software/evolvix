@@ -1,6 +1,7 @@
 "use client";
 
 import { Card, CardContent, CardHeader } from '@/components/common/forms/Card';
+import { Button } from '@/components/common/forms/Button';
 import { Scholar } from '@/data/mock/providerData';
 import { DollarSign, Calendar, FileText, Download } from 'lucide-react';
 

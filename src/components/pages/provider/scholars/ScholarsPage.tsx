@@ -48,20 +48,25 @@ export function ScholarsPage() {
 
   useEffect(() => {
     const loadData = async () => {
+      console.log('[ScholarsPage] Starting data load...');
       let currentProvider = provider;
       
       if (!currentProvider) {
+        console.log('[ScholarsPage] No provider found, checking registration data...');
         const registrationData = localStorage.getItem('evolvix_registration');
         if (registrationData) {
           const regData = JSON.parse(registrationData);
+          console.log('[ScholarsPage] Creating provider from registration data:', regData);
           currentProvider = providerService.createProvider({
             organizationName: regData.fullName || 'My Organization',
             organizationSlug: (regData.fullName || 'my-organization').toLowerCase().replace(/\s+/g, '-'),
             contactEmail: regData.email || '',
             userId: regData.email || '',
           });
+          console.log('[ScholarsPage] Created provider:', currentProvider);
           setProvider(currentProvider);
         } else {
+          console.log('[ScholarsPage] No registration data found, redirecting to signin');
           router.push('/auth/signin');
           return;
         }
@@ -69,31 +74,43 @@ export function ScholarsPage() {
 
       if (currentProvider) {
         try {
+          console.log('[ScholarsPage] Provider found:', currentProvider.id);
+          
           // Ensure data is assigned to this provider
+          console.log('[ScholarsPage] Ensuring data is assigned to provider...');
           providerService.ensureDataAssigned(currentProvider.id);
+          
+          // Get all scholars first to check what exists
+          const allScholars = scholarService.getAll();
+          console.log('[ScholarsPage] All scholars in storage:', allScholars.length, allScholars);
           
           // Get scholars for this provider
           const providerScholars = scholarService.getAll(currentProvider.id);
+          console.log('[ScholarsPage] Provider scholars:', providerScholars.length, providerScholars);
           
           // If no scholars found, try to get all scholars and check if they need to be assigned
           if (providerScholars.length === 0) {
-            const allScholars = scholarService.getAll();
+            console.log('[ScholarsPage] No provider scholars found, checking for unassigned scholars...');
             if (allScholars.length > 0) {
+              console.log('[ScholarsPage] Found unassigned scholars, reassigning...');
               // Reassign any unassigned scholars
               providerService.ensureDataAssigned(currentProvider.id);
               const reassignedScholars = scholarService.getAll(currentProvider.id);
+              console.log('[ScholarsPage] After reassignment:', reassignedScholars.length, reassignedScholars);
               setScholars(reassignedScholars);
               setFilteredScholars(reassignedScholars);
             } else {
+              console.log('[ScholarsPage] No scholars found in storage at all');
               setScholars([]);
               setFilteredScholars([]);
             }
           } else {
+            console.log('[ScholarsPage] Setting provider scholars:', providerScholars.length);
             setScholars(providerScholars);
             setFilteredScholars(providerScholars);
           }
         } catch (error) {
-          console.error('Error fetching scholars:', error);
+          console.error('[ScholarsPage] Error fetching scholars:', error);
           setScholars([]);
           setFilteredScholars([]);
         }

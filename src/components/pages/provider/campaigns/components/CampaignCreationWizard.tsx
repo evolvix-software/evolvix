@@ -61,7 +61,7 @@ const campaignWizardSchema = z.object({
   applicationOpenDate: z.string(),
   applicationCloseDate: z.string(),
   autoCloseWhenSlotsFilled: z.boolean(),
-  timezone: z.string().default('UTC'),
+  timezone: z.string(),
 
   // Step 6: Funding & Budget
   fundingGoal: z.number().optional(),
@@ -97,7 +97,7 @@ export type CampaignWizardFormData = z.infer<typeof campaignWizardSchema>;
 
 interface CampaignCreationWizardProps {
   campaignId?: string; // For editing
-  onComplete?: () => void;
+  onComplete?: (data: CampaignWizardFormData) => void;
 }
 
 export function CampaignCreationWizard({ campaignId, onComplete }: CampaignCreationWizardProps) {
@@ -200,7 +200,7 @@ export function CampaignCreationWizard({ campaignId, onComplete }: CampaignCreat
     console.log('Submitting campaign:', data);
     // After successful submission, redirect or call onComplete
     if (onComplete) {
-      onComplete();
+      onComplete(data);
     } else {
       router.push('/portal/provider/campaigns');
     }
