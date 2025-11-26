@@ -118,7 +118,7 @@ export function AdminCampaignsPage() {
   }
 
   return (
-    <Layout noCard title="Scholarship Campaigns" role="admin" noCard>
+    <Layout noCard title="Scholarship Campaigns" role="admin">
       <div className="space-y-6">
         {/* Header Section */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

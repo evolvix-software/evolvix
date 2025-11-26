@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { Card, CardContent } from '@/components/common/forms/Card';
 import { Button } from '@/components/common/forms/Button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -10,7 +10,7 @@ import { mockAssignments, mockSubmissions } from '@/data/mock/assignments';
 import { useSearchParams } from 'next/navigation';
 import { FileText, Upload, Users, CheckCircle2, FolderOpen, BarChart3 } from 'lucide-react';
 
-export function MentorAssignmentsPage() {
+function MentorAssignmentsPageContent() {
   const searchParams = useSearchParams();
   const studentIdParam = searchParams.get('studentId');
   const projectNumberParam = searchParams.get('projectNumber');
@@ -271,6 +271,18 @@ export function MentorAssignmentsPage() {
         />
       )}
     </div>
+  );
+}
+
+export function MentorAssignmentsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <MentorAssignmentsPageContent />
+    </Suspense>
   );
 }
 

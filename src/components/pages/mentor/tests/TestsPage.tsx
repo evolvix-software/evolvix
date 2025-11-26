@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useAppSelector } from '@/hooks';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/common/forms/Card';
@@ -55,7 +55,7 @@ export interface ModuleTest {
   status: 'draft' | 'published' | 'closed';
 }
 
-export function TestsPage() {
+function TestsPageContent() {
   const searchParams = useSearchParams();
   const { courses } = useAppSelector(state => state.courses);
   const [mentorId, setMentorId] = useState<string>('');
@@ -547,6 +547,18 @@ export function TestsPage() {
         </TabsContent>
       </Tabs>
     </div>
+  );
+}
+
+export function TestsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <TestsPageContent />
+    </Suspense>
   );
 }
 

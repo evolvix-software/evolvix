@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Layout } from '@/components/common/layout/Layout';
 import { Button } from '@/components/common/forms/Button';
@@ -27,7 +27,7 @@ interface Filters {
   riskLevel?: 'low' | 'medium' | 'high' | 'all';
 }
 
-export function ScholarsPage() {
+function ScholarsPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [provider, setProvider] = useState(providerService.getCurrentProvider());
@@ -390,6 +390,18 @@ export function ScholarsPage() {
         )}
       </div>
     </Layout>
+  );
+}
+
+export function ScholarsPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <ScholarsPageContent />
+    </Suspense>
   );
 }
 

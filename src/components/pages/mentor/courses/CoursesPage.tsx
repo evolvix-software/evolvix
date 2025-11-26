@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { addCourse, updateCourse, deleteCourse, setCourses } from '@/store/features/courses/coursesSlice';
 import { Card, CardContent } from '@/components/common/forms/Card';
@@ -27,7 +27,7 @@ import { CourseForm, CourseCard } from './components';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { mockVacancies } from '@/data/mock/vacanciesData';
 
-export function CoursesPage() {
+function CoursesPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useAppDispatch();
@@ -458,5 +458,17 @@ export function CoursesPage() {
         )}
       </div>
     </div>
+  );
+}
+
+export function CoursesPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    }>
+      <CoursesPageContent />
+    </Suspense>
   );
 }

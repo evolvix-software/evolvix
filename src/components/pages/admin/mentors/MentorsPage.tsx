@@ -45,7 +45,7 @@ export function MentorsPage() {
   }
 
   return (
-    <Layout noCard title="Mentors & Payroll" role="provider" noCard>
+    <Layout noCard title="Mentors & Payroll" role="provider">
       <div className="space-y-6">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

@@ -642,10 +642,7 @@ export function AllApplicantsPage() {
                           <h3 className="font-semibold text-foreground truncate">{application.candidateName}</h3>
                           <Checkbox
                             checked={selectedApplicants.has(application.id)}
-                            onCheckedChange={(e) => {
-                              e.stopPropagation();
-                              toggleApplicantSelection(application.id);
-                            }}
+                            onCheckedChange={() => toggleApplicantSelection(application.id)}
                             onClick={(e) => e.stopPropagation()}
                           />
                         </div>
